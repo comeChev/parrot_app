@@ -1,8 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
 import { compare } from "bcryptjs";
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -81,20 +80,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-//type declaration for next-auth session user (with custom keys)
-declare module "next-auth" {
-  interface Session {
-    user: {
-      email: string;
-      name: string;
-      picture: string | null;
-      lastName: string;
-      role: string;
-      sub: number;
-      exp: number;
-      iat: number;
-      jti: string;
-    };
-  }
-}
