@@ -1,8 +1,8 @@
 import {
   verifyAdmin,
   verifyAuthorization,
-} from "@/lib/nextAuth/nextAuth.protections";
-import { prisma } from "@/lib/prisma";
+} from "@/utils/nextAuth/nextAuth.protections";
+import { prisma } from "@/utils/prisma";
 import { User } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
