@@ -10,7 +10,12 @@ export async function GET(request: NextRequest, response: Response) {
   console.log(request.headers);
   console.log("verified", isVerified);
   try {
-    if (!isVerified) throw new Error("Vous n'êtes pas autorisé");
+    if (!isVerified)
+      return new NextResponse(
+        JSON.stringify({ error: "Vous n'êtes pas autorisé" }),
+        { status: 401 }
+      );
+
     if (request.nextUrl.searchParams.get("day")) {
       const day = await prisma.hour.findUnique({
         where: {
@@ -19,7 +24,9 @@ export async function GET(request: NextRequest, response: Response) {
       });
 
       if (!day) {
-        throw new Error("Aucun horaire n'a été trouvé");
+        return new NextResponse(JSON.stringify({ error: "Jour non trouvé" }), {
+          status: 404,
+        });
       }
 
       return new NextResponse(
@@ -34,7 +41,10 @@ export async function GET(request: NextRequest, response: Response) {
     const hours = await prisma.hour.findMany({});
 
     if (hours.length === 0) {
-      throw new Error("Aucun horaire n'a été trouvé");
+      return new NextResponse(
+        JSON.stringify({ message: "Aucune donnée", data: [] }),
+        { status: 200 }
+      );
     }
 
     return new NextResponse(

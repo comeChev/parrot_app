@@ -19,6 +19,7 @@ model User{
   user_role String
   user_status String
   user_image String?
+  user_fileKey String?
   user_gender String?
   user_job String?
   user_arrival DateTime?
@@ -42,6 +43,7 @@ model Picture{
   picture_description String?
   picture_published_date DateTime @default(now())
   picture_status String
+  picture_fileKey String
 }
 
 model Category{
@@ -67,6 +69,7 @@ model Service_picture{
   service_picture_id Int @id @default(autoincrement())
   service_picture_name String
   service_picture_image String
+  service_picture_fileKey String
   service_id Int
   service Service @relation(fields: [service_id], references: [service_id], onDelete: Cascade, onUpdate: Cascade)
 }
@@ -137,6 +140,7 @@ model Car_picture{
   car_picture_id Int @id @default(autoincrement())
   car_picture_name String
   car_picture_image String
+  car_picture_fileKey String
   car_id Int
   car Car @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
 }
