@@ -13,7 +13,7 @@ export const verifyAuthorization = async (request: NextRequest) => {
   if (request.headers.get("authorization")) {
     return (
       request.headers.get("authorization")?.split(" ")[1] ===
-      process.env.API_KEY
+      process.env.NEXT_PUBLIC_API_KEY
     );
   }
 
