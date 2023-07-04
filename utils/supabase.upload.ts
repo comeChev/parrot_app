@@ -7,10 +7,10 @@ const supabase = createClient(
 );
 
 // Upload file using standard upload
-export async function uploadFile(file: File) {
+export async function uploadFile(file: File, path: string) {
   const { data, error } = await supabase.storage
     .from("parrot_app")
-    .upload(`/uploads/${file.name}`, file);
+    .upload(`/${path}/${file.name}`, file);
   if (error) {
     console.log(error);
     return { success: false, data: error.message };
@@ -29,4 +29,8 @@ export async function deleteFile(path: string) {
   } else {
     return { success: true, data: "Supprimé avec succès" };
   }
+}
+
+export function createImageURL(fileKey: string) {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${fileKey}`;
 }
