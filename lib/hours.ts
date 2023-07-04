@@ -190,7 +190,7 @@ export async function toggleHourStatus(hour: Hour, isMorning: boolean) {
   const updatedHourJson = await updatedHour.json();
   if (updatedHourJson.error) {
     alert(updatedHourJson.error);
-    return {};
+    return null;
   }
   return updatedHourJson.data;
 }

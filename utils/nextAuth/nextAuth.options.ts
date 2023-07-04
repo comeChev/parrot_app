@@ -60,6 +60,9 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     session: ({ session, token }) => {
       //we add the token infos to the session
