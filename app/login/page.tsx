@@ -2,8 +2,14 @@ import LoginForm from "@/components/login/Login.form";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/public/logo-parrot.png";
+import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const hasSession = await verifySession();
+  //redirect if already has a session
+  hasSession && redirect("/dashboard");
+
   return (
     <div className="container mx-auto my-auto text-center flex flex-col">
       <Image
