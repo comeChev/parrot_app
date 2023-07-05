@@ -7,8 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, response: Response) {
   const isVerified = await verifyAuthorization(request);
-  console.log(request.headers);
-  console.log("verified", isVerified);
+
   try {
     if (!isVerified)
       return new NextResponse(
@@ -40,11 +39,10 @@ export async function GET(request: NextRequest, response: Response) {
 
     const hours = await prisma.hour.findMany({});
 
-    if (hours.length === 0) {
-      return new NextResponse(
-        JSON.stringify({ message: "Aucune donnée", data: [] }),
-        { status: 200 }
-      );
+    if (!hours) {
+      return new NextResponse(JSON.stringify({ error: "Aucune donnée" }), {
+        status: 500,
+      });
     }
 
     return new NextResponse(
@@ -55,7 +53,9 @@ export async function GET(request: NextRequest, response: Response) {
       { status: 200 }
     );
   } catch (error: any) {
-    return new NextResponse(error.message, { status: error.status || 500 });
+    return new NextResponse(JSON.stringify({ error: error.message }), {
+      status: error.status || 500,
+    });
   }
 }
 
@@ -171,7 +171,6 @@ export async function DELETE(request: NextRequest, response: Response) {
         where: { hour_day: queryDay },
       })
       .catch((error) => {
-        console.log(error.message);
         return new NextResponse(JSON.stringify({ error: error.message }), {
           status: error.status || 500,
         });

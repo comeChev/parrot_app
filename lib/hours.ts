@@ -1,5 +1,4 @@
 import { Hour } from "@prisma/client";
-const token = process.env.NEXT_PUBLIC_API_KEY;
 
 type HH =
   | "00"
@@ -106,19 +105,21 @@ export interface HourUpdate extends HourCreate {
 
 export async function getHours() {
   try {
-    const users = await fetch(`/api/hours`, {
+    const response = await fetch("/api/hours", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      cache: "no-cache",
     });
-    const usersJson = await users.json();
-    const usersData = usersJson.data;
-    return usersData;
+    const responseJson = await response.json();
+    if (responseJson.error) {
+      alert(responseJson.error);
+      return [];
+    }
+    return responseJson.data;
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error);
   }
 }
 
