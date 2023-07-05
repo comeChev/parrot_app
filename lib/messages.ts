@@ -14,7 +14,10 @@ export interface MessageCreate {
 
 export async function getMessages() {
   try {
-    const messages = await fetch("/api/messages", { cache: "no-cache" });
+    const messages = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages`,
+      { cache: "no-cache" }
+    );
     const messagesJson = await messages.json();
     if (messagesJson.error) {
       alert(messagesJson.error);
@@ -29,7 +32,9 @@ export async function getMessages() {
 
 export async function getMessage(id: number) {
   try {
-    const message = await fetch(`/api/messages?id=${id}`);
+    const message = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages?id=${id}`
+    );
     const messageJson = await message.json();
     if (messageJson.error) {
       alert(messageJson.error);
@@ -44,13 +49,16 @@ export async function getMessage(id: number) {
 
 export async function createMessage(message: MessageCreate) {
   try {
-    const messageCreate = await fetch("/api/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
+    const messageCreate = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(message),
+      }
+    );
     const messageCreateJson = await messageCreate.json();
     if (messageCreateJson.error) {
       alert(messageCreateJson.error);
@@ -65,13 +73,16 @@ export async function createMessage(message: MessageCreate) {
 
 export async function updateMessage(id: number, message: Partial<Message>) {
   try {
-    const messageUpdate = await fetch(`/api/messages?id=${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
+    const messageUpdate = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages?id=${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(message),
+      }
+    );
     const messageUpdateJson = await messageUpdate.json();
     if (messageUpdateJson.error) {
       alert(messageUpdateJson.error);
@@ -86,12 +97,15 @@ export async function updateMessage(id: number, message: Partial<Message>) {
 
 export async function deleteMessage(id: number) {
   try {
-    const messageDelete = await fetch(`/api/messages?id=${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const messageDelete = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages?id=${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const messageDeleteJson = await messageDelete.json();
     if (messageDeleteJson.error) {
       alert(messageDeleteJson.error);

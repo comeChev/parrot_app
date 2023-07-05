@@ -8,13 +8,16 @@ export interface ServiceWithPictures extends Service {
 export async function getServicesWithPictures(): Promise<
   ServiceWithPictures[]
 > {
-  const services = await fetch("/api/services", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-  });
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+    }
+  );
   const servicesJson = await services.json();
   if (servicesJson.error) {
     console.log(servicesJson.error);
@@ -24,13 +27,16 @@ export async function getServicesWithPictures(): Promise<
 }
 
 export async function getServiceWithPictures(id: number) {
-  const service = await fetch(`/api/services.id=${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-  });
+  const service = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services.id=${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+    }
+  );
   const serviceJson = await service.json();
   if (serviceJson.error) {
     console.log(serviceJson.error);
@@ -40,13 +46,16 @@ export async function getServiceWithPictures(id: number) {
 }
 
 export async function createService(service: Partial<ServiceWithPictures>) {
-  const newService = await fetch("/api/services", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(service),
-  });
+  const newService = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/service`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(service),
+    }
+  );
   const newServiceJson = await newService.json();
   if (newServiceJson.error) {
     console.log(newServiceJson.error);
@@ -59,11 +68,14 @@ export async function updateService(
   id: number,
   service: Partial<ServiceWithPictures>
 ) {
-  const updatedService = await fetch(`/api/services?id=${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(service),
-  });
+  const updatedService = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services?id=${id}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(service),
+    }
+  );
   const updatedServiceJson = await updatedService.json();
   if (updatedServiceJson.error) {
     console.log(updatedServiceJson.error);
@@ -73,10 +85,13 @@ export async function updateService(
 }
 
 export async function deleteService(id: number) {
-  const deletedService = await fetch(`/api/services?id=${id}`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-  });
+  const deletedService = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services?id=${id}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
   const deletedServiceJson = await deletedService.json();
   if (deletedServiceJson.error) {
     console.log(deletedServiceJson.error);
@@ -92,7 +107,7 @@ export async function createServicePicture(
   picture: Partial<Service_picture>
 ) {
   const newServicePicture = await fetch(
-    `/api/services/pictures?serviceId=${serviceId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services/pictures?serviceId=${serviceId}`,
     {
       method: "POST",
       headers: {
@@ -115,7 +130,7 @@ export async function deleteServicePicture(picture: Service_picture) {
   if (!success) return null;
   // then delete the picture from the database
   const deletedServicePicture = await fetch(
-    `/api/services/pictures?id=${picture.service_picture_id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services/pictures?id=${picture.service_picture_id}`,
     { method: "DELETE", headers: { "Content-Type": "application/json" } }
   );
   const deletedServicePictureJson = await deletedServicePicture.json();

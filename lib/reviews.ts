@@ -1,13 +1,16 @@
 import { Review } from "@prisma/client";
 
 export async function getReviews() {
-  const reviews = await fetch("/api/reviews", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-  });
+  const reviews = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+    }
+  );
   const reviewsJson = await reviews.json();
   if (reviewsJson.error) {
     console.error(reviewsJson.error);
@@ -17,13 +20,16 @@ export async function getReviews() {
 }
 
 export async function getReview(id: number) {
-  const review = await fetch(`/api/reviews?id=${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-  });
+  const review = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+    }
+  );
   const reviewJson = await review.json();
   if (reviewJson.error) {
     console.error(reviewJson.error);
@@ -33,14 +39,17 @@ export async function getReview(id: number) {
 }
 
 export async function createReview(review: Partial<Review>) {
-  const newReview = await fetch("/api/reviews", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-    body: JSON.stringify(review),
-  });
+  const newReview = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+      body: JSON.stringify(review),
+    }
+  );
   const newReviewJson = await newReview.json();
   if (newReviewJson.error) {
     console.error(newReviewJson.error);
@@ -50,13 +59,16 @@ export async function createReview(review: Partial<Review>) {
 }
 
 export async function updateReview(id: number, review: Partial<Review>) {
-  const updatedReview = await fetch(`/api/reviews?id=${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(review),
-  });
+  const updatedReview = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(review),
+    }
+  );
   const updatedReviewJson = await updatedReview.json();
   if (updatedReviewJson.error) {
     console.error(updatedReviewJson.error);
@@ -66,10 +78,13 @@ export async function updateReview(id: number, review: Partial<Review>) {
 }
 
 export async function deleteReview(id: number) {
-  const deletedReview = await fetch(`/api/reviews?id=${id}`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-  });
+  const deletedReview = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
   const deletedReviewJson = await deletedReview.json();
   if (deletedReviewJson.error) {
     console.error(deletedReviewJson.error);

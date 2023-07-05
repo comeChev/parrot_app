@@ -8,7 +8,7 @@ export interface FullCar extends Car {
 }
 
 export async function getCars() {
-  const response = await fetch("/api/cars", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -24,13 +24,16 @@ export async function getCars() {
 }
 
 export async function getCar(id: number) {
-  const response = await fetch(`/api/cars/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${process.env.API_KEY}`,
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${process.env.API_KEY}`,
+      },
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -40,7 +43,7 @@ export async function getCar(id: number) {
 }
 
 export async function createCar(car: Partial<Car>) {
-  const response = await fetch("/api/cars", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,13 +59,16 @@ export async function createCar(car: Partial<Car>) {
 }
 
 export async function updateCar(id: number, car: Partial<Car>) {
-  const response = await fetch(`/api/cars?id=${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(car),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars?id=${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(car),
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -72,12 +78,15 @@ export async function updateCar(id: number, car: Partial<Car>) {
 }
 
 export async function deleteCar(id: number) {
-  const response = await fetch(`/api/cars?id=${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars?id=${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -90,11 +99,14 @@ export async function createCarPicture(
   carId: number,
   car_picture: Partial<Car_picture>
 ) {
-  const response = await fetch(`/api/cars/pictures?carId=${carId}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(car_picture),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/pictures?carId=${carId}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(car_picture),
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -107,11 +119,14 @@ export async function updateCarPicture(
   id: number,
   picture: Partial<Car_picture>
 ) {
-  const response = await fetch(`api/cars/pictures?id=${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(picture),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/pictures?id=${id}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(picture),
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -128,10 +143,13 @@ export async function deleteCarPicture(id: number, fileKey: string) {
     return null;
   }
   //delete from db
-  const response = await fetch(`/api/cars/pictures?id=${id}`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/pictures?id=${id}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -144,14 +162,17 @@ export async function createCarMessage(
   carId: number,
   car_message: Partial<Car_message>
 ) {
-  const response = await fetch(`/api/cars/messages?carId=${carId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-    body: JSON.stringify(car_message),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/messages?carId=${carId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+      body: JSON.stringify(car_message),
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -164,10 +185,13 @@ export async function updateCarMessage(
   id: number,
   message: Partial<Car_message>
 ) {
-  const response = await fetch(`/api/cars/messages?id=${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/messages?id=${id}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
@@ -177,12 +201,15 @@ export async function updateCarMessage(
 }
 
 export async function deleteCarMessage(id: number) {
-  const response = await fetch(`/api/cars/messages?id=${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/messages?id=${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
