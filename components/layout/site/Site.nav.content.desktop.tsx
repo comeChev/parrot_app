@@ -1,7 +1,6 @@
 import { BsFillCarFrontFill } from "react-icons/bs";
-import SiteNavLink from "./Site.nav.link";
 import Image from "next/image";
-import logo from "@/public/logo-parrot.png";
+import logo from "@/assets/logo-parrot.png";
 import SiteNavLinkDesktop from "./Site.nav.link.desktop";
 import Link from "next/link";
 

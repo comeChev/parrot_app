@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BsFillPersonFill, BsFillKeyFill } from "react-icons/bs";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 type FormProps = {
   email: string;
@@ -58,16 +59,10 @@ export default function LoginForm() {
           </label>
           <AiOutlineInfoCircle
             className="text-gray-800 text-2xl cursor-pointer"
-            onMouseEnter={() =>
+            onClick={() =>
               setInfos({
                 ...infos,
-                email: true,
-              })
-            }
-            onMouseLeave={() =>
-              setInfos({
-                ...infos,
-                email: false,
+                email: !infos.email,
               })
             }
           />
@@ -94,7 +89,11 @@ export default function LoginForm() {
           <p className="text-red-600 text-start w-full">{errors.email}</p>
         )}
         {infos.email && (
-          <p className="text-start w-full">
+          <p
+            className={`${
+              infos.email ? "flex" : "hidden"
+            } text-start w-full text-blue-700`}
+          >
             {"Votre mail doit contenir un '.' et un '@'"}
           </p>
         )}
@@ -110,8 +109,7 @@ export default function LoginForm() {
           </label>
           <AiOutlineInfoCircle
             className="text-gray-800 text-2xl cursor-pointer"
-            onMouseEnter={() => setInfos({ ...infos, password: true })}
-            onMouseLeave={() => setInfos({ ...infos, password: false })}
+            onClick={() => setInfos({ ...infos, password: !infos.password })}
           />
         </div>
         <div
@@ -133,11 +131,14 @@ export default function LoginForm() {
             className={`w-full bg-neutral-200 text-xl outline-none placeholder-neutral-500 py-2 px-2`}
           />
         </div>
-        {infos.password && (
-          <p className="text-start w-full">
-            {"Votre mot de passe doit contenir au moins 8 caractères"}
-          </p>
-        )}
+
+        <p
+          className={`${
+            infos.password ? "flex" : "hidden"
+          } text-start w-full text-blue-700`}
+        >
+          {"Votre mot de passe doit contenir au moins 8 caractères"}
+        </p>
       </div>
 
       {/* submit button */}
@@ -147,6 +148,9 @@ export default function LoginForm() {
       >
         Se connecter
       </button>
+      <Link href={"/"} className="underline text-neutral-500 italic">
+        Mot de passe oublié ? Cliquez ici.
+      </Link>
     </form>
   );
 }

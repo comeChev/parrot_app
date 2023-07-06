@@ -1,14 +1,20 @@
 import { ReactNode } from "react";
 import SiteNav from "@/components/layout/site/Site.nav";
 import { getHours } from "@/lib/hours";
+import SiteFooter from "@/components/layout/site/Site.footer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/nextAuth/nextAuth.options";
 
 type SiteLayoutProps = { children: ReactNode };
 
 export default async function SiteLayout({ children }: SiteLayoutProps) {
+  const hours = await getHours();
+  const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-col min-h-screen font-title w-full">
       <SiteNav />
-      <main className="flex-1 px-4 py-2">{children}</main>
+      <main className="flex-1">{children}</main>
+      <SiteFooter hours={hours} session={session} />
     </div>
   );
 }

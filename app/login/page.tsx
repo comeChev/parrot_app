@@ -1,7 +1,7 @@
 import LoginForm from "@/components/login/Login.form";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/public/logo-parrot.png";
+import logo from "@/assets/images/logo-parrot.png";
 import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
 import { redirect } from "next/navigation";
 
@@ -11,21 +11,19 @@ export default async function LoginPage() {
   hasSession && redirect("/dashboard");
 
   return (
-    <div className="container mx-auto my-auto text-center flex flex-col">
+    <div className="container mx-auto my-auto text-center flex flex-col h-screen justify-between py-10">
       <Image
         src={logo}
         alt="logo garage V. Parrot"
-        className="w-3/4 mx-auto mb-10 mt-6"
+        className="w-3/4 max-w-[700px] mx-auto mb-10 mt-6 select-none"
       />
-      <div className="mb-10">
+      <div className="mb-10 select-none">
         <h1 className="text-4xl font-extrabold font-title">Connexion</h1>
         <h2 className="text-xl font-text">Connectez-vous à votre compte</h2>
       </div>
 
       <LoginForm />
-      <Link href={"/"} className="underline text-neutral-500 italic">
-        Mot de passe oublié ? Cliquez ici.
-      </Link>
+
       <Link
         type="button"
         href="/"

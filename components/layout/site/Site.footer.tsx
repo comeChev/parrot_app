@@ -102,7 +102,7 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
             </p>
             <div className="text-sm font-light flex flex-col space-y-2">
               <Link href="/services?name=mechanic">
-                Entretien et réparation mécanique
+                Entretien et révision mécanique
               </Link>
               <Link href="/services?name=repair">
                 Carrosserie et réparation

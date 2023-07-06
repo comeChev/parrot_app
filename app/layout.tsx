@@ -35,9 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body
-        className={`${monserrat.variable} ${lora.variable} ${assistant.variable}`}
-      >
+      <body className={``}>
         <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>
