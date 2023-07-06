@@ -87,7 +87,7 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
             <div className="text-sm font-light flex flex-col space-y-2">
               <Link href="/">Accueil</Link>
               <Link href="about">Notre entreprise</Link>
-              <Link href="review">Laisser un avis</Link>
+              <Link href="reviews">Laisser un avis</Link>
               <Link href="contact">Nous contacter</Link>
               <Link href="legals">Mentions légales</Link>
               <Link href="privacy">Vos données personnelles</Link>

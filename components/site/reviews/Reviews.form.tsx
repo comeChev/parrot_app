@@ -1,0 +1,279 @@
+"use client";
+
+import FormInput from "@/components/ui/form/Form.input";
+import FormSubmit from "@/components/ui/form/Form.submit";
+import FormTextarea from "@/components/ui/form/Form.textarea";
+import { UiAlertError, UiAlertSuccess } from "@/components/ui/Ui.alert.windows";
+import UiLoadingWindow from "@/components/ui/Ui.loading.window";
+import { NewReview, createReview } from "@/lib/reviews";
+import { useState } from "react";
+import { BsStar, BsStarFill } from "react-icons/bs";
+
+const defaultReview: NewReview = {
+  review_user_email: "",
+  review_user_first_name: "",
+  review_user_last_name: "",
+  review_comment: "",
+  review_note: 0,
+  review_status: null,
+};
+
+const arrayNote = [1, 2, 3, 4, 5];
+
+type ErrorsProps = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  comment: string;
+  note: string;
+};
+
+type ValidationProps = {
+  success: boolean;
+  message: string;
+};
+
+const defaultErrors: ErrorsProps = {
+  email: "",
+  firstName: "",
+  lastName: "",
+  comment: "",
+  note: "",
+};
+
+const defaultValidation: ValidationProps = {
+  success: false,
+  message: "",
+};
+
+export default function ReviewsForm() {
+  const [review, setReview] = useState<NewReview>(defaultReview);
+  const [errors, setErrors] = useState<ErrorsProps>(defaultErrors);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [validation, setValidation] =
+    useState<ValidationProps>(defaultValidation);
+
+  // handle errors
+  function isValidForm() {
+    let errorsTemp: ErrorsProps = defaultErrors;
+    // comment validation
+    if (
+      review.review_comment.trim().length < 10 ||
+      review.review_comment.trim().length > 500
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        comment:
+          "Votre commentaire doit contenir au moins 10 caractères et au maximum 500.",
+      };
+    }
+
+    // note validation
+    if (review.review_note < 1) {
+      errorsTemp = { ...errorsTemp, note: "Veuillez choisir une note." };
+    }
+
+    // firstName validation
+    if (
+      review.review_user_first_name.trim().length < 3 ||
+      review.review_user_first_name.trim().length > 50
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        firstName:
+          "Votre prénom doit comporter un minimum de 3 lettres et un maximum de 50",
+      };
+    }
+
+    // lastName validation
+    if (
+      review.review_user_last_name.trim().length < 3 ||
+      review.review_user_last_name.trim().length > 50
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        lastName:
+          "Votre nom de famille doit comporter un minimum de 3 lettres et un maximum de 50",
+      };
+    }
+
+    //checking errors
+    if (Object.values(errorsTemp).some((error) => error.length > 0)) {
+      setErrors(errorsTemp);
+      return false;
+    }
+    return true;
+  }
+
+  //handle submit
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (isValidForm()) {
+      setValidation({ success: false, message: "" });
+      setLoading(true);
+      const response = await createReview(review);
+
+      setTimeout(() => {
+        if (response !== null) {
+          setLoading(false);
+          setValidation({
+            success: true,
+            message: "Votre avis a bien été enregistré. Merci !",
+          });
+          setReview(defaultReview);
+          return;
+        }
+        setLoading(false);
+        setValidation({
+          success: false,
+          message: "Une erreur est survenue. Veuillez réessayer.",
+        });
+        return;
+      }, 2000);
+    }
+  }
+
+  return (
+    <div className="container mx-auto px-4 relative">
+      {/* Explanations */}
+      <div className="mb-10">
+        <p>
+          Votre expérience nous intéresse. Votre avis nous permettra d’améliorer
+          nos services afin de mieux subvenir à vos besoins. Pour des raisons de
+          sécurité, votre avis sera soumis à modération avant d’être publié sur
+          notre site.
+        </p>
+        <p>
+          Soyez rassurés,{" "}
+          <strong className="underline underline-offset-2 font-semibold">
+            tous les avis sont acceptés
+          </strong>{" "}
+          (bons comme moins bons) sous réserve de respect et de courtoisie.
+        </p>
+        <p>Une note minimale de 1 est demandée.</p>
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit}>
+        {/* name & lastName */}
+        <div className="flex flex-col md:flex-row md:space-x-5">
+          <FormInput
+            label="Prénom"
+            name="firstName"
+            value={review.review_user_first_name}
+            error={errors.firstName}
+            type="text"
+            autocomplete="given-name"
+            handleChange={(e) =>
+              setReview({ ...review, review_user_first_name: e.target.value })
+            }
+            handleFocus={(e) => setErrors({ ...errors, firstName: "" })}
+          />
+          <FormInput
+            label="Nom de famille"
+            name="lastName"
+            value={review.review_user_last_name}
+            error={errors.lastName}
+            type="text"
+            autocomplete="family-name"
+            handleChange={(e) =>
+              setReview({ ...review, review_user_last_name: e.target.value })
+            }
+            handleFocus={(e) => setErrors({ ...errors, lastName: "" })}
+          />
+        </div>
+
+        {/* email */}
+        <FormInput
+          label="E-mail"
+          name="email"
+          value={review.review_user_email}
+          error={errors.email}
+          type="email"
+          autocomplete="email"
+          handleChange={(e) =>
+            setReview({ ...review, review_user_email: e.target.value })
+          }
+          handleFocus={(e) => setErrors({ ...errors, email: "" })}
+        />
+
+        {/* note */}
+        <div className="mb-[50px] flex-col">
+          <p className="mb-3 px-4 font-semibold">
+            Note <span className="text-red-500">*</span>
+          </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-5 ml-4">
+              {arrayNote.map((note) => {
+                if (review.review_note && review.review_note >= note) {
+                  return (
+                    <BsStarFill
+                      aria-label={`note de ${note}`}
+                      className="text-red-500 text-2xl cursor-pointer"
+                      onClick={() =>
+                        setReview({ ...review, review_note: note })
+                      }
+                      onMouseEnter={() =>
+                        setReview({ ...review, review_note: note })
+                      }
+                    />
+                  );
+                } else {
+                  return (
+                    <BsStar
+                      aria-label={`note de ${note}`}
+                      className="text-red-500 cursor-pointer"
+                      onMouseEnter={() =>
+                        setReview({ ...review, review_note: note })
+                      }
+                    />
+                  );
+                }
+              })}
+            </div>
+            <span className="text-light italic text-sm pl-[40px]">{`Note affectée : ${review.review_note} sur 5`}</span>
+          </div>
+        </div>
+
+        {/* comment */}
+        <FormTextarea
+          label="Commentaire"
+          name="comment"
+          value={review.review_comment}
+          error={errors.comment}
+          handleChange={(e) =>
+            setReview({ ...review, review_comment: e.currentTarget.value })
+          }
+          handleFocus={() => setErrors({ ...errors, comment: "" })}
+        />
+
+        {/* submit button */}
+        <FormSubmit
+          handleCheck={loading}
+          description="Votre message apparaîtra en ligne une fois celui-ci validé par nos
+          modérateurs."
+        />
+      </form>
+
+      {/* loading window */}
+      {loading && (
+        <UiLoadingWindow text="Envoi en cours. Merci de patienter." />
+      )}
+
+      {/* success or error message */}
+      {validation.success && (
+        <UiAlertSuccess
+          handleClose={() => setValidation({ success: false, message: "" })}
+          message={validation.message}
+        />
+      )}
+      {!validation.success && validation.message !== "" && (
+        <UiAlertError
+          handleClose={() => setValidation({ success: false, message: "" })}
+          message={validation.message}
+        />
+      )}
+    </div>
+  );
+}

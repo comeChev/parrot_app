@@ -1,5 +1,14 @@
 import { Review } from "@prisma/client";
 
+export type NewReview = {
+  review_user_email: string;
+  review_user_first_name: string;
+  review_user_last_name: string;
+  review_comment: string;
+  review_note: number;
+  review_status: "PENDING" | "ONLINE" | "OFFLINE" | null;
+};
+
 export async function getReviews() {
   const reviews = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
@@ -9,6 +18,7 @@ export async function getReviews() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
+      cache: "no-cache",
     }
   );
   const reviewsJson = await reviews.json();
@@ -16,7 +26,17 @@ export async function getReviews() {
     console.error(reviewsJson.error);
     return [];
   }
-  return reviewsJson.data;
+
+  // Decode URI
+  const reviewsTransformed = reviewsJson.data.map((review: Review) => {
+    return {
+      ...review,
+      review_user_first_name: decodeURI(review.review_user_first_name),
+      review_user_last_name: decodeURI(review.review_user_last_name),
+      review_comment: decodeURI(review.review_comment),
+    };
+  });
+  return reviewsTransformed;
 }
 
 export async function getReview(id: number) {
@@ -35,10 +55,27 @@ export async function getReview(id: number) {
     console.error(reviewJson.error);
     return null;
   }
-  return reviewJson.data;
+
+  // Decode URI
+  const reviewTransformed = {
+    ...reviewJson.data,
+    review_user_first_name: decodeURI(reviewJson.data.review_user_first_name),
+    review_user_last_name: decodeURI(reviewJson.data.review_user_last_name),
+    review_comment: decodeURI(reviewJson.data.review_comment),
+  };
+  return reviewTransformed;
 }
 
-export async function createReview(review: Partial<Review>) {
+export async function createReview(review: NewReview) {
+  // Encode URI
+  const reviewToCreate = {
+    ...review,
+    review_user_first_name: encodeURI(review.review_user_first_name),
+    review_user_last_name: encodeURI(review.review_user_last_name),
+    review_comment: encodeURI(review.review_comment),
+    review_status: "ONLINE",
+  };
+
   const newReview = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
     {
@@ -47,7 +84,7 @@ export async function createReview(review: Partial<Review>) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      body: JSON.stringify(review),
+      body: JSON.stringify(reviewToCreate),
     }
   );
   const newReviewJson = await newReview.json();
@@ -58,6 +95,11 @@ export async function createReview(review: Partial<Review>) {
   return newReviewJson.data;
 }
 
+//only update the review status
+/**
+ * @description Update a review only by the review status
+ * @param review review to update ({review_status: "ONLINE" | "OFFLINE" | "PENDING"})
+ */
 export async function updateReview(id: number, review: Partial<Review>) {
   const updatedReview = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,

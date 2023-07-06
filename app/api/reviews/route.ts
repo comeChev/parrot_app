@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
+  const hasSession = await verifySession();
 
   try {
     if (!isAuthorized)
@@ -17,37 +18,58 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       );
 
-    //get review by id
-    if (request.nextUrl.searchParams.get("id")) {
-      const id = Number(request.nextUrl.searchParams.get("id"));
-      const review = await prisma.review.findUnique({
-        where: { review_id: id },
-      });
-      if (!review) {
+    if (hasSession) {
+      //get review by id
+      if (request.nextUrl.searchParams.get("id")) {
+        const id = Number(request.nextUrl.searchParams.get("id"));
+        const review = await prisma.review.findUnique({
+          where: { review_id: id },
+        });
+        if (!review) {
+          throw new Error("Aucune review trouvée");
+        }
+        return new NextResponse(
+          JSON.stringify({
+            status: 200,
+            message: "Review récupérée avec succès",
+            data: review,
+          })
+        );
+      }
+
+      //get all reviews
+      const reviews = await prisma.review.findMany({});
+      if (!reviews) {
         throw new Error("Aucune review trouvée");
       }
+
       return new NextResponse(
         JSON.stringify({
-          status: 200,
-          message: "Review récupérée avec succès",
-          data: review,
-        })
+          message: "Liste des reviews récupérée avec succès",
+          data: reviews,
+        }),
+        { status: 200 }
       );
     }
 
-    //get all reviews
-    const reviews = await prisma.review.findMany({});
-    if (!reviews) {
-      throw new Error("Aucune review trouvée");
-    }
+    // for site visitors
+    if (isAuthorized) {
+      //get all reviews if online
+      const reviews = await prisma.review.findMany({
+        where: { review_status: "ONLINE" },
+      });
+      if (!reviews) {
+        throw new Error("Aucune review trouvée");
+      }
 
-    return new NextResponse(
-      JSON.stringify({
-        message: "Liste des reviews récupérée avec succès",
-        data: reviews,
-      }),
-      { status: 200 }
-    );
+      return new NextResponse(
+        JSON.stringify({
+          message: "Liste des reviews en ligne récupérée avec succès",
+          data: reviews,
+        }),
+        { status: 200 }
+      );
+    }
   } catch (error: any) {
     return new NextResponse(
       JSON.stringify({
