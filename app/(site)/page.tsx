@@ -4,27 +4,18 @@ import mechanic2 from "@/assets/home/mechanic2.jpg";
 import carrosserie from "@/assets/home/carrosserie.jpg";
 import vente from "@/assets/home/vente.webp";
 import revision from "@/assets/home/revision.jpg";
-import outils from "@/assets/home/outils.jpg";
 import electric from "@/assets/home/electric.jpg";
 
 import HomeAssetsItem from "@/components/site/home/Home.assets.item";
 import HomeServicesItem from "@/components/site/home/Home.services.item";
 import Image from "next/image";
 import { BiChevronsDown } from "react-icons/bi";
-import {
-  BsStars,
-  BsCarFrontFill,
-  BsPersonWorkspace,
-  BsPinMapFill,
-} from "react-icons/bs";
+import { BsStars, BsCarFrontFill, BsPersonWorkspace } from "react-icons/bs";
 import { GrServices } from "react-icons/gr";
-import { GiReceiveMoney } from "react-icons/gi";
-import { FaHandsHelping } from "react-icons/fa";
-import HomeReasonsItem from "@/components/site/home/Home.reasons.item";
-import { LiaCertificateSolid } from "react-icons/lia";
 import HomeReviewsItem from "@/components/site/home/Home.reviews.item";
 import SeparatorImage from "@/components/ui/Ui.separator.image";
 import Link from "next/link";
+import UiReasons from "@/components/ui/Ui.reasons";
 
 const assetsItems = [
   {
@@ -70,29 +61,6 @@ const servicesItems = [
   },
 ];
 
-const reasonItems = [
-  {
-    Icon: FaHandsHelping,
-    text: "Forts de plus de 15 années d'expérience dans le métier de garagiste, nous saurons répondre à vos besoins dans les meilleurs délais.",
-    title: "Expertise et réactivité",
-  },
-  {
-    Icon: LiaCertificateSolid,
-    text: "Nous disposons des qualifications et des compétences nécessaires pour vous assurer un service de qualité.",
-    title: "Certifications",
-  },
-  {
-    Icon: GiReceiveMoney,
-    text: "Nous vous proposons des tarifs attractifs et respectueux de la qualité de notre travail.",
-    title: "Tarifs attractifs",
-  },
-  {
-    Icon: BsPinMapFill,
-    text: "Notre emplacement idéal nous permet de vous offrir un service de proximité.",
-    title: "Emplacements et réseaux",
-  },
-];
-
 const reviewItems = [
   {
     name: "Roger E.",
@@ -116,7 +84,7 @@ const reviewItems = [
 
 export default async function Home() {
   return (
-    <div className="">
+    <div className="min-h-screen">
       {/* main image */}
       <div className="relative w-full h-[500px] mb-10 md:mb-[150px]">
         <Image
@@ -201,7 +169,7 @@ export default async function Home() {
       {/* section 1 - assets */}
       <section className="container mx-auto hidden md:flex mb-[100px]">
         {/* assets */}
-        <div className="flex flex-col md:flex-row px-10 my-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-10 my-10 gap-5">
           {assetsItems.map((item, index) => (
             <HomeAssetsItem
               Icon={item.Icon}
@@ -283,20 +251,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* separation image */}
-      <SeparatorImage image={outils} />
-
-      {/* section 4 - reasons */}
-      <section className="container mx-auto px-4 mb-[100px]">
-        <h3 className="text-3xl font-bold mb-10">
-          Pourquoi choisir notre garage
-        </h3>
-        <div className="flex flex-col md:flex-row md:space-x-5">
-          {reasonItems.map((r) => (
-            <HomeReasonsItem Icon={r.Icon} text={r.text} title={r.title} />
-          ))}
-        </div>
-      </section>
+      {/* Reasons to choose garage */}
+      <UiReasons />
 
       {/* separation image */}
       <SeparatorImage image={electric} />

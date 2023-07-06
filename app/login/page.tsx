@@ -1,7 +1,7 @@
 import LoginForm from "@/components/login/Login.form";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/images/logo-parrot.png";
+import logo from "@/assets/logo-parrot.png";
 import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
 import { redirect } from "next/navigation";
 

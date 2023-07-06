@@ -13,7 +13,7 @@ export default function HomeReasonsItem({
 }: HomeReasonsItemProps) {
   return (
     <div className="flex flex-col flex-1 items-center">
-      <Icon className="text-red-800 text-8xl" />
+      <Icon className="text-red-800 text-6xl md:text-7xl lg:text-8xl" />
       <div className="w-full flex flex-col text-center mt-5 mb-12">
         <div className="w-1/2 mx-auto bg-neutral-600 h-[2px] mb-5" />
         <h4 className="text-lg font-semibold mb-2">{title}</h4>
