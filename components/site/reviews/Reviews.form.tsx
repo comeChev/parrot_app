@@ -1,10 +1,9 @@
 "use client";
 
+import Form from "@/components/ui/form/Form";
 import FormInput from "@/components/ui/form/Form.input";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
-import { UiAlertError, UiAlertSuccess } from "@/components/ui/Ui.alert.windows";
-import UiLoadingWindow from "@/components/ui/Ui.loading.window";
 import { NewReview, createReview } from "@/lib/reviews";
 import { useState } from "react";
 import { BsStar, BsStarFill } from "react-icons/bs";
@@ -45,6 +44,12 @@ const defaultValidation: ValidationProps = {
   success: false,
   message: "",
 };
+
+const explanations = [
+  "Votre expérience nous intéresse. Votre avis nous permettra d’améliorer nos services afin de mieux subvenir à vos besoins. Pour des raisons de sécurité, votre avis sera soumis à modération avant d’être publié sur notre site.",
+  "Soyez rassurés,tous les avis sont acceptés (bons comme moins bons) sous réserve de respect et de courtoisie.",
+  "Une note minimale de 1 est nécessaire pour valider l'avis.",
+];
 
 export default function ReviewsForm() {
   const [review, setReview] = useState<NewReview>(defaultReview);
@@ -135,147 +140,112 @@ export default function ReviewsForm() {
   }
 
   return (
-    <div className="container mx-auto px-4 relative">
-      {/* Explanations */}
-      <div className="mb-10">
-        <p>
-          Votre expérience nous intéresse. Votre avis nous permettra d’améliorer
-          nos services afin de mieux subvenir à vos besoins. Pour des raisons de
-          sécurité, votre avis sera soumis à modération avant d’être publié sur
-          notre site.
-        </p>
-        <p>
-          Soyez rassurés,{" "}
-          <strong className="underline underline-offset-2 font-semibold">
-            tous les avis sont acceptés
-          </strong>{" "}
-          (bons comme moins bons) sous réserve de respect et de courtoisie.
-        </p>
-        <p>Une note minimale de 1 est demandée.</p>
+    // Form
+    <Form
+      explanations={explanations}
+      handleSubmit={handleSubmit}
+      loading={loading}
+      validation={validation}
+      setValidation={setValidation}
+    >
+      {/* name & lastName */}
+      <div className="flex flex-col md:flex-row md:space-x-5">
+        <FormInput
+          label="Prénom"
+          name="firstName"
+          value={review.review_user_first_name}
+          error={errors.firstName}
+          type="text"
+          autocomplete="given-name"
+          handleChange={(e) =>
+            setReview({ ...review, review_user_first_name: e.target.value })
+          }
+          handleFocus={(e) => setErrors({ ...errors, firstName: "" })}
+        />
+        <FormInput
+          label="Nom de famille"
+          name="lastName"
+          value={review.review_user_last_name}
+          error={errors.lastName}
+          type="text"
+          autocomplete="family-name"
+          handleChange={(e) =>
+            setReview({ ...review, review_user_last_name: e.target.value })
+          }
+          handleFocus={(e) => setErrors({ ...errors, lastName: "" })}
+        />
       </div>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit}>
-        {/* name & lastName */}
-        <div className="flex flex-col md:flex-row md:space-x-5">
-          <FormInput
-            label="Prénom"
-            name="firstName"
-            value={review.review_user_first_name}
-            error={errors.firstName}
-            type="text"
-            autocomplete="given-name"
-            handleChange={(e) =>
-              setReview({ ...review, review_user_first_name: e.target.value })
-            }
-            handleFocus={(e) => setErrors({ ...errors, firstName: "" })}
-          />
-          <FormInput
-            label="Nom de famille"
-            name="lastName"
-            value={review.review_user_last_name}
-            error={errors.lastName}
-            type="text"
-            autocomplete="family-name"
-            handleChange={(e) =>
-              setReview({ ...review, review_user_last_name: e.target.value })
-            }
-            handleFocus={(e) => setErrors({ ...errors, lastName: "" })}
-          />
-        </div>
+      {/* email */}
+      <FormInput
+        label="E-mail"
+        name="email"
+        value={review.review_user_email}
+        error={errors.email}
+        type="email"
+        autocomplete="email"
+        handleChange={(e) =>
+          setReview({ ...review, review_user_email: e.target.value })
+        }
+        handleFocus={(e) => setErrors({ ...errors, email: "" })}
+      />
 
-        {/* email */}
-        <FormInput
-          label="E-mail"
-          name="email"
-          value={review.review_user_email}
-          error={errors.email}
-          type="email"
-          autocomplete="email"
-          handleChange={(e) =>
-            setReview({ ...review, review_user_email: e.target.value })
-          }
-          handleFocus={(e) => setErrors({ ...errors, email: "" })}
-        />
-
-        {/* note */}
-        <div className="mb-[50px] flex-col">
-          <p className="mb-3 px-4 font-semibold">
-            Note <span className="text-red-500">*</span>
-          </p>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-5 ml-4">
-              {arrayNote.map((note) => {
-                if (review.review_note && review.review_note >= note) {
-                  return (
-                    <BsStarFill
-                      key={note}
-                      aria-label={`note de ${note}`}
-                      className="text-red-500 text-4xl cursor-pointer"
-                      onClick={() =>
-                        setReview({ ...review, review_note: note })
-                      }
-                      onMouseEnter={() =>
-                        setReview({ ...review, review_note: note })
-                      }
-                    />
-                  );
-                } else {
-                  return (
-                    <BsStar
-                      key={note}
-                      aria-label={`note de ${note}`}
-                      className="text-red-500 cursor-pointer text-2xl"
-                      onMouseEnter={() =>
-                        setReview({ ...review, review_note: note })
-                      }
-                    />
-                  );
-                }
-              })}
-            </div>
-            <span className="text-light italic text-sm pl-[40px]">{`Note affectée : ${review.review_note} sur 5`}</span>
+      {/* note */}
+      <div className="mb-[50px] flex-col">
+        <p className="mb-3 px-4 font-semibold">
+          Note <span className="text-red-500">*</span>
+        </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-5 ml-4">
+            {arrayNote.map((note) => {
+              if (review.review_note && review.review_note >= note) {
+                return (
+                  <BsStarFill
+                    key={note}
+                    aria-label={`note de ${note}`}
+                    className="text-red-500 text-4xl cursor-pointer"
+                    onClick={() => setReview({ ...review, review_note: note })}
+                    onMouseEnter={() =>
+                      setReview({ ...review, review_note: note })
+                    }
+                  />
+                );
+              } else {
+                return (
+                  <BsStar
+                    key={note}
+                    aria-label={`note de ${note}`}
+                    className="text-red-500 cursor-pointer text-2xl"
+                    onMouseEnter={() =>
+                      setReview({ ...review, review_note: note })
+                    }
+                  />
+                );
+              }
+            })}
           </div>
+          <span className="text-light italic text-sm pl-[40px]">{`Note affectée : ${review.review_note} sur 5`}</span>
         </div>
+      </div>
 
-        {/* comment */}
-        <FormTextarea
-          label="Commentaire"
-          name="comment"
-          value={review.review_comment}
-          error={errors.comment}
-          handleChange={(e) =>
-            setReview({ ...review, review_comment: e.currentTarget.value })
-          }
-          handleFocus={() => setErrors({ ...errors, comment: "" })}
-        />
+      {/* comment */}
+      <FormTextarea
+        label="Commentaire"
+        name="comment"
+        value={review.review_comment}
+        error={errors.comment}
+        handleChange={(e) =>
+          setReview({ ...review, review_comment: e.currentTarget.value })
+        }
+        handleFocus={() => setErrors({ ...errors, comment: "" })}
+      />
 
-        {/* submit button */}
-        <FormSubmit
-          handleCheck={loading}
-          description="Votre message apparaîtra en ligne une fois celui-ci validé par nos
+      {/* submit button */}
+      <FormSubmit
+        handleCheck={loading}
+        description="Votre message apparaîtra en ligne une fois celui-ci validé par nos
           modérateurs."
-        />
-      </form>
-
-      {/* loading window */}
-      {loading && (
-        <UiLoadingWindow text="Envoi en cours. Merci de patienter." />
-      )}
-
-      {/* success or error message */}
-      {validation.success && (
-        <UiAlertSuccess
-          handleClose={() => setValidation({ success: false, message: "" })}
-          message={validation.message}
-        />
-      )}
-      {!validation.success && validation.message !== "" && (
-        <UiAlertError
-          handleClose={() => setValidation({ success: false, message: "" })}
-          message={validation.message}
-        />
-      )}
-    </div>
+      />
+    </Form>
   );
 }

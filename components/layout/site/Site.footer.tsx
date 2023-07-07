@@ -36,6 +36,7 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
               <p>39190 ST CLAUDE</p>
             </div>
             <a
+              type="button"
               href="tel:+33987654321"
               className="flex items-center mt-4 space-x-2 bg-red-700 w-[170px] justify-center py-2 px-2 rounded-lg font-bold"
             >

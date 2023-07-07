@@ -1,4 +1,6 @@
+import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
 import { Message } from "@prisma/client";
+import { NextResponse } from "next/server";
 
 export interface MessageCreate {
   message_contact_first_name: string;
@@ -13,21 +15,28 @@ export interface MessageCreate {
 }
 
 export async function getMessages() {
-  try {
-    const messages = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages`,
-      { cache: "no-cache" }
-    );
-    const messagesJson = await messages.json();
-    if (messagesJson.error) {
-      alert(messagesJson.error);
-      return null;
-    }
-    return messagesJson.data;
-  } catch (error: any) {
-    console.error(error.message);
-    return null;
+  const messages = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages`,
+    { cache: "no-cache" }
+  );
+  const messagesJson = await messages.json();
+  if (messagesJson.error) {
+    console.log(messagesJson.error);
+    return [];
   }
+
+  const messagesDecoded = messagesJson.data.map((message: Message) => {
+    return {
+      ...message,
+      message_content: decodeURI(message.message_content),
+      message_contact_first_name: decodeURI(message.message_contact_first_name),
+      message_contact_last_name: decodeURI(message.message_contact_last_name),
+      message_response:
+        message.message_response && decodeURI(message.message_response),
+    };
+  });
+
+  return messagesDecoded;
 }
 
 export async function getMessage(id: number) {
@@ -37,10 +46,24 @@ export async function getMessage(id: number) {
     );
     const messageJson = await message.json();
     if (messageJson.error) {
-      alert(messageJson.error);
+      console.log(messageJson.error);
       return null;
     }
-    return messageJson.data;
+
+    const decodedMessage = {
+      ...messageJson.data,
+      message_content: decodeURI(messageJson.data.message_content),
+      message_contact_first_name: decodeURI(
+        messageJson.data.message_contact_first_name
+      ),
+      message_contact_last_name: decodeURI(
+        messageJson.data.message_contact_last_name
+      ),
+      message_response:
+        messageJson.data.message_response &&
+        decodeURI(messageJson.data.message_response),
+    };
+    return decodedMessage;
   } catch (error: any) {
     console.error(error.message);
     return null;
@@ -49,19 +72,28 @@ export async function getMessage(id: number) {
 
 export async function createMessage(message: MessageCreate) {
   try {
+    //encode URI for special characters & db protection
+    const messageToCreate = {
+      ...message,
+      message_content: encodeURI(message.message_content),
+      message_contact_first_name: encodeURI(message.message_contact_first_name),
+      message_contact_last_name: encodeURI(message.message_contact_last_name),
+    };
+
     const messageCreate = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
         },
-        body: JSON.stringify(message),
+        body: JSON.stringify(messageToCreate),
       }
     );
     const messageCreateJson = await messageCreate.json();
     if (messageCreateJson.error) {
-      alert(messageCreateJson.error);
+      console.log(messageCreateJson.error);
       return null;
     }
     return messageCreateJson.data;
@@ -85,7 +117,7 @@ export async function updateMessage(id: number, message: Partial<Message>) {
     );
     const messageUpdateJson = await messageUpdate.json();
     if (messageUpdateJson.error) {
-      alert(messageUpdateJson.error);
+      console.log(messageUpdateJson.error);
       return null;
     }
     return messageUpdateJson.data;
@@ -108,7 +140,7 @@ export async function deleteMessage(id: number) {
     );
     const messageDeleteJson = await messageDelete.json();
     if (messageDeleteJson.error) {
-      alert(messageDeleteJson.error);
+      console.log(messageDeleteJson.error);
       return null;
     }
     return messageDeleteJson.data;
