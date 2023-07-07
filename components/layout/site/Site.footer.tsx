@@ -38,7 +38,7 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
             <a
               type="button"
               href="tel:+33987654321"
-              className="flex items-center mt-4 space-x-2 bg-red-700 w-[170px] justify-center py-2 px-2 rounded-lg font-bold"
+              className="flex items-center mt-4 space-x-2 bg-red-800 w-[170px] justify-center py-2 px-2 rounded-lg font-bold"
             >
               <BsFillTelephoneFill />
               <span>09 87 65 43 21</span>

@@ -6,6 +6,8 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BsFillPersonFill, BsFillKeyFill } from "react-icons/bs";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { UiAlertError } from "../ui/Ui.alert.windows";
+import { useRouter } from "next/navigation";
 
 type FormProps = {
   email: string;
@@ -22,6 +24,9 @@ export default function LoginForm() {
     password: false,
   });
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const [validation, setValidation] = useState({ success: false, message: "" });
+
+  const router = useRouter();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setErrors({ email: "", password: "" });
@@ -39,15 +44,27 @@ export default function LoginForm() {
       });
     }
 
-    signIn("credentials", {
+    const result = await signIn("credentials", {
       email: form.email,
       password: form.password,
-      callbackUrl: "http://localhost:3000/dashboard",
+      redirect: false,
     });
+
+    if (result && (!result.ok || result.error)) {
+      setValidation({
+        success: false,
+        message: "Erreur lors de la connexion, veuillez réessayer.",
+      });
+    } else {
+      router.push("/dashboard");
+    }
   }
 
   return (
-    <form className="w-3/4 mx-auto mb-2 font-text" onSubmit={handleSubmit}>
+    <form
+      className="w-3/4 mx-auto mb-2 font-text relative"
+      onSubmit={handleSubmit}
+    >
       {/* email input */}
       <div className="mb-10">
         <div className="flex items-center mb-2">
@@ -151,6 +168,14 @@ export default function LoginForm() {
       <Link href={"/"} className="underline text-neutral-500 italic">
         Mot de passe oublié ? Cliquez ici.
       </Link>
+
+      {/* error message */}
+      {!validation.success && validation.message !== "" && (
+        <UiAlertError
+          message={validation.message}
+          handleClose={() => setValidation({ success: false, message: "" })}
+        />
+      )}
     </form>
   );
 }

@@ -31,7 +31,7 @@ export default function SiteNavContentDesktop() {
         <Link
           type="button"
           href={"/cars"}
-          className={`flex items-center text-xl space-x-3 px-4 py-3 bg-red-900 rounded-md`}
+          className={`flex items-center text-xl space-x-3 px-4 py-3 bg-red-900 rounded-md ml-3`}
         >
           <BsFillCarFrontFill />
           <span className="text-sm lg:text-base xl:text-xl">

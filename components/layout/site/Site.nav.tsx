@@ -23,7 +23,7 @@ export default function SiteNav({
   return (
     <nav className="w-full text-neutral-100 text-title">
       {/* mobile */}
-      <div className="bg-red-700 w-full md:hidden">
+      <div className="bg-red-800 w-full md:hidden">
         {isOpen ? (
           <div className="w-full flex justify-end items-center h-[80px]">
             <AiOutlineClose
@@ -60,7 +60,7 @@ export default function SiteNav({
       </div>
 
       {/* desktop */}
-      <div className="bg-red-700 hidden md:flex flex-row w-full h-full">
+      <div className="bg-red-800 hidden md:flex flex-row w-full h-full">
         <SiteNavContentDesktop />
       </div>
     </nav>

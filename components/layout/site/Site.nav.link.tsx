@@ -28,7 +28,7 @@ export default function SiteNavLink({
       type="button"
       href={url}
       className={`w-full flex items-center text-xl space-x-3 px-3 py-3 ${
-        isCurrent ? "bg-red-50 text-red-800" : "bg-red-700 hover:bg-neutral-800"
+        isCurrent ? "bg-red-50 text-red-800" : "bg-red-800 hover:bg-neutral-800"
       } duration-150 transition-all ease-in-out`}
     >
       {Icon && <Icon />}
