@@ -71,7 +71,7 @@ export default function FormInput({
         required={required}
         name={name}
         placeholder={placeholder || label}
-        className={`w-full bg-neutral-200 py-2 px-4 rounded-md border-2 border-neutral-300 mb-1 ${
+        className={`w-full bg-slate-200 py-2 px-4 rounded-md border-2 border-slate-300 mb-1 ${
           error.length > 0 && "border-red-500"
         }`}
       />

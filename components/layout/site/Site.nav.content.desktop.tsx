@@ -8,7 +8,7 @@ const navItems = [
   { url: "/", text: "Accueil" },
   { url: "/services", text: "Nos services" },
   { url: "/reviews", text: "Témoignages" },
-  { url: "/pictures", text: "Galerie photos" },
+  { url: "/gallery", text: "Galerie photos" },
   { url: "/contact", text: "Nous contacter" },
 ];
 
@@ -20,8 +20,9 @@ export default function SiteNavContentDesktop() {
       </div>
       {/* nav links */}
       <div className="flex-1 flex items-center justify-end pr-4 lg:pr-6 lg:mt-1 h-full">
-        {navItems.map((item) => (
+        {navItems.map((item, index) => (
           <SiteNavLinkDesktop
+            key={index}
             url={item.url}
             text={item.text}
             isCurrent={item.url === "/cars"}

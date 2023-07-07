@@ -14,12 +14,12 @@ export default function FormSubmit({
       <button
         type="submit"
         disabled={handleCheck}
-        className="text-neutral-100 font-bold text-xl bg-red-700 px-8 py-4 mb-2 rounded-lg disabled:opacity-30 disabled:bg-neutral-600"
+        className="text-slate-100 font-bold text-xl bg-red-700 px-8 py-4 mb-2 rounded-lg disabled:opacity-30 disabled:bg-slate-600"
       >
         {text}
       </button>
       {description && (
-        <p className="text-sm font-light text-neutral-500 ">{description}</p>
+        <p className="text-sm font-light text-slate-500 ">{description}</p>
       )}
     </div>
   );

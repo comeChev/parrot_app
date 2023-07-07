@@ -12,7 +12,7 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
   const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-col min-h-screen font-title w-full">
-      <SiteNav />
+      <SiteNav hours={hours} session={session} />
       <main className="flex-1">{children}</main>
       <SiteFooter hours={hours} session={session} />
     </div>

@@ -25,8 +25,8 @@ export default function ReviewsCommentsItem({
       <div className="flex space-x-2 mb-3 md:mb-0 md:mr-[100px]">
         {arrayNote.map((s) => {
           if (review.review_note >= s)
-            return <BsStarFill className="text-2xl text-red-700" />;
-          return <BsStar className="text-2xl text-red-700" />;
+            return <BsStarFill key={s} className="text-2xl text-red-700" />;
+          return <BsStar key={s} className="text-2xl text-red-700" />;
         })}
       </div>
       {/* comment */}

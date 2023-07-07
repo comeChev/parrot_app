@@ -18,7 +18,6 @@ export async function getReviews() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      cache: "no-cache",
     }
   );
   const reviewsJson = await reviews.json();
@@ -133,4 +132,35 @@ export async function deleteReview(id: number) {
     return null;
   }
   return deletedReviewJson.data;
+}
+
+export async function getFreshReviews() {
+  const reviews = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+    }
+  );
+  const reviewsJson = await reviews.json();
+  if (reviewsJson.error) {
+    console.error(reviewsJson.error);
+    return [];
+  }
+  const reverseReviews: Review[] = reviewsJson.data.reverse();
+  const freshReviews = reverseReviews.slice(0, 3);
+  const returnedReviews = freshReviews.map((r) => {
+    const review: Partial<Review> = {
+      review_user_first_name: decodeURI(r.review_user_first_name),
+      review_user_last_name: decodeURI(r.review_user_last_name),
+      review_comment: decodeURI(r.review_comment),
+      review_published_date: r.review_published_date,
+      review_note: r.review_note,
+    };
+    return review;
+  });
+  return returnedReviews;
 }

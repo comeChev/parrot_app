@@ -19,15 +19,16 @@ export default function SiteNavContentHoursItem({ day }: HourItemProps) {
           ? `de ${showTime(day.hour_morning_opening)} à ${showTime(
               day.hour_morning_closing
             )}`
-          : "Fermé"}
+          : "Fermé le matin"}
       </p>
-      {day.hour_afternoon_status === "open" ? (
-        <p className="w-40">{`de ${showTime(
-          day.hour_afternoon_opening
-        )} à ${showTime(day.hour_afternoon_closing)}`}</p>
-      ) : (
-        <p>Fermé</p>
-      )}
+
+      <p className="w-40">
+        {day.hour_afternoon_status === "open"
+          ? `de ${showTime(day.hour_afternoon_opening)} à ${showTime(
+              day.hour_afternoon_closing
+            )}`
+          : "Fermé l'après-midi"}
+      </p>
     </div>
   );
 }

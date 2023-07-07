@@ -209,8 +209,9 @@ export default function ReviewsForm() {
                 if (review.review_note && review.review_note >= note) {
                   return (
                     <BsStarFill
+                      key={note}
                       aria-label={`note de ${note}`}
-                      className="text-red-500 text-2xl cursor-pointer"
+                      className="text-red-500 text-4xl cursor-pointer"
                       onClick={() =>
                         setReview({ ...review, review_note: note })
                       }
@@ -222,8 +223,9 @@ export default function ReviewsForm() {
                 } else {
                   return (
                     <BsStar
+                      key={note}
                       aria-label={`note de ${note}`}
-                      className="text-red-500 cursor-pointer"
+                      className="text-red-500 cursor-pointer text-2xl"
                       onMouseEnter={() =>
                         setReview({ ...review, review_note: note })
                       }

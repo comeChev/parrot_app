@@ -16,6 +16,8 @@ import HomeReviewsItem from "@/components/site/home/Home.reviews.item";
 import SeparatorImage from "@/components/ui/Ui.separator.image";
 import Link from "next/link";
 import UiReasons from "@/components/ui/Ui.reasons";
+import { getFreshReviews } from "@/lib/reviews";
+import { Review } from "@prisma/client";
 
 const assetsItems = [
   {
@@ -83,6 +85,7 @@ const reviewItems = [
 ];
 
 export default async function Home() {
+  const reviews = await getFreshReviews();
   return (
     <div className="min-h-screen">
       {/* main image */}
@@ -263,13 +266,8 @@ export default async function Home() {
           Ils nous ont fait confiance
         </h3>
         <div className="flex flex-col md:flex-row md:space-x-5 mb-[70px]">
-          {reviewItems.map((i) => (
-            <HomeReviewsItem
-              name={i.name}
-              text={i.text}
-              date={i.date}
-              note={i.note}
-            />
+          {reviews.map((r, i) => (
+            <HomeReviewsItem key={i} review={r as Review} />
           ))}
         </div>
         <Link

@@ -31,7 +31,7 @@ export default function FormTextarea({
         {label} {required && <span className="text-red-500">*</span>}
       </p>
       <div
-        className={`flex-1 flex flex-col bg-neutral-200 py-2 px-4 rounded-md border-2 border-neutral-300 mb-1 ${
+        className={`flex-1 flex flex-col bg-slate-200 py-2 px-4 rounded-md border-2 border-slate-300 mb-1 ${
           error.length > 0 && "border-red-500"
         }`}
       >
@@ -44,7 +44,7 @@ export default function FormTextarea({
           rows={5}
           required={required}
           placeholder={placeholder || label}
-          className="bg-neutral-200 resize-none outline-none"
+          className="bg-slate-200 resize-none outline-none"
         />
         <span className="text-xs">{`Caractères restants : ${
           max - value.length
