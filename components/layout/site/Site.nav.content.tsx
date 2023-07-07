@@ -11,7 +11,7 @@ import SiteNavLogoutButton from "./Site.nav.logout.button";
 
 const navItems = [
   { url: "/", text: "Accueil" },
-  { url: "/services", text: "Nos services" },
+  { url: "/#services", text: "Nos services" },
   { url: "/reviews", text: "Témoignages" },
   { url: "/gallery", text: "Galerie photos" },
   { url: "/contact", text: "Nous contacter" },

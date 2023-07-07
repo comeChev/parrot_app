@@ -5,7 +5,7 @@ type UiImageMainProps = {
 };
 export default function UiImageMain({ image }: UiImageMainProps) {
   return (
-    <div className="relative w-full h-[500px] mb-10 md:mb-[150px]">
+    <div className="relative w-full h-[500px] mb-10 md:mb-[100px]">
       <Image
         src={image}
         alt="image de présentation garage V. Parrot"

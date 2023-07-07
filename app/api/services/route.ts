@@ -31,6 +31,32 @@ export async function GET(request: NextRequest) {
         { status: 200 }
       );
     }
+
+    //get services by category name
+    if (request.nextUrl.searchParams.get("category")) {
+      const name = request.nextUrl.searchParams.get("category");
+
+      const services = await prisma.service.findMany({
+        where: { category: { category_name_url: name as string } },
+        include: { service_images: true, category: true },
+      });
+
+      if (!services)
+        throw new Error("Erreur dans la récupération des services");
+
+      // const servicesByCategory = services.filter(
+      //   (service) => service.category.category_name_url === name
+      // );
+
+      return new NextResponse(
+        JSON.stringify({
+          data: services,
+          message: "Services récupérés avec succès",
+        }),
+        { status: 200 }
+      );
+    }
+
     //get all services
     const services = await prisma.service.findMany({
       include: { service_images: true },

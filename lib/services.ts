@@ -1,8 +1,12 @@
 import { deleteFile } from "@/utils/supabase.upload";
-import { Service, Service_picture } from "@prisma/client";
+import { Category, Service, Service_picture } from "@prisma/client";
 
 export interface ServiceWithPictures extends Service {
   service_images: Partial<Service_picture>[];
+}
+
+export interface ServiceWithPicturesAndCategory extends ServiceWithPictures {
+  category: Category;
 }
 
 export async function getServicesWithPictures(): Promise<
@@ -47,7 +51,7 @@ export async function getServiceWithPictures(id: number) {
 
 export async function createService(service: Partial<ServiceWithPictures>) {
   const newService = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/service`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services`,
     {
       method: "POST",
       headers: {
@@ -139,4 +143,24 @@ export async function deleteServicePicture(picture: Service_picture) {
     return null;
   }
   return deletedServicePictureJson.data;
+}
+
+export async function getServicesByCategory(name: string) {
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services?category=${name}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+      cache: "no-cache",
+    }
+  );
+  const servicesJson = await services.json();
+  if (servicesJson.error) {
+    console.log(servicesJson.error);
+    return [];
+  }
+  return servicesJson.data;
 }

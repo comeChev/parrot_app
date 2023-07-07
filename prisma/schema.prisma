@@ -48,7 +48,9 @@ model Picture{
 
 model Category{
   category_id Int @id @default(autoincrement())
-  category_name String
+  category_name String @unique
+  category_description String @default("Aucune description")
+  category_name_url String @default("")
   services Service[]
 }
 

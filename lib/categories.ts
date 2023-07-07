@@ -1,3 +1,5 @@
+import { Category } from "@prisma/client";
+
 export async function getCategories() {
   const categories = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`,
@@ -33,13 +35,13 @@ export async function getCategory(id: number) {
   return categoryJson.data;
 }
 
-export async function createCategory(categoryName: string) {
+export async function createCategory(category: Omit<Category, "category_id">) {
   const newCategory = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ category_name: categoryName }),
+      body: JSON.stringify(category),
     }
   );
   const newCategoryJson = await newCategory.json();
@@ -48,4 +50,36 @@ export async function createCategory(categoryName: string) {
     return null;
   }
   return newCategoryJson.data;
+}
+
+export async function deleteCategory(id: number) {
+  const deletedCategory = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories?id=${id}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  const deletedCategoryJson = await deletedCategory.json();
+  if (deletedCategoryJson.error) {
+    console.log(deletedCategoryJson.error);
+    return null;
+  }
+  return deletedCategoryJson.data;
+}
+
+export async function updateCategory(category: Category) {
+  const updatedCategory = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories?id=${category.category_id}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  const updatedCategoryJson = await updatedCategory.json();
+  if (updatedCategoryJson.error) {
+    console.log(updatedCategoryJson.error);
+    return null;
+  }
+  return updatedCategoryJson.data;
 }

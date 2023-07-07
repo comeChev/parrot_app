@@ -42,7 +42,7 @@ const assetsItems = [
   },
 ];
 
-const servicesItems = [
+export const servicesItems = [
   {
     imageSrc: vente,
     text: "Véhicules en bon état et révisés cherchent propriétaires pour couler des jours heureux. Nous nous chargeons de vous mettre en relation.",
@@ -238,7 +238,7 @@ export default async function Home() {
       </section>
 
       {/* section 3 - services */}
-      <section className="container mx-auto px-4 mb-[100px]">
+      <section className="container mx-auto px-4 mb-[100px]" id="services">
         <h3 className="text-3xl font-bold mb-10">
           Les services que nous vous proposons
         </h3>
