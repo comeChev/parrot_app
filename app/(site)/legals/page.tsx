@@ -1,6 +1,7 @@
 import UiImageMain from "@/components/ui/Ui.image.main";
 
 import legalsPic from "@/assets/legals/legalsMain.jpg";
+import UiTextMain from "@/components/ui/Ui.text.main";
 
 type Link = {
   text: string;
@@ -155,12 +156,7 @@ export default function LegalsPage() {
     <div>
       <UiImageMain image={legalsPic} />
 
-      <h2 className="text-center text-4xl font-bold px-4">
-        Politique de confidentialité
-      </h2>
-      <h3 className="text-center text-2xl font-bold px-4 mb-12">
-        Mentions légales
-      </h3>
+      <UiTextMain text="Politique de confidentialité. Mentions légales" />
 
       <div className="container mx-auto px-4 mb-[100px] lg:px-[200px]">
         <div className="flex flex-col space-y-2 font-medium text-base mb-[50px]">

@@ -10,6 +10,7 @@ import about from "@/assets/about/about.jpg";
 import garage from "@/assets/about/garage.jpg";
 import vente from "@/assets/about/vente.webp";
 import mechanic from "@/assets/about/mechanic4.jpg";
+import UiTextMain from "@/components/ui/Ui.text.main";
 
 const historicItems = [
   {
@@ -44,10 +45,10 @@ export default async function AboutPage() {
       {/* mainImage */}
       <UiImageMain image={about} />
 
-      <h2 className="text-center text-4xl font-bold mb-12 px-4">
-        La confiance en son garagiste est un élément primordial. Apprenez-en
-        plus sur nous et notre parcours.
-      </h2>
+      <UiTextMain
+        text={`La confiance en son garagiste est un élément primordial. Apprenez-en
+        plus sur nous et notre parcours`}
+      />
 
       {/* historic */}
       <section className="container mx-auto mb-[100px]">

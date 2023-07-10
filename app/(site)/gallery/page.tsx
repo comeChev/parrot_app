@@ -4,6 +4,7 @@ import UiReasons from "@/components/ui/Ui.reasons";
 import { getPictures } from "@/lib/pictures";
 import { Picture } from "@prisma/client";
 import GalleryPictures from "@/components/site/gallery/Gallery.pictures";
+import UiTextMain from "@/components/ui/Ui.text.main";
 
 export default async function GalleryPage() {
   const pictures: Picture[] = await getPictures();
@@ -21,9 +22,8 @@ export default async function GalleryPage() {
   return (
     <div>
       <UiImageMain image={galleryMainPic} />
-      <h2 className="text-center text-4xl font-bold mb-12 px-4">
-        Galerie de photos
-      </h2>
+
+      <UiTextMain text="Découvrez nos photos de véhicules, de notre garage et de nos équipes !" />
 
       <div className="container mx-auto flex flex-col space-y-5 mb-[80px]">
         {pagesPictures.map((pagePictures) => (

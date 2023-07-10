@@ -18,6 +18,7 @@ import Link from "next/link";
 import UiReasons from "@/components/ui/Ui.reasons";
 import { getFreshReviews } from "@/lib/reviews";
 import { Review } from "@prisma/client";
+import UiTextMain from "@/components/ui/Ui.text.main";
 
 const assetsItems = [
   {
@@ -165,9 +166,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <h2 className="text-center text-4xl font-bold mb-12 px-4">
-        Plus de 15 d'expérience à votre service
-      </h2>
+      <UiTextMain text="Plus de 15 d'expérience à votre service" />
 
       {/* section 1 - assets */}
       <section className="container mx-auto hidden md:flex mb-[100px]">

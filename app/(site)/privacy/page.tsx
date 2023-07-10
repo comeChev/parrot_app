@@ -1,5 +1,6 @@
 import UiImageMain from "@/components/ui/Ui.image.main";
 import privacyPic from "@/assets/privacy/privacyMain.jpg";
+import UiTextMain from "@/components/ui/Ui.text.main";
 
 type Link = {
   text: string;
@@ -109,9 +110,7 @@ export default function PrivacyPage() {
     <div>
       <UiImageMain image={privacyPic} />
 
-      <h2 className="text-center text-4xl font-bold mb-12 px-4">
-        Vos données personnelles
-      </h2>
+      <UiTextMain text="Vos données personnelles" />
 
       <div className="container mx-auto px-4 mb-[100px]">
         {textItems.map((item, index) => (

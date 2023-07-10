@@ -6,6 +6,7 @@ import { Review } from "@prisma/client";
 import ReviewsComments from "@/components/site/reviews/Reviews.comments";
 import ReviewsForm from "@/components/site/reviews/Reviews.form";
 import UiReasons from "@/components/ui/Ui.reasons";
+import UiTextMain from "@/components/ui/Ui.text.main";
 
 export default async function ReviewsPage() {
   const reviews: Review[] = await getReviews();
@@ -14,14 +15,12 @@ export default async function ReviewsPage() {
     <div>
       <UiImageMain image={reviewsPic} />
 
-      <h2 className="text-center text-4xl font-bold mb-12 px-4">
-        Ils nous ont partagé leurs expériences !
-      </h2>
+      <UiTextMain text="Découvrez les avis de nos clients !" />
 
       {/* Reviews */}
       <ReviewsComments reviews={reviews} />
 
-      <div className=" mb-12 px-4">
+      <div className=" mb-12 px-4" id="makeReview">
         <h2 className="text-center text-4xl font-bold mb-5">
           Vous souhaitez donner votre avis ?
         </h2>
