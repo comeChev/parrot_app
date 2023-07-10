@@ -25,7 +25,7 @@ export default function SiteNav({
   const pathname = usePathname();
 
   return (
-    <footer className="w-full text-neutral-100 text-title">
+    <header className="w-full text-neutral-100 text-title">
       {/* mobile */}
       <div className="bg-red-800 w-full md:hidden">
         {isOpen ? (
@@ -69,6 +69,6 @@ export default function SiteNav({
       <div className="bg-red-800 hidden md:flex flex-row w-full h-full">
         <SiteNavContentDesktop pathName={pathname} />
       </div>
-    </footer>
+    </header>
   );
 }

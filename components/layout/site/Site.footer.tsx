@@ -72,7 +72,7 @@ const servicesLinks = [
 
 export default function SiteFooter({ hours, session }: SiteFooterProps) {
   return (
-    <div className=" min-h-[100px] bg-neutral-700 text-neutral-200">
+    <footer className=" min-h-[100px] bg-neutral-700 text-neutral-200">
       {/* content */}
       <div className="flex mb-10 flex-wrap">
         <div className="flex-1 flex flex-wrap">
@@ -181,6 +181,6 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
           </a>
         </p>
       </div>
-    </div>
+    </footer>
   );
 }
