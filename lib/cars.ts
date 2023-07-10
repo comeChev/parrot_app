@@ -7,6 +7,11 @@ export interface FullCar extends Car {
   car_strengths: Strength[];
 }
 
+export interface PublicCar extends Car {
+  car_pictures: Car_picture[];
+  car_strengths: Strength[];
+}
+
 export async function getCars() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`, {
     method: "GET",
@@ -26,18 +31,19 @@ export async function getCars() {
 
 export async function getCar(id: number) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/${id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars?id=${id}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${process.env.API_KEY}`,
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
+      cache: "no-cache",
     }
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -158,6 +164,19 @@ export async function deleteCarPicture(id: number, fileKey: string) {
   }
   return responseJson.data;
 }
+
+export type CarMessage = {
+  car_message_contact_first_name: string;
+  car_message_contact_last_name: string;
+  car_message_contact_email: string;
+  car_message_contact_phone: string;
+  car_message_content: string;
+  car_message_status: "PENDING" | "ANSWERED";
+  car_message_response: string | null;
+  car_message_response_date: Date | null;
+  car_message_response_type: "PHONE" | "EMAIL" | null;
+  car_id: number;
+};
 
 export async function createCarMessage(
   carId: number,

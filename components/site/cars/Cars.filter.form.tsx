@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { BsFilterCircle, BsFilterCircleFill } from "react-icons/bs";
 import CarsFilterFormSelect from "./Cars.filter.form.select";
 import CarsFilterFormSlider from "./Cars.filter.form.slider";
-import { FullCar } from "@/lib/cars";
+import { PublicCar } from "@/lib/cars";
 import { useRouter } from "next/navigation";
 
 export type FiltersProps = {
@@ -16,9 +16,9 @@ export type FiltersProps = {
 };
 
 type CarsFilterFormProps = {
-  cars: FullCar[];
-  carsDB: FullCar[];
-  setCars: Dispatch<SetStateAction<FullCar[]>>;
+  cars: PublicCar[];
+  carsDB: PublicCar[];
+  setCars: Dispatch<SetStateAction<PublicCar[]>>;
   handleResetCars: () => void;
   setPage: Dispatch<SetStateAction<number>>;
 };
@@ -30,7 +30,7 @@ export default function CarsFilterForm({
   setPage,
   carsDB,
 }: CarsFilterFormProps) {
-  const [filteredCars, setFilteredCars] = useState<FullCar[]>([...cars]);
+  const [filteredCars, setFilteredCars] = useState<PublicCar[]>([...cars]);
   const [filters, setFilters] = useState(calculateDefaultFilters(cars));
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,7 +45,7 @@ export default function CarsFilterForm({
     return "Aucun véhicule";
   }
 
-  function calculateDefaultFilters(cars: FullCar[]) {
+  function calculateDefaultFilters(cars: PublicCar[]) {
     const kilometers = Array.from(
       new Set(cars.map((car) => car.car_kilometers))
     );

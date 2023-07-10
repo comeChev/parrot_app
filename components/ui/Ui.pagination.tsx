@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import { IconType } from "react-icons";
 import {
@@ -34,6 +35,7 @@ type UiPaginationProps = {
   setPage: Dispatch<SetStateAction<number>>;
   length: number;
   itemsPerPage: number;
+  scrollTo?: () => void;
 };
 
 export default function UiPagination({
@@ -41,7 +43,9 @@ export default function UiPagination({
   setPage,
   length,
   itemsPerPage,
+  scrollTo,
 }: UiPaginationProps) {
+  const router = useRouter();
   const numberPage = Math.ceil(length / itemsPerPage);
   const firstItem = (page - 1) * itemsPerPage + 1;
   const lastItem = page * itemsPerPage < length ? page * itemsPerPage : length;
@@ -50,21 +54,25 @@ export default function UiPagination({
 
   function handleFirstPage() {
     setPage(1);
+    scrollTo && scrollTo();
   }
   function handleLastPage() {
     setPage(numberPage);
+    scrollTo && scrollTo();
   }
   function handleNextPage() {
     setPage((prev) => prev + 1);
+    scrollTo && scrollTo();
   }
   function handlePreviousPage() {
     setPage((prev) => prev - 1);
+    scrollTo && scrollTo();
   }
 
   return (
     <div className="flex px-4 justify-between items-center my-10 select-none">
       {/* first & previous button */}
-      <div>
+      <div className="flex flex-col sm:flex-row">
         <UiPaginationButton
           Icon={MdFirstPage}
           disabled={page === 1}
@@ -78,7 +86,7 @@ export default function UiPagination({
       </div>
 
       {/* text */}
-      <div className="flex flex-col items-center text-sm sm:text-base">
+      <div className="flex flex-col items-center text-xs sm:text-base">
         <p>{`Résultats de ${firstItem} à ${lastItem}`}</p>
         <p className="italic font-light text-neutral-500">{`pour un total de ${txtLength}`}</p>
         <p>
@@ -87,7 +95,7 @@ export default function UiPagination({
       </div>
 
       {/* next & last button */}
-      <div>
+      <div className="flex flex-col sm:flex-row">
         <UiPaginationButton
           Icon={MdChevronRight}
           disabled={page === numberPage}

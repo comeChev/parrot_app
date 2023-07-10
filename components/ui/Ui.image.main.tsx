@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 
 type UiImageMainProps = {
-  image: StaticImageData;
+  image: StaticImageData | string;
 };
 export default function UiImageMain({ image }: UiImageMainProps) {
   return (
@@ -9,6 +9,7 @@ export default function UiImageMain({ image }: UiImageMainProps) {
       <Image
         src={image}
         alt="image de présentation garage V. Parrot"
+        fill={true}
         className="w-full h-full object-cover brightness-75"
         placeholder="blur"
       />

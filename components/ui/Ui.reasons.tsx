@@ -41,7 +41,7 @@ export default function UiReasons() {
         <h3 className="text-3xl font-bold mb-10">
           Pourquoi choisir notre garage
         </h3>
-        <div className="flex flex-col md:flex-row md:space-x-5">
+        <div className="flex flex-wrap md:space-x-5">
           {reasonItems.map((r, index) => (
             <HomeReasonsItem
               key={index}

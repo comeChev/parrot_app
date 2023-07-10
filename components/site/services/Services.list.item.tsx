@@ -1,7 +1,6 @@
 import { ServiceWithPicturesAndCategory } from "@/lib/services";
 import Image from "next/image";
 import noImageAvailable from "@/assets/no-image-available.jpg";
-import Link from "next/link";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 

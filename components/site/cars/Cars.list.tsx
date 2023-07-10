@@ -1,19 +1,24 @@
 "use client";
 
-import { FullCar } from "@/lib/cars";
-import { useState } from "react";
+import { PublicCar } from "@/lib/cars";
+import { useRef, useState } from "react";
 import CarsListItem from "./Cars.list.item";
 import UiPagination from "@/components/ui/Ui.pagination";
 import CarsFilterForm from "./Cars.filter.form";
 
-export default function CarsList({ carsDB }: { carsDB: FullCar[] }) {
+export default function CarsList({ carsDB }: { carsDB: PublicCar[] }) {
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [page, setPage] = useState(1);
   const [cars, setCars] = useState(carsDB);
+  const listCars = useRef<HTMLDivElement>(null);
 
   function handleResetCars() {
     setCars(carsDB);
     setPage(1);
+  }
+
+  function scrollToCarsList() {
+    listCars.current?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -33,6 +38,7 @@ export default function CarsList({ carsDB }: { carsDB: FullCar[] }) {
           <div
             className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             id="carsList"
+            ref={listCars}
           >
             {cars &&
               cars.length > 0 &&
@@ -48,6 +54,7 @@ export default function CarsList({ carsDB }: { carsDB: FullCar[] }) {
               setPage={setPage}
               length={cars.length}
               itemsPerPage={itemsPerPage}
+              scrollTo={scrollToCarsList}
             />
           </div>
         </div>

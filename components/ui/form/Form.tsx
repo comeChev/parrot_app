@@ -25,7 +25,7 @@ export default function Form({
   setValidation,
 }: FormProps) {
   return (
-    <div className="container mx-auto px-4 relative lg:px-[200px]">
+    <div className="container mx-auto px-4 relative">
       {/* Explanations */}
       {explanations && (
         <div className="mb-10">

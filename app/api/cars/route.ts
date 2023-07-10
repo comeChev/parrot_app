@@ -7,18 +7,60 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const isVerified = await verifyAuthorization(request);
+  const hasSession = await verifySession();
   try {
     if (!isVerified)
       return new NextResponse(JSON.stringify({ error: "Accès non autorisé" }), {
         status: 401,
       });
+
+    // get car & cars for dashboard
+    if (hasSession) {
+      // get car by id
+      if (request.nextUrl.searchParams.get("id")) {
+        const id = Number(request.nextUrl.searchParams.get("id"));
+        const car = await prisma.car.findUnique({
+          where: { car_id: id },
+          include: {
+            car_messages: true,
+            car_pictures: true,
+            car_strengths: true,
+          },
+        });
+        if (!car) throw new Error("Impossible de récupérer la voiture");
+        return new NextResponse(
+          JSON.stringify({
+            message: "Voiture récupérée",
+            data: car,
+          }),
+          { status: 200 }
+        );
+      }
+      // get all cars
+      const cars = await prisma.car.findMany({
+        include: {
+          car_messages: true,
+          car_pictures: true,
+          car_strengths: true,
+        },
+      });
+      if (!cars) throw new Error("Aucune voiture trouvée");
+      return new NextResponse(
+        JSON.stringify({
+          message: "Voitures récupérées",
+          data: cars,
+        }),
+        { status: 200 }
+      );
+    }
+
+    // get car for public (without messages)
     // get car by id
     if (request.nextUrl.searchParams.get("id")) {
       const id = Number(request.nextUrl.searchParams.get("id"));
       const car = await prisma.car.findUnique({
         where: { car_id: id },
         include: {
-          car_messages: true,
           car_pictures: true,
           car_strengths: true,
         },
@@ -35,7 +77,6 @@ export async function GET(request: NextRequest) {
     // get all cars
     const cars = await prisma.car.findMany({
       include: {
-        car_messages: true,
         car_pictures: true,
         car_strengths: true,
       },

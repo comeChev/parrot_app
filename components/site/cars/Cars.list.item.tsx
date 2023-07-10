@@ -1,4 +1,4 @@
-import { FullCar } from "@/lib/cars";
+import { PublicCar } from "@/lib/cars";
 import noImage from "@/assets/no-image-available.jpg";
 import Image from "next/image";
 import {
@@ -10,28 +10,15 @@ import {
 import { GiGearStickPattern } from "react-icons/gi";
 import CarsListItemAsset from "./Cars.list.item.asset";
 import Link from "next/link";
+import {
+  getKilometers,
+  getPrice,
+  getUpperCaseFirstLetter,
+} from "@/utils/globals";
 
 type CarsListItemProps = {
-  car: FullCar;
+  car: PublicCar;
 };
-
-function getPrice(price: number) {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-  }).format(price);
-}
-
-function getKilometers(kilometers: number) {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "unit",
-    unit: "kilometer",
-  }).format(kilometers);
-}
-
-function getUpperCaseFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 export default function CarsListItem({ car }: CarsListItemProps) {
   return (

@@ -26,7 +26,7 @@ export default function UiButtonAction({
   onClick,
 }: UiButtonActionProps) {
   const buttonClassName =
-    "block text-neutral-100 px-4 py-2 rounded-lg font-light bg-red-800 hover:bg-red-900 transition-all duration-150 ease-in-out w-fit my-2";
+    "block text-neutral-100 px-4 py-2 rounded-lg font-light bg-red-800 hover:bg-red-900 transition-all duration-150 ease-in-out w-fit m-1";
 
   return type === "button" ? (
     <button type="button" onClick={onClick} className={buttonClassName}>

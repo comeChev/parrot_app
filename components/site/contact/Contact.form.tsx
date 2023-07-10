@@ -1,6 +1,5 @@
 "use client";
 
-import UiLoadingWindow from "@/components/ui/Ui.loading.window";
 import Form from "@/components/ui/form/Form";
 import FormInput from "@/components/ui/form/Form.input";
 import FormPhone from "@/components/ui/form/Form.phone";
