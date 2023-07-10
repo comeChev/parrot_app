@@ -14,7 +14,7 @@ export default function FormSubmit({
       <button
         type="submit"
         disabled={handleCheck}
-        className="text-slate-100 font-bold text-xl bg-red-700 px-8 py-4 mb-2 rounded-lg disabled:opacity-30 disabled:bg-slate-600 hover:bg-red-800 transition-all duration-150 ease-in-out"
+        className="text-slate-100 font-bold text-xl bg-red-800 px-8 py-4 mb-2 rounded-lg disabled:opacity-30 disabled:bg-slate-600 hover:bg-red-900 transition-all duration-150 ease-in-out"
       >
         {text}
       </button>
