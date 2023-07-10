@@ -42,8 +42,13 @@ export default function UiReasons() {
           Pourquoi choisir notre garage
         </h3>
         <div className="flex flex-col md:flex-row md:space-x-5">
-          {reasonItems.map((r) => (
-            <HomeReasonsItem Icon={r.Icon} text={r.text} title={r.title} />
+          {reasonItems.map((r, index) => (
+            <HomeReasonsItem
+              key={index}
+              Icon={r.Icon}
+              text={r.text}
+              title={r.title}
+            />
           ))}
         </div>
       </section>

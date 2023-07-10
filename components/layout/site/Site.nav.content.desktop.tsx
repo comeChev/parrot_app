@@ -6,13 +6,17 @@ import Link from "next/link";
 
 const navItems = [
   { url: "/", text: "Accueil" },
-  { url: "/#services", text: "Nos services" },
+  { url: "/services", text: "Nos services" },
   { url: "/reviews", text: "Témoignages" },
   { url: "/gallery", text: "Galerie photos" },
   { url: "/contact", text: "Nous contacter" },
 ];
 
-export default function SiteNavContentDesktop() {
+export default function SiteNavContentDesktop({
+  pathName,
+}: {
+  pathName: string;
+}) {
   return (
     <div className="flex w-full h-20 items-center">
       <div className=" hidden lg:w-[280px] bg-white h-full lg:flex items-center pl-10">
@@ -25,13 +29,13 @@ export default function SiteNavContentDesktop() {
             key={index}
             url={item.url}
             text={item.text}
-            isCurrent={item.url === "/cars"}
+            isCurrent={item.url === pathName}
           />
         ))}
         <Link
           type="button"
           href={"/cars"}
-          className={`flex items-center text-xl space-x-3 px-4 py-3 bg-red-900 rounded-md ml-3`}
+          className={`flex items-center text-xl space-x-3 px-4 py-3 bg-red-900 border-2 border-red-900 rounded-md ml-3 hover:border-neutral-100 text-neutral-100 transition-all duration-300 ease-in-out`}
         >
           <BsFillCarFrontFill />
           <span className="text-sm lg:text-base xl:text-xl">

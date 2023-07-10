@@ -7,6 +7,7 @@ import {
   BsTwitter,
   BsInstagram,
 } from "react-icons/bs";
+import SiteFooterLinkList from "./Site.footer.link.list";
 
 type SiteFooterProps = {
   hours: Hour[] | [];
@@ -19,6 +20,55 @@ function showTime(date: Date) {
     minute: "2-digit",
   });
 }
+
+const aboutLinks = [
+  {
+    url: "/",
+    text: "Accueil",
+  },
+  {
+    url: "/about",
+    text: "Notre entreprise",
+  },
+  {
+    url: "/reviews/#makeReview",
+    text: "Laisser un avis",
+    originalUrl: "/reviews",
+  },
+  {
+    url: "/contact",
+    text: "Nous contacter",
+  },
+  {
+    url: "/legals",
+    text: "Mentions légales",
+  },
+  {
+    url: "/privacy",
+    text: "Vos données personnelles",
+  },
+  {
+    url: "/sitemap",
+    text: "Plan du site",
+  },
+];
+
+const servicesLinks = [
+  {
+    url: "/services?name=mechanic",
+    text: "Entretien et révision mécanique",
+    originalUrl: "/services",
+  },
+  {
+    url: "/services?name=repair",
+    text: "Carrosserie et réparation",
+    originalUrl: "/services",
+  },
+  {
+    url: "/cars",
+    text: "Vente véhicules d'occasion",
+  },
+];
 
 export default function SiteFooter({ hours, session }: SiteFooterProps) {
   return (
@@ -79,38 +129,11 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
               ))}
             </div>
           </div>
-
           {/* about */}
-          <div className="mx-10 mt-10 flex flex-col">
-            <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold">
-              A PROPOS
-            </p>
-            <div className="text-sm font-light flex flex-col space-y-2">
-              <Link href="/">Accueil</Link>
-              <Link href="about">Notre entreprise</Link>
-              <Link href="reviews">Laisser un avis</Link>
-              <Link href="contact">Nous contacter</Link>
-              <Link href="legals">Mentions légales</Link>
-              <Link href="privacy">Vos données personnelles</Link>
-              <Link href="sitemap">Plan du site</Link>
-            </div>
-          </div>
+          <SiteFooterLinkList title="A PROPOS" links={aboutLinks} />
 
           {/* services */}
-          <div className="mx-10 mt-10 flex flex-col">
-            <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold">
-              NOS SERVICES
-            </p>
-            <div className="text-sm font-light flex flex-col space-y-2">
-              <Link href="/services?name=mechanic">
-                Entretien et révision mécanique
-              </Link>
-              <Link href="/services?name=repair">
-                Carrosserie et réparation
-              </Link>
-              <Link href="car">Vente véhicules d'occasion</Link>
-            </div>
-          </div>
+          <SiteFooterLinkList title="NOS SERVICES" links={servicesLinks} />
         </div>
 
         {/* socials & admin link */}
