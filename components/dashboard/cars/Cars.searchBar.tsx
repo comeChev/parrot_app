@@ -45,7 +45,7 @@ export default function CarsSearchBar({
 
   return (
     <div className="flex-1">
-      <div className="bg-neutral-300 text-neutral-700 flex items-center rounded-md border-2 border-gray-500 relative flex-1">
+      <div className="bg-slate-200 text-neutral-700 flex items-center rounded-md border-2 border-slate-300 relative flex-1">
         <BsSearch className="ml-4 mr-1 absolute top-3 left-0" />
         <input
           type="text"
@@ -53,7 +53,7 @@ export default function CarsSearchBar({
           placeholder={placeholder}
           onChange={handleSearchCar}
           value={search}
-          className="bg-neutral-300 flex-1 py-2 px-10 rounded-md"
+          className="bg-slate-200 flex-1 py-2 px-10 rounded-md"
         />
         {search !== "" && (
           <BsXLg

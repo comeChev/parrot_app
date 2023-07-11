@@ -52,8 +52,7 @@ export default function CarForm({ car }: CarFormProps) {
       "Bonjour, je suis intéressé par votre véhicule. Merci de bien vouloir me recontacter. Merci et bonne journée. Cordialement.",
   });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit() {
     if (!isValidForm()) return;
 
     setLoading(true);
@@ -146,7 +145,6 @@ export default function CarForm({ car }: CarFormProps) {
         explanations={[
           "Veuillez remplir le formulaire ci-dessous pour nous contacter. Nous vous répondrons dans les plus brefs délais.",
         ]}
-        handleSubmit={handleSubmit}
       >
         {/* name & lastName */}
         <div className="flex flex-col md:flex-row md:space-x-5">
@@ -228,6 +226,7 @@ export default function CarForm({ car }: CarFormProps) {
 
         {/* submit */}
         <FormSubmit
+          handleClick={handleSubmit}
           text="Envoyer"
           description="La référence du véhicule est directement intégrée à ce message. Il ne vous est pas nécessaire de l’indiquer."
           handleCheck={loading}

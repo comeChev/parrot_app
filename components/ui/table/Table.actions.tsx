@@ -146,7 +146,7 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
                 disabled={car.car_status === "ARCHIVED" || isLoading}
               />
             ))}
-          <TableActionsButtonsEdit disabled={isLoading} />
+          <TableActionsButtonsEdit href={`/dashboard/car?id=${car.car_id}`} />
         </div>
       )}
     </div>

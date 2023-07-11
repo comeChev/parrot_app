@@ -99,8 +99,7 @@ export default function ContactForm() {
     return true;
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit() {
     if (!isValidForm()) return;
 
     setLoading(true);
@@ -127,7 +126,6 @@ export default function ContactForm() {
   return (
     //Form
     <Form
-      handleSubmit={handleSubmit}
       loading={loading}
       validation={validation}
       setValidation={setValidation}
@@ -209,6 +207,7 @@ export default function ContactForm() {
 
       {/* submit */}
       <FormSubmit
+        handleClick={handleSubmit}
         handleCheck={loading}
         description="Dans la mesure du possible, nous essayons toujours de vous contacter par téléphone. Le cas échéant, nous vous répondrons par mail."
       />

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   BsEyeFill,
   BsEyeSlashFill,
@@ -6,15 +7,16 @@ import {
   BsPenFill,
 } from "react-icons/bs";
 
-export function TableActionsButtonsEdit({ disabled }: { disabled: boolean }) {
+export function TableActionsButtonsEdit({ href }: { href: string }) {
   return (
-    <button
+    <Link
+      type="button"
+      href={href}
       className="text-md text-teal-500 hover:text-teal-700 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
-      disabled={disabled}
     >
       <p className="text-sm">Éditer</p>
       <BsPenFill className="" />
-    </button>
+    </Link>
   );
 }
 

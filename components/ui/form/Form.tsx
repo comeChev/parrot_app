@@ -1,11 +1,13 @@
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import UiLoadingWindow from "../Ui.loading.window";
 import { UiAlertError, UiAlertSuccess } from "../Ui.alert.windows";
+import mailSendingPic from "@/assets/contact/message_sending.gif";
+import { StaticImageData } from "next/image";
 
 type FormProps = {
   explanations?: string[];
   children: React.ReactNode;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+
   loading: boolean;
   validation: {
     success: boolean;
@@ -14,15 +16,17 @@ type FormProps = {
   setValidation: Dispatch<
     SetStateAction<{ success: boolean; message: string }>
   >;
+  imgSrc?: StaticImageData;
 };
 
 export default function Form({
   explanations,
   children,
-  handleSubmit,
+
   loading,
   validation,
   setValidation,
+  imgSrc = mailSendingPic,
 }: FormProps) {
   return (
     <div className="container mx-auto px-4 relative">
@@ -36,12 +40,15 @@ export default function Form({
           ))}
         </div>
       )}
-      <form onSubmit={handleSubmit}>
-        {children}
 
+      <div>
+        {children}
         {/* loading window */}
         {loading && (
-          <UiLoadingWindow text="Envoi en cours. Merci de patienter." />
+          <UiLoadingWindow
+            text="Envoi en cours. Merci de patienter."
+            imgSrc={imgSrc}
+          />
         )}
 
         {/* success or error message */}
@@ -57,7 +64,7 @@ export default function Form({
             message={validation.message}
           />
         )}
-      </form>
+      </div>
     </div>
   );
 }

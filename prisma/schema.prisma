@@ -43,7 +43,7 @@ model Picture{
   picture_description String?
   picture_published_date DateTime @default(now())
   picture_status String
-  picture_fileKey String
+  picture_fileKey String @unique
 }
 
 model Category{
@@ -142,7 +142,7 @@ model Car_picture{
   car_picture_id Int @id @default(autoincrement())
   car_picture_name String
   car_picture_image String
-  car_picture_fileKey String
+  car_picture_fileKey String @unique
   car_id Int
   car Car @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
 }

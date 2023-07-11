@@ -31,30 +31,41 @@ export default function DashboardNavContent({
   setIsOpen,
 }: DashboardNavMobileProps) {
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex flex-col min-h-[93vh] md:h-[99vh] fixed w-full sm:w-60">
+    <div className="flex flex-col w-full justify-between ">
+      <div className="flex flex-col min-h-[93vh] sm:h-[99vh] fixed w-full sm:w-60">
         {/* session name & link to profile page */}
         {session && (
-          <div className="flex items-center px-2 mt-10">
-            <h2 className="flex-1 text-md">{`Bienvenue, ${session.user.name}`}</h2>
-            {session.user.picture ? (
-              <Link href="/dashboard/me">
-                <img
-                  className="h-10 w-10 rounded-full object-cover"
-                  src={session.user.picture}
-                  alt={`image de profil de ${session.user.name}`}
-                />
-              </Link>
-            ) : (
-              <Link
-                href="/dashboard/me"
-                className="bg-neutral-700 h-10 w-10 flex items-center justify-center rounded-full font-text"
-              >
-                {session.user.name[0].toLocaleUpperCase()}
-                {session.user.lastName !== "" &&
-                  session.user.lastName[0].toLocaleUpperCase()}
-              </Link>
-            )}
+          <div className="flex items-center md:flex-col md:items-start px-2 mt-10 ml-5">
+            <div className="flex items-center w-full">
+              <div className="mr-3">
+                {session.user.picture ? (
+                  <Link href="/dashboard/me">
+                    <img
+                      className="h-10 w-10 rounded-full object-cover"
+                      src={session.user.picture}
+                      alt={`image de profil de ${session.user.name}`}
+                    />
+                  </Link>
+                ) : (
+                  <Link
+                    href="/dashboard/me"
+                    className="bg-neutral-700 h-10 w-10 flex items-center justify-center rounded-full text-md text-neutral-100"
+                  >
+                    {session.user.name[0].toLocaleUpperCase()}
+                    {session.user.lastName !== "" &&
+                      session.user.lastName[0].toLocaleUpperCase()}
+                  </Link>
+                )}
+              </div>
+              <div className="group flex-1 flex w-full cursor-pointer">
+                <div className="group-hover:flex hidden justify-end w-full">
+                  <DashboardNavLogoutButton />
+                </div>
+                <h2 className="flex-1 text-lg md:text-base group-hover:hidden">
+                  {`Bienvenue, ${session.user.name}`}
+                </h2>
+              </div>
+            </div>
           </div>
         )}
 
@@ -71,8 +82,6 @@ export default function DashboardNavContent({
             />
           ))}
         </div>
-
-        {/* logout button */}
         <DashboardNavLogoutButton />
       </div>
     </div>

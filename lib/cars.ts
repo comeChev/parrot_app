@@ -76,6 +76,7 @@ export async function createCar(car: Partial<Car>) {
   });
   const responseJson = await response.json();
   if (responseJson.error) {
+    console.log(responseJson.error);
     alert(responseJson.error);
     return null;
   }
@@ -95,6 +96,7 @@ export async function updateCar(id: number, car: Partial<Car>) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
+    console.log(responseJson.error);
     alert(responseJson.error);
     return null;
   }

@@ -1,8 +1,10 @@
+import { create } from "domain";
 import {
   verifyAuthorization,
   verifySession,
 } from "@/utils/nextAuth/nextAuth.protections";
 import { prisma } from "@/utils/prisma";
+import { Car, Car_message, Car_picture, Strength } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -111,8 +113,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     //const year = new Date(body.car_year, 1);
     let carToCreate = { ...body };
-    let strengths = [];
-    let pictures = [];
+    let strengths: Strength[] = [];
+    let pictures: Car_picture[] = [];
+    let messages: Car_message[] = [];
+
     if (body.car_strengths) {
       strengths = body.car_strengths;
       delete carToCreate.strengths;
@@ -121,11 +125,17 @@ export async function POST(request: NextRequest) {
       pictures = body.car_pictures;
       delete carToCreate.pictures;
     }
+    if (body.car_messages) {
+      messages = body.car_messages;
+      delete carToCreate.messages;
+    }
+
     const car = await prisma.car.create({
       data: {
         ...carToCreate,
         car_strengths: { create: [...strengths] },
         car_pictures: { create: [...pictures] },
+        car_messages: { create: [...messages] },
       },
       include: { car_pictures: true, car_strengths: true, car_messages: true },
     });
@@ -162,26 +172,35 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
 
     let carToUpdate = { ...body };
-    if (body.car_year) {
-      const year = new Date(body.car_year, 1);
-      carToUpdate = { ...body, car_year: year };
-    } else {
-      carToUpdate = { ...body };
-    }
+    // if (body.car_year) {
+    //   const year = new Date(body.car_year, 1);
+    //   carToUpdate = { ...body, car_year: year };
+    // } else {
+    //   carToUpdate = { ...body };
+    // }
     let strengths = [];
     let pictures = [];
     let messages = [];
 
     if (body.car_strengths) {
       strengths = body.car_strengths;
+      strengths.forEach((strength: any) => {
+        delete strength.car_id;
+      });
       delete carToUpdate.car_strengths;
     }
     if (body.car_pictures) {
       pictures = body.car_pictures;
+      pictures.forEach((picture: any) => {
+        delete picture.car_id;
+      });
       delete carToUpdate.car_pictures;
     }
     if (body.car_messages) {
       messages = body.car_messages;
+      messages.forEach((message: any) => {
+        delete message.car_id;
+      });
       delete carToUpdate.car_messages;
     }
     const car = await prisma.car.update({
