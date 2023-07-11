@@ -26,7 +26,7 @@ export default function CarFormAssets({
         type="text"
         label="Provenance (pays)"
         placeholder="Provenance"
-        value={car.car_country ? car.car_country : ""}
+        value={car.car_country !== null ? car.car_country : ""}
         handleChange={(e) =>
           setCar({
             ...car,
@@ -110,7 +110,7 @@ export default function CarFormAssets({
         type="text"
         label="Couleur"
         placeholder="Noir laqué"
-        value={car.car_color ? car.car_color : ""}
+        value={car.car_color !== null ? car.car_color : ""}
         handleChange={(e) =>
           setCar({
             ...car,
@@ -180,7 +180,7 @@ export default function CarFormAssets({
         type="number"
         label="Longueur du véhicule"
         placeholder="Longueur em mètres (ex: 4.5)"
-        value={car.car_length ? car.car_length : ""}
+        value={car.car_length !== null ? car.car_length : ""}
         handleChange={(e) =>
           setCar({
             ...car,
@@ -199,7 +199,7 @@ export default function CarFormAssets({
         type="number"
         label="Volume de coffre"
         placeholder="Volume en L (ex: 190)"
-        value={car.car_boot ? car.car_boot : ""}
+        value={car.car_boot !== null ? car.car_boot : ""}
         handleChange={(e) =>
           setCar({
             ...car,

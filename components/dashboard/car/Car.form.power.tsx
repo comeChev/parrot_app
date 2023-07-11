@@ -24,7 +24,7 @@ export default function CarFormPower({
         type="number"
         label="Puissance fiscale (CV)"
         placeholder="Puissance fiscale (CV)"
-        value={car.car_fiscal_power ? car.car_fiscal_power : ""}
+        value={car.car_fiscal_power != null ? car.car_fiscal_power : ""}
         handleChange={(e) =>
           setCar({
             ...car,
@@ -43,7 +43,7 @@ export default function CarFormPower({
         type="number"
         label="Puissance (ch)"
         placeholder="Puissance en chevaux (ch)"
-        value={car.car_horse_power ? car.car_horse_power : ""}
+        value={car.car_horse_power !== null ? car.car_horse_power : ""}
         handleChange={(e) =>
           setCar({
             ...car,
