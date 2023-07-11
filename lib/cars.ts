@@ -2,6 +2,7 @@ import { deleteFile } from "@/utils/supabase.upload";
 import { Car, Car_message, Car_picture, Strength } from "@prisma/client";
 
 export interface FullCar extends Car {
+  car_status: "ONLINE" | "OFFLINE" | "ARCHIVED";
   car_pictures: Car_picture[];
   car_messages: Car_message[];
   car_strengths: Strength[];
@@ -24,6 +25,22 @@ export async function getCars() {
   const responseJson = await response.json();
   if (responseJson.error) {
     alert(responseJson.error);
+    return [];
+  }
+  return responseJson.data;
+}
+
+export async function getAdminCars() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-cache",
+  });
+  const responseJson = await response.json();
+  if (responseJson.error) {
+    console.log(responseJson.error);
     return [];
   }
   return responseJson.data;

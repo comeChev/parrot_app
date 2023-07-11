@@ -7,6 +7,9 @@ import { prisma } from "../prisma";
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60, // 1 hour
+    //maxAge: 30 * 24 * 60 * 60, // 30 days
+    //days * hours * minutes * seconds
   },
   // Configure one or more authentication providers
   providers: [

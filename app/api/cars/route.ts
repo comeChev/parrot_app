@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // get car for public (without messages)
+    // get car for public (without messages) && only online cars
     // get car by id
     if (request.nextUrl.searchParams.get("id")) {
       const id = Number(request.nextUrl.searchParams.get("id"));
@@ -76,6 +76,7 @@ export async function GET(request: NextRequest) {
     }
     // get all cars
     const cars = await prisma.car.findMany({
+      where: { car_status: "ONLINE" || "online" },
       include: {
         car_pictures: true,
         car_strengths: true,

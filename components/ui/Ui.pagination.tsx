@@ -45,7 +45,6 @@ export default function UiPagination({
   itemsPerPage,
   scrollTo,
 }: UiPaginationProps) {
-  const router = useRouter();
   const numberPage = Math.ceil(length / itemsPerPage);
   const firstItem = (page - 1) * itemsPerPage + 1;
   const lastItem = page * itemsPerPage < length ? page * itemsPerPage : length;

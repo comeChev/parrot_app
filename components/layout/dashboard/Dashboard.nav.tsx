@@ -40,7 +40,7 @@ export default function DashboardNav({ session }: DashboardNavProps) {
         )}
       </div>
       {/* desktop */}
-      <div className="bg-red-800 hidden sm:flex w-full h-full">
+      <div className="bg-red-800 hidden sm:flex w-60 h-full">
         <DashboardNavContent session={session} setIsOpen={setIsOpen} />
       </div>
     </nav>

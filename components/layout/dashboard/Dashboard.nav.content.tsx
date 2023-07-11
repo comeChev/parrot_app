@@ -32,7 +32,7 @@ export default function DashboardNavContent({
 }: DashboardNavMobileProps) {
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col min-h-[93vh] md:h-[99vh] md:fixed md:w-60">
+      <div className="flex flex-col min-h-[93vh] md:h-[99vh] fixed w-full sm:w-60">
         {/* session name & link to profile page */}
         {session && (
           <div className="flex items-center px-2 mt-10">
@@ -60,8 +60,9 @@ export default function DashboardNavContent({
 
         {/* nav links */}
         <div className="mt-10 flex-1">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <DashboardNavLink
+              key={index}
               url={item.url}
               text={item.text}
               Icon={item.Icon}
