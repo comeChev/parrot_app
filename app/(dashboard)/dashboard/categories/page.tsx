@@ -1,11 +1,11 @@
-import PicturesList from "@/components/dashboard/pictures/Pictures.list";
+import CategoriesList from "@/components/dashboard/categories/Categories.list";
 import { authOptions } from "@/utils/nextAuth/nextAuth.options";
 import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export default async function AdminPicturesPage() {
-  const pictures = await prisma.picture.findMany({});
+export default async function AdminServicesPage() {
+  const categories = await prisma.category.findMany();
   const session = await getServerSession(authOptions);
 
   if (!session || session.user.role !== "ADMIN") {
@@ -15,11 +15,10 @@ export default async function AdminPicturesPage() {
   return (
     <div className="px-4 mt-10 min-h-screen container">
       {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
-      <h2 className="text-3xl font-bold">Galerie de photos</h2>
+      <h2 className="text-3xl font-bold">Liste des catégories</h2>
 
-      {/* users list */}
-      <PicturesList picturesDB={pictures} />
-      {/* cars list */}
+      {/* categories list */}
+      <CategoriesList categoriesDB={categories} />
     </div>
   );
 }

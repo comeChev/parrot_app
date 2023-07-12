@@ -51,6 +51,8 @@ model Category{
   category_name String @unique
   category_description String @default("Aucune description")
   category_name_url String @default("")
+  category_picture String @default("")
+  category_fileKey String @default("")
   services Service[]
 }
 

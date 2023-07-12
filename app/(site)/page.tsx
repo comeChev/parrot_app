@@ -19,6 +19,7 @@ import UiReasons from "@/components/ui/Ui.reasons";
 import { getFreshReviews } from "@/lib/reviews";
 import { Review } from "@prisma/client";
 import UiTextMain from "@/components/ui/Ui.text.main";
+import { prisma } from "@/utils/prisma";
 
 const assetsItems = [
   {
@@ -42,6 +43,13 @@ const assetsItems = [
     text: "Nous prêtons une attention toute particulière à la provenance et la qualité de nos produits. Nos prestations sont donc dans la même lignée.",
   },
 ];
+
+export const carItem = {
+  imageSrc: vente,
+  text: "Véhicules en bon état et révisés cherchent propriétaires pour couler des jours heureux. Nous nous chargeons de vous mettre en relation.",
+  title: "Vente de véhicules d'occasion",
+  url: "/cars",
+};
 
 export const servicesItems = [
   {
@@ -87,6 +95,7 @@ const reviewItems = [
 
 export default async function Home() {
   const reviews = await getFreshReviews();
+  const categories = await prisma.category.findMany();
   return (
     <div className="min-h-screen">
       {/* main image */}
@@ -241,15 +250,30 @@ export default async function Home() {
         <h3 className="text-3xl font-bold mb-10">
           Les services que nous vous proposons
         </h3>
-        <div className="flex flex-col md:flex-row md:space-x-5">
-          {servicesItems.map((s) => (
+        <div className="flex flex-col md:grid md:grid-cols-3 md:space-x-5">
+          {categories.map((c) => (
+            <HomeServicesItem
+              url={`/services?name=${c.category_name_url}`}
+              imageSrc={c.category_picture || ""}
+              text={c.category_description}
+              title={c.category_name}
+            />
+          ))}
+          <HomeServicesItem
+            url={carItem.url}
+            imageSrc={carItem.imageSrc}
+            text={carItem.text}
+            title={carItem.title}
+          />
+
+          {/* {servicesItems.map((s) => (
             <HomeServicesItem
               url={s.url}
               imageSrc={s.imageSrc}
               text={s.text}
               title={s.title}
             />
-          ))}
+          ))} */}
         </div>
       </section>
 

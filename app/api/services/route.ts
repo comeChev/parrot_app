@@ -3,6 +3,7 @@ import {
   verifyAuthorization,
 } from "@/utils/nextAuth/nextAuth.protections";
 import { prisma } from "@/utils/prisma";
+import { Service_picture } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -89,12 +90,25 @@ export async function POST(request: NextRequest) {
     if (!isAdmin)
       return new NextResponse("Accès non autorisé", { status: 401 });
     const body = await request.json();
-    const images = body.service_images || [];
+    const images = [...body.service_images];
     const serviceToCreate = { ...body };
     delete serviceToCreate.service_images;
+    delete serviceToCreate.category_id;
+    delete serviceToCreate.category;
+
+    //delele all images from the db before creating new ones
+    //we do this because we don't want to have images in the db that are not linked to a service
+    const response = await prisma.service_picture.deleteMany({
+      where: { service_id: undefined },
+    });
+
     const service = await prisma.service.create({
-      data: { ...serviceToCreate, service_images: { create: [...images] } },
-      include: { service_images: true },
+      data: {
+        ...serviceToCreate,
+        service_images: { create: [...images] },
+        category: { connect: { category_id: Number(body.category_id) } },
+      },
+      include: { service_images: true, category: true },
     });
     if (!service) {
       throw new Error("Erreur dans la création du service");
@@ -130,35 +144,42 @@ export async function PATCH(request: NextRequest) {
     }
     const id = Number(request.nextUrl.searchParams.get("id"));
     const body = await request.json();
-    const images = body.service_images || [];
+    const images: Service_picture[] = [...body.service_images];
+    const imagesToCreate = images.map((image) => {
+      let imageToCreate = {
+        service_picture_image: image.service_picture_image,
+        service_picture_fileKey: image.service_picture_fileKey,
+        service_picture_name: image.service_picture_name,
+      };
+      return imageToCreate;
+    });
+
     const serviceToUpdate = { ...body };
+    delete serviceToUpdate.service_id;
     delete serviceToUpdate.service_images;
+    delete serviceToUpdate.category_id;
+    delete serviceToUpdate.category;
 
     //update service
     //we delete all the images linked to the service
     //we create new ones (old images are stored in the body of the request)
-    let service = null;
-    if (images.length > 0) {
-      service = await prisma.service.update({
-        where: { service_id: id },
-        data: {
-          ...serviceToUpdate,
-          service_images: {
-            deleteMany: { service_id: id },
-            createMany: { data: images, skipDuplicates: true },
-          },
-        },
-        include: { service_images: true },
-      });
-    } else {
-      service = await prisma.service.update({
-        where: { service_id: id },
-        data: {
-          ...serviceToUpdate,
-        },
-        include: { service_images: true },
-      });
-    }
+
+    const response = await prisma.service_picture.deleteMany({
+      where: { service_id: id },
+    });
+    if (!response)
+      throw new Error("Erreur dans la suppression des images du service");
+
+    const service = await prisma.service.update({
+      where: { service_id: id },
+      data: {
+        ...serviceToUpdate,
+
+        service_images: { create: [...imagesToCreate] },
+        category: { connect: { category_id: Number(body.category_id) } },
+      },
+    });
+
     if (!service) {
       throw new Error("Erreur dans la modification du service");
     }

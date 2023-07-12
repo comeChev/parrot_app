@@ -88,6 +88,7 @@ export async function PATCH(request: NextRequest) {
       return new NextResponse(JSON.stringify({ error: "Accès non autorisé" }), {
         status: 401,
       });
+
     if (!request.nextUrl.searchParams.get("id")) {
       throw new Error("Aucune catégorie trouvée");
     }
@@ -111,7 +112,6 @@ export async function PATCH(request: NextRequest) {
     return new NextResponse(
       JSON.stringify({
         error: error.message,
-        data: error,
       }),
       { status: error.status || 500 }
     );

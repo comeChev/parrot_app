@@ -33,10 +33,11 @@ export default async function AdminCarPage() {
         </div>
       </div>
       {/* cars list */}
+
       <CarsList carsDB={cars as FullCar[]} />
 
       {/* explanations icons */}
-      <div className="">
+      <div className="absolute bottom-5 w-4/5">
         <CarsExplanation
           Icon={BsFillInboxesFill}
           text="Une annonce archivée correspond à une annonce qui a été vendue (ou

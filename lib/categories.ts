@@ -74,6 +74,7 @@ export async function updateCategory(category: Category) {
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(category),
     }
   );
   const updatedCategoryJson = await updatedCategory.json();
