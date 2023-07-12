@@ -1,36 +1,35 @@
 "use client";
 import UiButtonAction from "@/components/ui/Ui.button.action";
-import { User } from "@prisma/client";
-import React, { useState } from "react";
-import UserForm, { defaultUser } from "./User.form";
+import { Picture } from "@prisma/client";
+import PicturesForm, { defaultPicture } from "./Pictures.form";
 
-type UserAddOrCreateProps = {
-  usersDB: User[];
-  curentUser: User;
-  setCurentUser: React.Dispatch<React.SetStateAction<User>>;
+type PicturesAddOrCreateProps = {
+  picturesDB: Picture[];
+  currentPicture: Picture;
+  setCurrentPicture: React.Dispatch<React.SetStateAction<Picture>>;
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenForm: boolean;
   isNew: boolean;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
-  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  setPictures: React.Dispatch<React.SetStateAction<Picture[]>>;
 };
-export default function UserAddOrCreate({
-  setUsers,
-  usersDB,
-  curentUser,
-  setCurentUser,
+export default function PicturesAddOrCreate({
+  setPictures,
+  picturesDB,
+  currentPicture,
+  setCurrentPicture,
   setIsOpenForm,
   isOpenForm,
   isNew,
   setIsNew,
-}: UserAddOrCreateProps) {
+}: PicturesAddOrCreateProps) {
   function handleOpenForm() {
-    setCurentUser(defaultUser);
+    setCurrentPicture(defaultPicture);
     setIsNew(true);
     setIsOpenForm(true);
   }
   function handleCloseForm() {
-    setCurentUser(defaultUser);
+    setCurrentPicture(defaultPicture);
     setIsOpenForm(false);
     setIsNew(false);
   }
@@ -47,7 +46,7 @@ export default function UserAddOrCreate({
           />
         ) : (
           <UiButtonAction
-            text="Ajouter un utilisateur"
+            text="Ajouter une image"
             onClick={handleOpenForm}
             type="button"
             href=""
@@ -55,10 +54,10 @@ export default function UserAddOrCreate({
         )}
       </div>
       {isOpenForm && (
-        <UserForm
-          setUsers={setUsers}
+        <PicturesForm
+          setPictures={setPictures}
           isNew={isNew}
-          curentUser={curentUser}
+          currentPicture={currentPicture}
           setIsOpenForm={setIsOpenForm}
         />
       )}

@@ -25,11 +25,13 @@ const navItems = [
 type DashboardNavMobileProps = {
   session: Session | null;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  pathname: string;
 };
 
 export default function DashboardNavContent({
   session,
   setIsOpen,
+  pathname,
 }: DashboardNavMobileProps) {
   return (
     <div className="flex flex-col w-full justify-between ">
@@ -37,36 +39,40 @@ export default function DashboardNavContent({
         {/* session name & link to profile page */}
         {session && (
           <div className="flex items-center md:flex-col md:items-start px-2 mt-10 ml-5">
-            <div className="flex items-center w-full">
-              <div className="mr-3">
-                {session.user.picture ? (
-                  <Link href="/dashboard/me">
-                    <Image
-                      className="h-10 w-10 rounded-full object-cover"
-                      src={session.user.picture}
-                      alt={`image de profil de ${session.user.name}`}
-                      width={40}
-                      height={40}
-                    />
-                  </Link>
-                ) : (
-                  <Link
-                    href="/dashboard/me"
-                    className="bg-neutral-700 h-10 w-10 flex items-center justify-center rounded-full text-md text-neutral-100"
-                  >
-                    {session.user.name[0].toLocaleUpperCase()}
-                    {session.user.lastName !== "" &&
-                      session.user.lastName[0].toLocaleUpperCase()}
-                  </Link>
-                )}
-              </div>
-              <div className="group flex-1 flex w-full cursor-pointer">
-                <div className="group-hover:flex hidden justify-end w-full">
-                  <DashboardNavLogoutButton />
+            <div className="flex flex-col">
+              <div className="flex items-center w-full">
+                {/* user pictures */}
+                <div className="mr-3">
+                  {session.user.picture ? (
+                    <Link href="/dashboard/me">
+                      <Image
+                        className="h-10 w-10 rounded-full object-cover"
+                        src={session.user.picture}
+                        alt={`image de profil de ${session.user.name}`}
+                        width={40}
+                        height={40}
+                      />
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/dashboard/me"
+                      className="bg-neutral-700 h-10 w-10 flex items-center justify-center rounded-full text-md text-neutral-100"
+                    >
+                      {session.user.name[0].toLocaleUpperCase()}
+                      {session.user.lastName !== "" &&
+                        session.user.lastName[0].toLocaleUpperCase()}
+                    </Link>
+                  )}
                 </div>
-                <h2 className="flex-1 text-lg md:text-base group-hover:hidden">
-                  {`Bienvenue, ${session.user.name}`}
-                </h2>
+                {/* logout button */}
+                <div className="group flex-1 flex w-full cursor-pointer">
+                  <div className="group-hover:flex hidden justify-end w-full">
+                    <DashboardNavLogoutButton />
+                  </div>
+                  <h2 className="flex-1 text-lg md:text-base group-hover:hidden">
+                    {`Bienvenue, ${session.user.name}`}
+                  </h2>
+                </div>
               </div>
             </div>
           </div>
@@ -80,12 +86,17 @@ export default function DashboardNavContent({
               url={item.url}
               text={item.text}
               Icon={item.Icon}
-              isCurrent={item.url === "/dashboard/cars"}
+              isCurrent={item.url === pathname}
               setIsOpen={setIsOpen}
             />
           ))}
         </div>
-        <DashboardNavLogoutButton />
+        <div className="flex flex-row sm:flex-col justify-between items-center px-4 text-end mb-6 sm:mb-0">
+          <Link href={"/"} className="px-2 sm:mr-8 w-full">
+            Retour au site
+          </Link>
+          <DashboardNavLogoutButton />
+        </div>
       </div>
     </div>
   );

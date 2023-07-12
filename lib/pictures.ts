@@ -13,7 +13,7 @@ export async function getPictures() {
   );
   const picturesJson = await pictures.json();
   if (picturesJson.error) {
-    alert(picturesJson.error);
+    console.log(picturesJson.error);
     return [];
   }
   return picturesJson.data;
@@ -32,13 +32,13 @@ export async function createPicture(picture: Partial<Picture>) {
   );
   const picturesJson = await pictures.json();
   if (picturesJson.error) {
-    alert(picturesJson.error);
+    console.log(picturesJson.error);
     return null;
   }
   return picturesJson.data;
 }
 
-export async function deletePicture(id: string) {
+export async function deletePicture(id: number) {
   const pictures = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/pictures?id=${id}`,
     {
@@ -50,7 +50,27 @@ export async function deletePicture(id: string) {
   );
   const picturesJson = await pictures.json();
   if (picturesJson.error) {
-    alert(picturesJson.error);
+    console.log(picturesJson.error);
+    return null;
+  }
+  return picturesJson.data;
+}
+
+export async function updatePicture(id: number, picture: Partial<Picture>) {
+  const pictures = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/pictures?id=${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(picture),
+    }
+  );
+  const picturesJson = await pictures.json();
+  console.log("at picture JSON");
+  if (picturesJson.error) {
+    console.log(picturesJson.error);
     return null;
   }
   return picturesJson.data;

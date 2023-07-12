@@ -117,7 +117,7 @@ export async function getHours() {
     );
     const responseJson = await response.json();
     if (responseJson.error) {
-      alert(responseJson.error);
+      console.log(responseJson.error);
       return [];
     }
     return responseJson.data;
@@ -140,7 +140,7 @@ export async function createHour(hour: HourCreate) {
   const createdHourJson = await createdHour.json();
 
   if (createdHourJson.error) {
-    alert(createdHourJson.error);
+    console.log(createdHourJson.error);
   }
 }
 
@@ -161,7 +161,7 @@ export async function updateHour(hour: Partial<HourCreate>) {
   );
   const updatedHourJson = await updatedHour.json();
   if (updatedHourJson.error) {
-    alert(updatedHourJson.error);
+    console.log(updatedHourJson.error);
     return {};
   }
   return updatedHourJson.data;
@@ -204,7 +204,7 @@ export async function toggleHourStatus(hour: Hour, isMorning: boolean) {
   );
   const updatedHourJson = await updatedHour.json();
   if (updatedHourJson.error) {
-    alert(updatedHourJson.error);
+    console.log(updatedHourJson.error);
     return null;
   }
   return updatedHourJson.data;

@@ -9,12 +9,13 @@ import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
 import { User } from "@prisma/client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UsersListProfile from "./Users.list.profile";
 import UsersListStatus from "./Users.list.status";
 import UsersListAction from "./Users.list.action";
 import UserAddOrCreate from "./User.add";
 import { defaultUser } from "./User.form";
+import UiPagination from "@/components/ui/Ui.pagination";
 
 const tableHeaders: TableHeaderProps[] = [
   {
@@ -53,11 +54,15 @@ export default function UsersList({ usersDB }: UserListProps) {
   const [isNew, setIsNew] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const listUsers = useRef<HTMLDivElement>(null);
+  const [usersToShow, setUsersToShow] = useState<User[]>(usersDB);
+
+  const [page, setPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 
   let bodyItems: BodyItems[] = [];
 
-  users &&
-    users.map((user) => {
+  usersToShow &&
+    usersToShow.map((user) => {
       const bodyItem: BodyItemProps[] = [
         { value: user.user_id, className: "hidden lg:table-cell text-center" },
         { value: <UsersListProfile user={user} /> },
@@ -85,6 +90,12 @@ export default function UsersList({ usersDB }: UserListProps) {
       bodyItems.push(bodyItem);
     });
 
+  useEffect(() => {
+    const start = (page - 1) * itemsPerPage;
+    const end = page * itemsPerPage;
+    setUsersToShow(users.slice(start, end));
+  }, [page]);
+
   return (
     <div>
       <div className="mb-20">
@@ -92,12 +103,19 @@ export default function UsersList({ usersDB }: UserListProps) {
           <TableHeader headersList={tableHeaders} />
           <TableBody bodyItems={bodyItems} />
         </Table>
+        <UiPagination
+          page={page}
+          setPage={setPage}
+          length={users.length}
+          itemsPerPage={itemsPerPage}
+        />
       </div>
       <div className="mb-20">
         <UserAddOrCreate
           setIsNew={setIsNew}
           isNew={isNew}
           usersDB={users}
+          setUsers={setUsers}
           curentUser={curentUser}
           setCurentUser={setCurentUser}
           setIsOpenForm={setIsOpenForm}

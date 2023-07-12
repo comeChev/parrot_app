@@ -22,12 +22,14 @@ type SiteNavContentProps = {
   session: Session | null;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   hours: Hour[];
+  pathname: string;
 };
 
 export default function SiteNavContent({
   session,
   setIsOpen,
   hours,
+  pathname,
 }: SiteNavContentProps) {
   return (
     <div className="flex flex-col w-full justify-between select-none">
@@ -35,26 +37,31 @@ export default function SiteNavContent({
         <div className="flex-1 flex flex-col">
           {/* session name & link to profile page */}
           {session && (
-            <div className="flex items-center px-2 mt-10">
-              <h2 className="flex-1 text-md">{`Bienvenue, ${session.user.name}`}</h2>
-              {session.user.picture ? (
-                <Link href="/dashboard/me">
-                  <img
-                    className="h-10 w-10 rounded-full object-cover"
-                    src={session.user.picture}
-                    alt={`image de profil de ${session.user.name}`}
-                  />
-                </Link>
-              ) : (
-                <Link
-                  href="/dashboard/me"
-                  className="bg-neutral-700 h-10 w-10 flex items-center justify-center rounded-full font-text"
-                >
-                  {session.user.name[0].toLocaleUpperCase()}
-                  {session.user.lastName !== "" &&
-                    session.user.lastName[0].toLocaleUpperCase()}
-                </Link>
-              )}
+            <div>
+              <div className="flex items-center px-4 mt-10">
+                <h2 className="flex-1 text-md">{`Bienvenue, ${session.user.name}`}</h2>
+                {session.user.picture ? (
+                  <Link href="/dashboard/me">
+                    <img
+                      className="h-10 w-10 rounded-full object-cover"
+                      src={session.user.picture}
+                      alt={`image de profil de ${session.user.name}`}
+                    />
+                  </Link>
+                ) : (
+                  <Link
+                    href="/dashboard/me"
+                    className="bg-neutral-700 h-10 w-10 flex items-center justify-center rounded-full font-text"
+                  >
+                    {session.user.name[0].toLocaleUpperCase()}
+                    {session.user.lastName !== "" &&
+                      session.user.lastName[0].toLocaleUpperCase()}
+                  </Link>
+                )}
+              </div>
+              <Link href={"/dashboard"} className="px-4">
+                Administration du site
+              </Link>
             </div>
           )}
 
@@ -66,7 +73,7 @@ export default function SiteNavContent({
                 url={item.url}
                 text={item.text}
                 Icon={item.Icon ? item.Icon : null}
-                isCurrent={item.url === "/cars"}
+                isCurrent={item.url === pathname}
                 setIsOpen={setIsOpen}
               />
             ))}

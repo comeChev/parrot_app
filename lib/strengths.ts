@@ -7,7 +7,9 @@ export async function getStrengths() {
   );
   const strengthsJson = await strengths.json();
   if (strengthsJson.error) {
-    alert("Une erreur est survenue lors de la récupération des points forts");
+    console.log(
+      "Une erreur est survenue lors de la récupération des points forts"
+    );
     return [];
   }
   return strengthsJson.data;
@@ -20,7 +22,9 @@ export async function getStrength(id: number) {
   );
   const strengthJson = await strength.json();
   if (strengthJson.error) {
-    alert("Une erreur est survenue lors de la récupération du point fort");
+    console.log(
+      "Une erreur est survenue lors de la récupération du point fort"
+    );
     return null;
   }
   return strengthJson.data;
@@ -36,7 +40,7 @@ export async function createStrength(strength: Partial<Strength>) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert("Une erreur est survenue lors de la création du point fort");
+    console.log("Une erreur est survenue lors de la création du point fort");
     return null;
   }
   return responseJson.data;
@@ -53,7 +57,7 @@ export async function updateStrength(id: number, strength: Partial<Strength>) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert("Une erreur est survenue lors de la mise à jour du point fort");
+    console.log("Une erreur est survenue lors de la mise à jour du point fort");
     return null;
   }
   return responseJson.data;
@@ -69,7 +73,7 @@ export async function deleteStrength(id: number) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert("Une erreur est survenue lors de la suppression du point fort");
+    console.log("Une erreur est survenue lors de la suppression du point fort");
     return null;
   }
   return responseJson.data;

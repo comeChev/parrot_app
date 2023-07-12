@@ -24,7 +24,7 @@ export async function getCars() {
   });
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return [];
   }
   return responseJson.data;
@@ -77,7 +77,7 @@ export async function createCar(car: Partial<Car>) {
   const responseJson = await response.json();
   if (responseJson.error) {
     console.log(responseJson.error);
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -97,7 +97,7 @@ export async function updateCar(id: number, car: Partial<Car>) {
   const responseJson = await response.json();
   if (responseJson.error) {
     console.log(responseJson.error);
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -115,7 +115,7 @@ export async function deleteCar(id: number) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -135,7 +135,7 @@ export async function createCarPicture(
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -155,7 +155,7 @@ export async function updateCarPicture(
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -165,7 +165,7 @@ export async function deleteCarPicture(id: number, fileKey: string) {
   //delete from supabase
   const { data, success } = await deleteFile(fileKey);
   if (!success) {
-    alert(data);
+    console.log(data);
     return null;
   }
   //delete from db
@@ -178,7 +178,7 @@ export async function deleteCarPicture(id: number, fileKey: string) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -214,7 +214,7 @@ export async function createCarMessage(
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -233,7 +233,7 @@ export async function updateCarMessage(
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -251,7 +251,7 @@ export async function deleteCarMessage(id: number) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    alert(responseJson.error);
+    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;

@@ -39,16 +39,19 @@ const defaultErrors = {
 };
 
 type UserFormProps = {
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
   isNew: boolean;
   curentUser: User;
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function UserForm({
+  setUsers,
   isNew,
   curentUser,
   setIsOpenForm,
 }: UserFormProps) {
+  const oldUser = curentUser;
   const [user, setUser] = useState<User>(curentUser);
   const [userPasswordVerify, setUserPasswordVerify] = useState("");
   const [validation, setValidation] = useState({ success: false, message: "" });
@@ -136,7 +139,12 @@ export default function UserForm({
     setValidation({ success: false, message: "" });
 
     if (!isNew) {
-      // TODO --> update user
+      //optimistic update
+      setUsers((prev) =>
+        prev.map((u) => (u.user_id === user.user_id ? user : u))
+      );
+
+      // update user in db
       if (user.user_id) {
         const userToUpdate = { ...user };
         delete (userToUpdate as any).user_password;
@@ -152,7 +160,13 @@ export default function UserForm({
           // TODO --> maybe implement a redirect to the cars page
           return;
         }
-        return;
+        // if error, rollback
+        if (!response) {
+          setUsers((prev) =>
+            prev.map((u) => (u.user_id === oldUser.user_id ? oldUser : u))
+          );
+          return;
+        }
       }
     }
 
@@ -169,6 +183,9 @@ export default function UserForm({
         });
         setUser(defaultUser);
         setIsOpenForm(false);
+
+        //update data on website
+        setUsers((prev) => [...prev, response]);
         // TODO --> maybe implement a redirect to the cars page
         return;
       }

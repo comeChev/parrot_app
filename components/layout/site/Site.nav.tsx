@@ -60,6 +60,7 @@ export default function SiteNav({
               session={session}
               setIsOpen={setIsOpen}
               hours={hours}
+              pathname={pathname}
             />
           </div>
         )}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import DashboardNavContent from "./Dashboard.nav.content";
 import { Session } from "next-auth";
+import { usePathname } from "next/navigation";
 
 type DashboardNavProps = {
   session: Session;
@@ -11,6 +12,7 @@ type DashboardNavProps = {
 
 export default function DashboardNav({ session }: DashboardNavProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="w-full sm:w-60 text-neutral-100 text-title select-none">
@@ -35,13 +37,21 @@ export default function DashboardNav({ session }: DashboardNavProps) {
         </div>
         {isOpen && (
           <div className="min-h-screen">
-            <DashboardNavContent session={session} setIsOpen={setIsOpen} />
+            <DashboardNavContent
+              session={session}
+              setIsOpen={setIsOpen}
+              pathname={pathname}
+            />
           </div>
         )}
       </div>
       {/* desktop */}
       <div className="bg-red-800 hidden sm:flex w-60 h-full">
-        <DashboardNavContent session={session} setIsOpen={setIsOpen} />
+        <DashboardNavContent
+          session={session}
+          setIsOpen={setIsOpen}
+          pathname={pathname}
+        />
       </div>
     </nav>
   );
