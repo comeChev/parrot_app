@@ -17,7 +17,7 @@ function getFullName(user: User) {
   if (user.user_last_name === "") {
     return `${user.user_first_name}`;
   }
-  return `${user.user_first_name} ${user.user_last_name}`;
+  return `${user.user_first_name} ${user.user_last_name.toUpperCase()}`;
 }
 
 const ProfilePicture = ({ user }: { user: User }) => {
@@ -30,7 +30,7 @@ const ProfilePicture = ({ user }: { user: User }) => {
   ) : (
     <div
       className={`w-10 h-10 ${
-        !user.user_gender || user.user_gender === "homme"
+        !user.user_gender || user.user_gender === "MALE"
           ? "bg-neutral-700"
           : "bg-pink-600"
       } rounded-full flex items-center justify-center text-neutral-100`}
@@ -51,8 +51,10 @@ export default function AboutMembersItem({ user }: AboutMembersItemProps) {
           <p className="text-md text-neutral-500">{user.user_job}</p>
         )}
         <p className="text-sm italic text-neutral-400">{`${
-          user.user_gender === ("homme" || "") ? "Arrivé en " : "Arrivée en "
-        } ${user.user_arrival ? user.user_arrival.getFullYear() : 2020}`}</p>
+          user.user_gender === ("MALE" || "") ? "Arrivé en " : "Arrivée en "
+        } ${
+          user.user_arrival ? new Date(user.user_arrival).getFullYear() : 2020
+        }`}</p>
       </div>
     </div>
   );

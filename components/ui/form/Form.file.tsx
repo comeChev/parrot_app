@@ -20,7 +20,8 @@ type FormFileProps = {
 };
 
 /**
- * @param onlinePath: path to the folder where the image will be uploaded (/cars/id)
+ * @param handleAddImage function to add image in db (image is already uploaded on supabase storage)
+ * @param onlinePath path to the folder where the image will be uploaded (/cars/id)
  */
 export default function FormFile({
   label,

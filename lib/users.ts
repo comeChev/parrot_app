@@ -1,3 +1,6 @@
+import { User } from "@prisma/client";
+import { hash } from "bcryptjs";
+
 export async function getUsers() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/users`,
@@ -7,6 +10,7 @@ export async function getUsers() {
         "Content-Type": "application/json",
         authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
+      cache: "no-cache",
     }
   );
   const responseJson = await response.json();
@@ -15,4 +19,48 @@ export async function getUsers() {
     return [];
   }
   return responseJson.data;
+}
+
+export async function updateUser(id: number, data: Partial<User>) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/users?id=${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify(data),
+    }
+  );
+  const responseJson = await response.json();
+  if (responseJson.error) {
+    console.log(responseJson.error);
+    return null;
+  }
+  return responseJson.data;
+}
+
+export async function createUser(user: Partial<User>) {
+  if (user.user_password) {
+    const hashedPassword = await hash(user.user_password, 12);
+    const userToCreate = { ...user, user_password: hashedPassword };
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/users`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify(userToCreate),
+      }
+    );
+    const responseJson = await response.json();
+    if (responseJson.error) {
+      console.log(responseJson.error);
+      return null;
+    }
+    return responseJson.data;
+  }
 }

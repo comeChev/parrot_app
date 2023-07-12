@@ -10,6 +10,8 @@ export async function GET(request: NextRequest, response: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
   const isAdmin = await verifyAdmin();
   try {
+    if (!isAuthorized)
+      throw new Error("Vous n'êtes pas autorisé à effectuer cette action");
     //verification session or API KEY
     if (isAuthorized) {
       // get user by id
@@ -56,9 +58,10 @@ export async function GET(request: NextRequest, response: NextRequest) {
 
       //get users
       const users = await prisma.user.findMany({});
-      if (!users || users.length === 0) {
+      if (!users) {
         throw new Error("Aucun utilisateur trouvé");
       }
+
       //verification if user is ADMIN
       if (isAdmin) {
         const usersWithoutPassword: Partial<User>[] = users.map((user) => {
@@ -110,10 +113,12 @@ export async function GET(request: NextRequest, response: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const isAdmin = await verifyAdmin();
+  const isAuthorized = await verifyAuthorization(request);
+  //const isAdmin = await verifyAdmin();
   try {
     // user must be logged and admin
-    if (isAdmin) {
+    // if (isAdmin) {
+    if (isAuthorized) {
       const body = await request.json();
       const user = await prisma.user.create({
         data: body,
@@ -153,7 +158,7 @@ export async function PATCH(request: NextRequest) {
   try {
     // user must be logged and admin
     if (isAdmin) {
-      if (Number(request.nextUrl.searchParams.get("id"))) {
+      if (!request.nextUrl.searchParams.get("id")) {
         throw new Error("Aucun id fourni");
       }
       const id = Number(request.nextUrl.searchParams.get("id"));
@@ -174,8 +179,7 @@ export async function PATCH(request: NextRequest) {
   } catch (error: any) {
     return new NextResponse(
       JSON.stringify({
-        message: error.message,
-        data: error,
+        error: error.message,
       }),
       { status: 401 }
     );

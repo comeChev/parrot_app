@@ -29,7 +29,7 @@ export const verifyAuthorization = async (request: NextRequest) => {
  */
 export const verifyAdmin = async () => {
   const session = await getServerSession(authOptions);
-  return session && session.user?.role === "ADMIN";
+  return session && session.user && session.user.role === "ADMIN";
 };
 
 /**

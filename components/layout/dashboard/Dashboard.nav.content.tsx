@@ -11,6 +11,7 @@ import DashboardNavLink from "./Dashboard.nav.link";
 import { Session } from "next-auth";
 import Link from "next/link";
 import DashboardNavLogoutButton from "./Dashboard.nav.logout.button";
+import Image from "next/image";
 
 const navItems = [
   { url: "/dashboard/cars", text: "Voitures", Icon: BsFillCarFrontFill },
@@ -40,10 +41,12 @@ export default function DashboardNavContent({
               <div className="mr-3">
                 {session.user.picture ? (
                   <Link href="/dashboard/me">
-                    <img
+                    <Image
                       className="h-10 w-10 rounded-full object-cover"
                       src={session.user.picture}
                       alt={`image de profil de ${session.user.name}`}
+                      width={40}
+                      height={40}
                     />
                   </Link>
                 ) : (
