@@ -1,8 +1,8 @@
 "use client";
 
 import Form from "@/components/ui/form/Form";
-import { FormEvent, useEffect, useState } from "react";
-import carCreation from "@/assets/dashboard/carCreation.png";
+import { useEffect, useState } from "react";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
 import { FullCar, createCar, createCarPicture, updateCar } from "@/lib/cars";
 import FormInput from "@/components/ui/form/Form.input";
 import { ImageCreate } from "@/components/ui/form/Form.file";
@@ -24,6 +24,8 @@ type CarFormProps = {
 
 export type ErrorsProps = {
   carName: string;
+  carFuel: string;
+  carGearbox: string;
   carPrice: string;
   carKilometers: string;
   carCountry: string;
@@ -44,6 +46,8 @@ const defaultErrors: ErrorsProps = {
   carFiscalPower: "",
   carHorsePower: "",
   carOwners: "",
+  carFuel: "",
+  carGearbox: "",
 };
 
 const defaultCar: FullCar = {
@@ -114,6 +118,21 @@ export default function CarForm({ carDB }: CarFormProps) {
           "Les kilomètres du compteur doivent être compris entre 1 et 1 000 000 kms",
       };
     }
+
+    //car fuel validation
+    if (car.car_fuel === "") {
+      errorsTemp = {
+        ...errorsTemp,
+        carFuel: "Vous devez sélectionner un type de carburant.",
+      };
+    }
+    //car gearbox validation
+    if (car.car_gearbox === "") {
+      errorsTemp = {
+        ...errorsTemp,
+        carGearbox: "Vous devez sélectionner le type de boite de vitesse.",
+      };
+    }
     // car country validation
     if (car.car_country !== null) {
       if (
@@ -175,6 +194,11 @@ export default function CarForm({ carDB }: CarFormProps) {
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
+      setValidation({
+        success: false,
+        message:
+          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
+      });
       return false;
     }
     return true;
@@ -187,7 +211,6 @@ export default function CarForm({ carDB }: CarFormProps) {
     setValidation({ success: false, message: "" });
 
     if (carDB) {
-      // TODO --> update car
       const carToUpdate = { ...car, car_published_date: new Date() };
       const response = await updateCar(carDB.car_id, carToUpdate);
       if (response) {
@@ -196,6 +219,7 @@ export default function CarForm({ carDB }: CarFormProps) {
           success: true,
           message: "Votre véhicule a bien été mis à jour.",
         });
+        router.push(`/dashboard/cars`);
         // TODO --> maybe implement a redirect to the cars page
         return;
       }
@@ -303,7 +327,6 @@ export default function CarForm({ carDB }: CarFormProps) {
             <div className="flex items-center w-full sm:w-48">
               <FormSelect
                 name="carStatus"
-                required={false}
                 label="État"
                 value={car.car_status}
                 handleChange={(e) =>

@@ -37,7 +37,7 @@ export default async function AdminCarPage() {
       <CarsList carsDB={cars as FullCar[]} />
 
       {/* explanations icons */}
-      <div className="absolute bottom-5 w-4/5">
+      {/* <div className="absolute bottom-5 w-4/5">
         <CarsExplanation
           Icon={BsFillInboxesFill}
           text="Une annonce archivée correspond à une annonce qui a été vendue (ou
@@ -50,7 +50,7 @@ export default async function AdminCarPage() {
             est en cours de création ou de modification, ou encore quand le
             paiement du véhicule est en attente."
         />
-      </div>
+      </div> */}
     </div>
   );
 }

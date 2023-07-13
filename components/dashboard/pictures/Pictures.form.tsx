@@ -12,6 +12,7 @@ import { deleteFile } from "@/utils/supabase.upload";
 import Image from "next/image";
 import FormFooter from "@/components/ui/form/Form.footer";
 import pictureCreate from "@/assets/dashboard/imageCreation.jpg";
+import FormError from "@/components/ui/form/Form.error";
 
 export const defaultPicture: Picture = {
   picture_id: 0,
@@ -25,6 +26,8 @@ export const defaultPicture: Picture = {
 
 const defaultErrors = {
   picture_description: "",
+  picture_image: "",
+  picture_name: "",
 };
 
 type PicturesFormProps = {
@@ -50,6 +53,22 @@ export default function PicturesForm({
     if (!picture) return false;
     let errorsTemp = defaultErrors;
 
+    if (picture.picture_name === "") {
+      errorsTemp = {
+        ...errorsTemp,
+        picture_name: "Vous devez ajouter un nom.",
+      };
+    }
+    if (
+      picture.picture_image === "" ||
+      picture.picture_fileKey === "" ||
+      picture.picture_name === ""
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        picture_image: "Vous devez ajouter une image.",
+      };
+    }
     // description validation
     if (picture.picture_description) {
       if (
@@ -67,6 +86,11 @@ export default function PicturesForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
+      setValidation({
+        success: false,
+        message:
+          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
+      });
       return false;
     }
     return true;
@@ -190,7 +214,10 @@ export default function PicturesForm({
               handleChange={(e) =>
                 setPicture({ ...picture, picture_name: e.currentTarget.value })
               }
-              handleFocus={() => {}}
+              handleFocus={() => {
+                setErrors({ ...errors, picture_name: "" });
+              }}
+              error={errors.picture_name}
               value={picture.picture_name ? picture.picture_name : ""}
             />
             {/* status */}
@@ -237,14 +264,18 @@ export default function PicturesForm({
               picture.picture_description ? picture.picture_description : ""
             }
           />
-          <FormFile
-            label={
-              picture.picture_image ? "Modifier l'image" : "Ajouter une image"
-            }
-            name="pictureImage"
-            onlinePath="gallery"
-            handleAddImage={handleAddImage}
-          />
+          <div>
+            <FormFile
+              label={
+                picture.picture_image ? "Modifier l'image" : "Ajouter une image"
+              }
+              name="pictureImage"
+              onlinePath="gallery"
+              handleAddImage={handleAddImage}
+            />
+            <FormError error={errors.picture_image} />
+          </div>
+
           {picture.picture_image && (
             <Image
               src={picture.picture_image}

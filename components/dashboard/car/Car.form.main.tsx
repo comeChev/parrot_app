@@ -73,7 +73,10 @@ export default function CarFormMain({
         handleChange={(e) =>
           setCar({ ...car, car_fuel: e.currentTarget.value })
         }
-        handleFocus={() => {}}
+        handleFocus={() => {
+          setErrors({ ...errors, carFuel: "" });
+        }}
+        error={errors.carFuel}
         name="carFuel"
       />
       {/* car year */}
@@ -116,7 +119,10 @@ export default function CarFormMain({
         handleChange={(e) =>
           setCar({ ...car, car_gearbox: e.currentTarget.value })
         }
-        handleFocus={() => {}}
+        handleFocus={() => {
+          setErrors({ ...errors, carGearbox: "" });
+        }}
+        error={errors.carGearbox}
         name="carGearbox"
       />
     </FormBox>

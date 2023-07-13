@@ -6,6 +6,7 @@ import {
   BsFillPersonFill,
   BsFillStarFill,
   BsImages,
+  BsTagsFill,
 } from "react-icons/bs";
 import DashboardNavLink from "./Dashboard.nav.link";
 import { Session } from "next-auth";
@@ -16,6 +17,7 @@ import Image from "next/image";
 const navItems = [
   { url: "/dashboard/cars", text: "Voitures", Icon: BsFillCarFrontFill },
   { url: "/dashboard/services", text: "Prestations", Icon: BsFillBoxSeamFill },
+  { url: "/dashboard/categories", text: "Catégories", Icon: BsTagsFill },
   { url: "/dashboard/reviews", text: "Commentaires", Icon: BsFillStarFill },
   { url: "/dashboard/hours", text: "Horaires", Icon: BsCalendarDate },
   { url: "/dashboard/users", text: "Utilisateurs", Icon: BsFillPersonFill },

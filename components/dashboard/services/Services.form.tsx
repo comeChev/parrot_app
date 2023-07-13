@@ -19,6 +19,7 @@ import {
 import FormTextarea from "@/components/ui/form/Form.textarea";
 import { Category, Service_picture } from "@prisma/client";
 import UiConfirmDeleteButton from "@/components/ui/Ui.confirm.delete.button";
+import FormError from "@/components/ui/form/Form.error";
 
 export const defaultService: ServiceWithPicturesAndCategory = {
   service_id: 0,
@@ -45,6 +46,8 @@ const defaultErrors = {
   service_paragraph_one: "",
   service_paragraph_two: "",
   service_end_sentence: "",
+  category_id: "",
+  service_images: "",
 };
 
 type ServicesFormProps = {
@@ -70,20 +73,34 @@ export default function ServicesForm({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
+  const optionsCategories = categoriesDB.map((category) => ({
+    value: category.category_id,
+    label: category.category_name,
+  }));
+
   function isValidForm() {
     if (!service) return false;
     let errorsTemp = defaultErrors;
 
     // title validation
-    if (service.service_title) {
-      if (
-        service.service_title.trim().length < 10 ||
-        service.service_title.trim().length > 100
-      ) {
+
+    if (
+      service.service_title.trim().length < 10 ||
+      service.service_title.trim().length > 100
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        service_title:
+          "Le titre doit contenir au moins 10 caractères et au maximum 100.",
+      };
+    }
+
+    // category validation
+    if (service.category_id === 0) {
+      if (service.category_id === 0) {
         errorsTemp = {
           ...errorsTemp,
-          service_title:
-            "Le titre doit contenir au moins 10 caractères et au maximum 100.",
+          category_id: "Vous devez obligatoirement choisir une catégorie.",
         };
       }
     }
@@ -101,35 +118,47 @@ export default function ServicesForm({
       }
     }
     // paragraph two validation
-    if (service.service_paragraph_two) {
-      if (
-        service.service_paragraph_two.trim().length < 50 ||
-        service.service_paragraph_two.trim().length > 600
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          service_paragraph_two:
-            "Le paragraphe doit contenir au moins 50 caractères et au maximum 600.",
-        };
-      }
+
+    if (
+      service.service_paragraph_two.trim().length < 50 ||
+      service.service_paragraph_two.trim().length > 600
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        service_paragraph_two:
+          "Le paragraphe doit contenir au moins 50 caractères et au maximum 600.",
+      };
     }
+
     //end sentence validation
-    if (service.service_end_sentence) {
-      if (
-        service.service_end_sentence.trim().length < 10 ||
-        service.service_end_sentence.trim().length > 200
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          service_end_sentence:
-            "Le paragraphe doit contenir au moins 10 caractères et au maximum 200.",
-        };
-      }
+
+    if (
+      service.service_end_sentence.trim().length < 10 ||
+      service.service_end_sentence.trim().length > 200
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        service_end_sentence:
+          "Le paragraphe doit contenir au moins 10 caractères et au maximum 200.",
+      };
+    }
+
+    // images validation
+    if (service.service_images.length < 3) {
+      errorsTemp = {
+        ...errorsTemp,
+        service_images: "Vous devez ajouter au moins 3 images.",
+      };
     }
 
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
+      setValidation({
+        success: false,
+        message:
+          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
+      });
       return false;
     }
     return true;
@@ -215,6 +244,7 @@ export default function ServicesForm({
 
   async function handleAddImage(image: ImageCreate) {
     if (!service) return null;
+    setErrors({ ...errors, service_images: "" });
     const newPicture = {
       service_picture_image: image.picture_image,
       service_picture_fileKey: image.picture_fileKey,
@@ -292,12 +322,16 @@ export default function ServicesForm({
             label="Catégorie"
             name="category_id"
             handleChange={handleChange}
-            handleFocus={() => {}}
+            handleFocus={() => setErrors({ ...errors, category_id: "" })}
+            error={errors.category_id}
             value={service.category_id ? service.category_id : ""}
-            options={categoriesDB.map((category) => ({
-              value: category.category_id,
-              label: category.category_name,
-            }))}
+            options={[
+              {
+                value: 0,
+                label: "-- Choisir une catégorie --",
+              },
+              ...optionsCategories,
+            ]}
           />
 
           {/* paragraph one */}
@@ -363,6 +397,7 @@ export default function ServicesForm({
             onlinePath="services"
             handleAddImage={handleAddImage}
           />
+          <FormError error={errors.service_images} />
           <div className="flex flex-wrap">
             {service.service_images.length > 0 &&
               service.service_images.map((image) => (

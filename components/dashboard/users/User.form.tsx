@@ -63,47 +63,45 @@ export default function UserForm({
     let errorsTemp = defaultErrors;
 
     // name validation
-    if (user.user_first_name) {
-      if (
-        user.user_first_name.trim().length < 3 ||
-        user.user_first_name.trim().length > 50
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          user_first_name:
-            "Le prénom doit contenir au moins 3 caractères et au maximum 50.",
-        };
-      }
+
+    if (
+      user.user_first_name.trim().length < 3 ||
+      user.user_first_name.trim().length > 50
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        user_first_name:
+          "Le prénom doit contenir au moins 3 caractères et au maximum 50.",
+      };
     }
+
     // lastName validation
-    if (user.user_last_name) {
-      if (
-        user.user_last_name.trim().length < 3 ||
-        user.user_last_name.trim().length > 50
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          user_last_name:
-            "Le nom de famille doit contenir au moins 3 caractères et au maximum 50.",
-        };
-      }
+
+    if (
+      user.user_last_name.trim().length < 3 ||
+      user.user_last_name.trim().length > 50
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        user_last_name:
+          "Le nom de famille doit contenir au moins 3 caractères et au maximum 50.",
+      };
     }
 
     // password validation
     if (isNew) {
-      if (user.user_password) {
-        if (
-          user.user_password.match(
-            /^(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/
-          ) === null
-        ) {
-          errorsTemp = {
-            ...errorsTemp,
-            user_password:
-              "Le mot de passe doit contenir au moins 8 caractères et au maximum 16 (avec un caractère spécial, un nombre et un chiffre).",
-          };
-        }
+      if (
+        user.user_password.match(
+          /^(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/
+        ) === null
+      ) {
+        errorsTemp = {
+          ...errorsTemp,
+          user_password:
+            "Le mot de passe doit contenir au moins 8 caractères et au maximum 16 (avec un caractère spécial, un nombre et un chiffre).",
+        };
       }
+
       // password validation
       if (userPasswordVerify !== user.user_password) {
         errorsTemp = {
@@ -127,6 +125,11 @@ export default function UserForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
+      setValidation({
+        success: false,
+        message:
+          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
+      });
       return false;
     }
     return true;

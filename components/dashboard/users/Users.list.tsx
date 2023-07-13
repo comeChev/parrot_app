@@ -79,7 +79,7 @@ export default function UsersList({ usersDB }: UserListProps) {
           value: (
             <UsersListAction
               user={user}
-              setUsers={setUsers}
+              setUsers={setUsersToShow}
               setCurrent={setCurentUser}
               setIsOpenForm={setIsOpenForm}
             />

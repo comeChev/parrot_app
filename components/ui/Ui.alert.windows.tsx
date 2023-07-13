@@ -17,7 +17,7 @@ export function UiAlertSuccess({
   }, []);
 
   return (
-    <div className="flex items-center justify-between w-4/5 fixed top-2  bg-green-200 py-4 px-4">
+    <div className="flex items-center justify-between w-4/5 fixed top-2  bg-green-200 py-4 px-4 z-[1000] rounded-md">
       <p className="text-xl text-green-800">{message}</p>
       <button>
         <AiOutlineClose
@@ -42,7 +42,7 @@ export function UiAlertError({
     }, 3000);
   }, []);
   return (
-    <div className="flex items-center justify-between w-4/5 fixed top-2  bg-red-200 py-4 px-4">
+    <div className="flex items-center justify-between w-4/5 fixed top-2  bg-red-200 py-4 px-4 z-[1000] rounded-md">
       <p className="text-xl text-red-800">{message}</p>
       <button>
         <AiOutlineClose

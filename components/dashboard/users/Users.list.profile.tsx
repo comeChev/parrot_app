@@ -11,7 +11,7 @@ export default function UsersListProfile({ user }: { user: User }) {
   }
   function getInitials(user: User) {
     if (user.user_last_name) {
-      return `${user.user_last_name[0]} ${user.user_first_name[0]}`;
+      return `${user.user_last_name[0]}${user.user_first_name[0]}`;
     }
     return user.user_first_name[0];
   }

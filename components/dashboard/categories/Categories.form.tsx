@@ -14,6 +14,7 @@ import FormTextarea from "@/components/ui/form/Form.textarea";
 import { Category } from "@prisma/client";
 import { createCategory, updateCategory } from "@/lib/categories";
 import { deleteFile } from "@/utils/supabase.upload";
+import FormError from "@/components/ui/form/Form.error";
 
 export const defaultCategory: Category = {
   category_id: 0,
@@ -28,6 +29,7 @@ const defaultErrors = {
   category_description: "",
   category_name: "",
   category_name_url: "",
+  category_picture: "",
 };
 
 type CategoriesFormProps = {
@@ -54,47 +56,59 @@ export default function CategoryForm({
     let errorsTemp = defaultErrors;
 
     // name validation
-    if (category.category_name) {
-      if (
-        category.category_name.trim().length < 10 ||
-        category.category_name.trim().length > 100
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          category_name:
-            "Le nom de la catégorie doit contenir au moins 10 caractères et au maximum 100.",
-        };
-      }
+    if (
+      category.category_name.trim().length < 10 ||
+      category.category_name.trim().length > 100
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        category_name:
+          "Le nom de la catégorie doit contenir au moins 10 caractères et au maximum 100.",
+      };
     }
+
     //category description validation
-    if (category.category_description) {
-      if (
-        category.category_description.trim().length < 30 ||
-        category.category_description.trim().length > 300
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          category_description:
-            "La description doit contenir au moins 30 caractères et au maximum 300.",
-        };
-      }
+    if (
+      category.category_description.trim().length < 30 ||
+      category.category_description.trim().length > 300
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        category_description:
+          "La description doit contenir au moins 30 caractères et au maximum 300.",
+      };
     }
+
     // category name validation
-    if (category.category_name_url) {
-      if (
-        category.category_name_url.trim().length < 5 ||
-        category.category_name_url.trim().length > 15
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          category_name_url:
-            "Le chemin d'accès doit contenir au moins 5 caractères et au maximum 15.",
-        };
-      }
+    if (
+      category.category_name_url.trim().length < 5 ||
+      category.category_name_url.trim().length > 15
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        category_name_url:
+          "Le chemin d'accès doit contenir au moins 5 caractères et au maximum 15.",
+      };
     }
+
+    // category picture validation
+    if (
+      category.category_picture === "" ||
+      category.category_picture === null
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        category_picture: "Vous devez ajouter une image pour la catégorie.",
+      };
+    }
+
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
+      setValidation({
+        success: false,
+        message: "Veuillez corriger les erreurs dans le formulaire.",
+      });
       return false;
     }
     return true;
@@ -272,6 +286,7 @@ export default function CategoryForm({
             onlinePath="categories"
             handleAddImage={handleAddImage}
           />
+          <FormError error={errors.category_picture} />
           {category.category_picture && (
             <Image
               key={category.category_fileKey}

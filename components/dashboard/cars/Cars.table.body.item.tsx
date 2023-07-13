@@ -36,7 +36,7 @@ export default function CarsTableBodyItem({
         <p>{new Date(car.car_published_date).toLocaleDateString("fr-FR")}</p>
       </td>
       <td className="py-2 px-1 hidden lg:table-cell">
-        <div className="mx-1 w-full relative">
+        <div className="mx-1 relative">
           <Image
             src={
               car.car_pictures[0]
@@ -46,8 +46,7 @@ export default function CarsTableBodyItem({
             alt={car.car_name}
             height={100}
             width={150}
-            style={{ height: "auto" }}
-            className="p-3 w-full h-full object-cover rounded-md"
+            className="p-3 h-full w-full object-cover rounded-md"
           />
         </div>
       </td>
