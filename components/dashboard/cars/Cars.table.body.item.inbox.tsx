@@ -3,14 +3,12 @@ import { BsEnvelopeCheckFill, BsEnvelopeExclamationFill } from "react-icons/bs";
 
 export default function CarsTableBodyItemInbox({ car }: { car: FullCar }) {
   function getPendingMessages() {
-    return car.car_messages.filter(
-      (m) => m.car_message_status === "PENDING" || "pending"
-    ).length;
+    return car.car_messages.filter((m) => m.car_message_status === "PENDING")
+      .length;
   }
   function getReadMessages() {
-    return car.car_messages.filter(
-      (m) => m.car_message_status === "READ" || "read"
-    ).length;
+    return car.car_messages.filter((m) => m.car_message_status === "REPLIED")
+      .length;
   }
   return (
     <div className="flex px-1 justify-between">

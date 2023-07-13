@@ -17,6 +17,7 @@ import CarFormMain from "./Car.form.main";
 import CarFormFooter from "./Car.form.footer";
 import { useRouter } from "next/navigation";
 import FormSelect from "@/components/ui/form/Form.select";
+import CarFormMessages from "./Car.form.messages";
 
 type CarFormProps = {
   carDB?: FullCar;
@@ -408,6 +409,10 @@ export default function CarForm({ carDB }: CarFormProps) {
             errors={errors}
             setErrors={setErrors}
           />
+          {/* car messages */}
+          {car.car_messages && car.car_messages.length > 0 && (
+            <CarFormMessages car={car} setCar={setCar} />
+          )}
         </div>
         {/* sticky footer */}
         <CarFormFooter
