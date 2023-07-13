@@ -1,6 +1,7 @@
 "use client";
 
 import Form from "@/components/ui/form/Form";
+import FormError from "@/components/ui/form/Form.error";
 import FormInput from "@/components/ui/form/Form.input";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
@@ -73,6 +74,17 @@ export default function ReviewsForm() {
       };
     }
 
+    // email validation
+    if (
+      !review.review_user_email.match(
+        /^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/i
+      )
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        email: "Votre adresse email est invalide.",
+      };
+    }
     // note validation
     if (review.review_note < 1) {
       errorsTemp = { ...errorsTemp, note: "Veuillez choisir une note." };
@@ -111,9 +123,7 @@ export default function ReviewsForm() {
   }
 
   //handle submit
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
+  async function handleSubmit() {
     if (isValidForm()) {
       setValidation({ success: false, message: "" });
       setLoading(true);
@@ -143,7 +153,6 @@ export default function ReviewsForm() {
     // Form
     <Form
       explanations={explanations}
-      handleSubmit={handleSubmit}
       loading={loading}
       validation={validation}
       setValidation={setValidation}
@@ -226,6 +235,9 @@ export default function ReviewsForm() {
           </div>
           <span className="text-light italic text-sm pl-[40px]">{`Note affectée : ${review.review_note} sur 5`}</span>
         </div>
+        <div className="mt-2 mx-2">
+          <FormError error={errors.note} />
+        </div>
       </div>
 
       {/* comment */}
@@ -242,6 +254,7 @@ export default function ReviewsForm() {
 
       {/* submit button */}
       <FormSubmit
+        handleClick={handleSubmit}
         handleCheck={loading}
         description="Votre message apparaîtra en ligne une fois celui-ci validé par nos
           modérateurs."

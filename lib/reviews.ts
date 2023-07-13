@@ -72,7 +72,7 @@ export async function createReview(review: NewReview) {
     review_user_first_name: encodeURI(review.review_user_first_name),
     review_user_last_name: encodeURI(review.review_user_last_name),
     review_comment: encodeURI(review.review_comment),
-    review_status: "ONLINE",
+    review_status: "PENDING",
   };
 
   const newReview = await fetch(

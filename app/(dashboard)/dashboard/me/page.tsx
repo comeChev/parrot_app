@@ -1,6 +1,4 @@
-import MessagesTable from "@/components/dashboard/messages/Messages.table";
 import UiUnderConstruction from "@/components/ui/Ui.underConstruction";
-import { prisma } from "@/utils/prisma";
 
 export default async function AdminProfilePage() {
   return (

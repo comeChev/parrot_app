@@ -1,7 +1,7 @@
 "use client";
 
 import { Review } from "@prisma/client";
-import { MutableRefObject, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ReviewsCommentsItem from "./Reviews.comments.item";
 
 type ReviewsCommentsProps = {

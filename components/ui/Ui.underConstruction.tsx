@@ -1,5 +1,5 @@
 import Image from "next/image";
-import underConstruction from "@/assets/underConstruction.jpg";
+import underConstruction from "@/assets/underConstruction.jpeg";
 import UiButtonAction from "./Ui.button.action";
 import { BsArrowLeft } from "react-icons/bs";
 

@@ -1,4 +1,5 @@
 import MessagesTable from "@/components/dashboard/messages/Messages.table";
+import { DescriptionPin, StatusPin } from "@/components/ui/Ui.status.pin";
 import { prisma } from "@/utils/prisma";
 
 export default async function AdminHoursPage() {
@@ -23,6 +24,20 @@ export default async function AdminHoursPage() {
       <p className="text-sm italic font-light">
         Messages obtenus via la boite de contact
       </p>
+      {/* explanations status */}
+      <div className="flex items-center mt-5">
+        <div className="flex flex-col">
+          <div className="flex mb-1 items-center">
+            <StatusPin status="READ" />
+            <DescriptionPin label="Message consulté et répondu" />
+          </div>
+          <div className="flex mb-1 items-center">
+            <StatusPin status="OFFLINE" />
+            <DescriptionPin label="Message reçu et non consulté" />
+          </div>
+        </div>
+      </div>
+
       <MessagesTable messagesDB={messages} />
     </div>
   );

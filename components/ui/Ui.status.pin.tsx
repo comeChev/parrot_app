@@ -1,5 +1,5 @@
 type statusPinProps = {
-  status: "ONLINE" | "ARCHIVED" | "OFFLINE";
+  status: "ONLINE" | "ARCHIVED" | "OFFLINE" | "READ";
 };
 
 export const StatusPin = ({ status }: statusPinProps) => {
@@ -10,7 +10,9 @@ export const StatusPin = ({ status }: statusPinProps) => {
           ? "bg-green-500"
           : status === "OFFLINE"
           ? "bg-red-500"
-          : status === "ARCHIVED" && "bg-amber-500"
+          : status === "ARCHIVED"
+          ? "bg-amber-500"
+          : "READ" && "bg-sky-500"
       }`}
     />
   );
