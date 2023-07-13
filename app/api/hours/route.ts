@@ -72,25 +72,31 @@ export async function POST(request: NextRequest, response: Response) {
     }
     const body = await request.json();
 
+    // const hour = await prisma.hour.create({
+    //   data: {
+    //     hour_day: body.hour_day,
+    //     hour_morning_status: body.hour_morning_status,
+    //     hour_morning_opening: new Date(
+    //       `2019-01-16 ${body.hour_morning_opening}:00`
+    //     ),
+    //     hour_morning_closing: new Date(
+    //       `2019-01-16 ${body.hour_morning_closing}:00`
+    //     ),
+    //     hour_afternoon_status: body.hour_afternoon_status,
+    //     hour_afternoon_closing: new Date(
+    //       `2019-01-16 ${body.hour_afternoon_closing}:00`
+    //     ),
+    //     hour_afternoon_opening: new Date(
+    //       `2019-01-16 ${body.hour_afternoon_opening}:00`
+    //     ),
+    //   },
+    // });
+
     const hour = await prisma.hour.create({
-      data: {
-        hour_day: body.hour_day,
-        hour_morning_status: body.hour_morning_status,
-        hour_morning_opening: new Date(
-          `2019-01-16 ${body.hour_morning_opening}:00`
-        ),
-        hour_morning_closing: new Date(
-          `2019-01-16 ${body.hour_morning_closing}:00`
-        ),
-        hour_afternoon_status: body.hour_afternoon_status,
-        hour_afternoon_closing: new Date(
-          `2019-01-16 ${body.hour_afternoon_closing}:00`
-        ),
-        hour_afternoon_opening: new Date(
-          `2019-01-16 ${body.hour_afternoon_opening}:00`
-        ),
-      },
+      data: body,
     });
+    if (!hour) throw new Error("Erreur lors de la création de l'horaire");
+
     return new NextResponse(
       JSON.stringify({
         message: "Horaire créé avec succès",
@@ -124,14 +130,14 @@ export async function PATCH(request: NextRequest, response: Response) {
         JSON.stringify({ error: "Vous n'êtes pas autorisé" }),
         { status: 401 }
       );
-    if (!request.nextUrl.searchParams.get("day")) {
+    if (!request.nextUrl.searchParams.get("id")) {
       throw new Error("Aucun jour n'a été trouvé");
     }
-    const queryDay = request.nextUrl.searchParams.get("day") as string;
+    const id = request.nextUrl.searchParams.get("id") as string;
     const body = await request.json();
 
     const day = await prisma.hour.update({
-      where: { hour_day: queryDay },
+      where: { hour_id: Number(id) },
       data: body,
     });
     return new NextResponse(
@@ -160,15 +166,15 @@ export async function DELETE(request: NextRequest, response: Response) {
         JSON.stringify({ error: "Vous n'êtes pas autorisé" }),
         { status: 401 }
       );
-    if (!request.nextUrl.searchParams.get("day")) {
+    if (!request.nextUrl.searchParams.get("id")) {
       return new NextResponse(JSON.stringify({ error: "Aucun jour trouvé" }), {
         status: 400,
       });
     }
-    const queryDay = request.nextUrl.searchParams.get("day") as string;
+    const id = request.nextUrl.searchParams.get("id") as string;
     const day = await prisma.hour
       .delete({
-        where: { hour_day: queryDay },
+        where: { hour_id: Number(id) },
       })
       .catch((error) => {
         return new NextResponse(JSON.stringify({ error: error.message }), {

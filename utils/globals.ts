@@ -44,3 +44,19 @@ export function getFullStringDate(date: Date) {
   const minutes = date.getMinutes().toString().padStart(2, "0");
   return `le ${day}/${month}/${year} à ${hours}:${minutes}`;
 }
+
+export function getOpeningHoursString(
+  opening: Date,
+  closing: Date,
+  status: boolean
+) {
+  const openHour = opening.getHours().toString().padStart(2, "0");
+  const openMinutes = opening.getMinutes().toString().padStart(2, "0");
+
+  const closeHour = closing.getHours().toString().padStart(2, "0");
+  const closeMinutes = closing.getMinutes().toString().padStart(2, "0");
+
+  if (!status) return `Fermé`;
+
+  return ` de ${openHour}:${openMinutes} à ${closeHour}:${closeMinutes}`;
+}

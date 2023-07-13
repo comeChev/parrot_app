@@ -91,10 +91,10 @@ type HourTime = `${HH}:${MM}`;
 
 export interface HourCreate {
   hour_day: string;
-  hour_morning_status: "open" | "closed";
+  hour_morning_status: boolean;
   hour_morning_opening: HourTime;
   hour_morning_closing: HourTime;
-  hour_afternoon_status: "open" | "closed";
+  hour_afternoon_status: boolean;
   hour_afternoon_opening: HourTime;
   hour_afternoon_closing: HourTime;
 }
@@ -126,7 +126,7 @@ export async function getHours() {
   }
 }
 
-export async function createHour(hour: HourCreate) {
+export async function createHour(hour: Omit<Hour, "hour_id">) {
   const createdHour = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours`,
     {
@@ -141,16 +141,18 @@ export async function createHour(hour: HourCreate) {
 
   if (createdHourJson.error) {
     console.log(createdHourJson.error);
+    return null;
   }
+  return createdHourJson.data;
 }
 
 /**
  * @param day day of the week (Lundi | Mardi | Mercredi | Jeudi | Vendredi | Samedi | Dimanche)
  * @param hour hour to update (hour_morning_status | hour_morning_opening | hour_morning_closing | hour_afternoon_status | hour_afternoon_opening | hour_afternoon_closing)
  */
-export async function updateHour(hour: Partial<HourCreate>) {
+export async function updateHour(hour: Hour) {
   const updatedHour = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?day=${hour.hour_day}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?id=${hour.hour_id}`,
     {
       method: "PATCH",
       headers: {
@@ -162,50 +164,19 @@ export async function updateHour(hour: Partial<HourCreate>) {
   const updatedHourJson = await updatedHour.json();
   if (updatedHourJson.error) {
     console.log(updatedHourJson.error);
-    return {};
+    return null;
   }
   return updatedHourJson.data;
 }
 
-export async function deleteHour(day: string) {
-  return await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?day=${day}`,
-    {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    }
-  )
+export async function deleteHour(id: number) {
+  return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?id=${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  })
     .then((res) => res.json())
     .then((data) => data?.data || data?.error)
     .catch((error) => {
       console.error(error);
     });
-}
-
-export async function toggleHourStatus(hour: Hour, isMorning: boolean) {
-  const status = isMorning
-    ? {
-        hour_morning_status:
-          hour.hour_morning_status === "open" ? "closed" : "open",
-      }
-    : {
-        hour_afternoon_status:
-          hour.hour_afternoon_status === "open" ? "closed" : "open",
-      };
-
-  const hourToUpdate = { ...hour, ...status };
-  const updatedHour = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?day=${hour.hour_day}`,
-    {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(hourToUpdate),
-    }
-  );
-  const updatedHourJson = await updatedHour.json();
-  if (updatedHourJson.error) {
-    console.log(updatedHourJson.error);
-    return null;
-  }
-  return updatedHourJson.data;
 }

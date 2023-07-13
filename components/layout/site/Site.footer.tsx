@@ -104,23 +104,19 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
               {hours.map((hour) => (
                 <div className="flex space-x-2">
                   <p className="w-[100px]">{hour.hour_day}</p>
-                  {hour.hour_morning_status === "closed" &&
-                  hour.hour_afternoon_status === "closed" ? (
+                  {hour.hour_morning_status === false &&
+                  hour.hour_afternoon_status === false ? (
                     <p>Fermé toute la journée</p>
                   ) : (
                     <div className="flex flex-col">
                       <p>
-                        {hour.hour_morning_status === "open"
-                          ? `de ${showTime(
-                              hour.hour_morning_opening
-                            )} à ${showTime(hour.hour_morning_closing)}`
+                        {hour.hour_morning_status === true
+                          ? `de ${hour.hour_morning_opening} à ${hour.hour_morning_closing}`
                           : "Fermé le matin"}
                       </p>
                       <p>
-                        {hour.hour_morning_status === "open"
-                          ? `de ${showTime(
-                              hour.hour_morning_opening
-                            )} à ${showTime(hour.hour_morning_closing)}`
+                        {hour.hour_afternoon_status === true
+                          ? `de ${hour.hour_afternoon_opening} à ${hour.hour_afternoon_closing}`
                           : "Fermé l'après-midi"}
                       </p>
                     </div>

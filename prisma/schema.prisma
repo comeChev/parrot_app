@@ -28,12 +28,12 @@ model User{
 model Hour{
   hour_id Int @id @default(autoincrement())
   hour_day String @unique
-  hour_morning_status String
-  hour_morning_opening DateTime 
-  hour_morning_closing DateTime 
-  hour_afternoon_status String
-  hour_afternoon_opening DateTime 
-  hour_afternoon_closing DateTime 
+  hour_morning_status Boolean
+  hour_morning_opening String
+  hour_morning_closing String 
+  hour_afternoon_status Boolean
+  hour_afternoon_opening String 
+  hour_afternoon_closing String 
 }
 
 model Picture{
