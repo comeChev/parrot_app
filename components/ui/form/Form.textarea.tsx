@@ -8,9 +8,10 @@ type FormTextareaProps = {
   handleFocus: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   value: string;
   placeholder?: string;
-  error: string;
+  error?: string;
   min?: number;
   max?: number;
+  disabled?: boolean;
 };
 
 export default function FormTextarea({
@@ -22,6 +23,7 @@ export default function FormTextarea({
   value,
   placeholder,
   error,
+  disabled = false,
   min = 3,
   max = 500,
 }: FormTextareaProps) {
@@ -32,10 +34,11 @@ export default function FormTextarea({
       </p>
       <div
         className={`flex-1 flex flex-col bg-slate-200 py-2 px-4 rounded-md border-2 border-slate-300 mb-1 ${
-          error.length > 0 && "border-red-500"
+          error && error.length > 0 && "border-red-500"
         }`}
       >
         <textarea
+          disabled={disabled}
           name={name}
           onChange={handleChange}
           onFocus={handleFocus}
@@ -44,11 +47,13 @@ export default function FormTextarea({
           rows={5}
           required={required}
           placeholder={placeholder || label}
-          className="bg-slate-200 resize-none outline-none"
+          className="bg-slate-200 resize-none outline-none disabled:select-none disabled:text-slate-500"
         />
-        <span className="text-xs">{`Caractères restants : ${
-          max - value.length
-        }`}</span>
+        {!disabled && value && (
+          <span className="text-xs">{`Caractères restants : ${
+            max - value.length
+          }`}</span>
+        )}
       </div>
       {error && <FormError error={error} />}
     </div>

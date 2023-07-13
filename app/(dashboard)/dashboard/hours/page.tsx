@@ -1,15 +1,8 @@
 import HoursTable from "@/components/dashboard/hours/Hours.table";
-import PicturesList from "@/components/dashboard/pictures/Pictures.list";
-import UiLogoExplanation from "@/components/ui/Ui.logo.explanation";
-import Table from "@/components/ui/table/Table";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
 import { authOptions } from "@/utils/nextAuth/nextAuth.options";
 import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { BsDoorOpenFill, BsPenFill } from "react-icons/bs";
 
 export default async function AdminHoursPage() {
   const hours = await prisma.hour.findMany({});

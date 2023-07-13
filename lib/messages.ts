@@ -14,6 +14,20 @@ export interface MessageCreate {
   message_response_date: Date | null;
 }
 
+export interface MessageUpdate {
+  message_id: number;
+  message_published_date: Date;
+  message_contact_first_name: string;
+  message_contact_last_name: string;
+  message_contact_email: string;
+  message_contact_phone: string;
+  message_content: string;
+  message_status: "PENDING" | "REPLIED" | "ARCHIVED";
+  message_response: string;
+  message_response_type: "MAIL" | "PHONE" | "";
+  message_response_date: Date;
+}
+
 export async function getMessages() {
   const messages = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages`,

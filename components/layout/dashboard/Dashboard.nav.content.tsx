@@ -1,11 +1,13 @@
 import React, { Dispatch, SetStateAction } from "react";
 import {
   BsCalendarDate,
+  BsEnvelopeAtFill,
   BsFillBoxSeamFill,
   BsFillCarFrontFill,
   BsFillPersonFill,
   BsFillStarFill,
   BsImages,
+  BsMailbox2,
   BsTagsFill,
 } from "react-icons/bs";
 import DashboardNavLink from "./Dashboard.nav.link";
@@ -19,6 +21,7 @@ const navItems = [
   { url: "/dashboard/services", text: "Prestations", Icon: BsFillBoxSeamFill },
   { url: "/dashboard/categories", text: "Catégories", Icon: BsTagsFill },
   { url: "/dashboard/reviews", text: "Commentaires", Icon: BsFillStarFill },
+  { url: "/dashboard/messages", text: "Messages", Icon: BsEnvelopeAtFill },
   { url: "/dashboard/hours", text: "Horaires", Icon: BsCalendarDate },
   { url: "/dashboard/users", text: "Utilisateurs", Icon: BsFillPersonFill },
   { url: "/dashboard/pictures", text: "Galerie photos", Icon: BsImages },

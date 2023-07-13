@@ -42,7 +42,9 @@ export function getFullStringDate(date: Date) {
   const day = date.getDate().toString().padStart(2, "0");
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
-  return `le ${day}/${month}/${year} à ${hours}:${minutes}`;
+  return `le ${new Date(date).toLocaleDateString("fr-FR")} à ${new Date(
+    date
+  ).toLocaleTimeString("fr-FR")}`;
 }
 
 export function getOpeningHoursString(
@@ -59,4 +61,8 @@ export function getOpeningHoursString(
   if (!status) return `Fermé`;
 
   return ` de ${openHour}:${openMinutes} à ${closeHour}:${closeMinutes}`;
+}
+
+export function getFullName(firstName: string, lastName: string) {
+  return `${getUpperCaseFirstLetter(firstName)} ${lastName.toUpperCase()}`;
 }

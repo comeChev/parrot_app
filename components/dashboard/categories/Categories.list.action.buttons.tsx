@@ -102,7 +102,7 @@ export function CategoriesListActionDelete({
       className="text-md text-red-700 hover:text-red-800 bg-red-200 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
       onClick={handleDelete}
     >
-      <span className="text-sm">Confirmer la suppression</span>
+      <span className="text-sm mr-2">Confirmer la suppression</span>
       <BsExclamationDiamondFill className="" />
     </button>
   ) : (
@@ -110,7 +110,7 @@ export function CategoriesListActionDelete({
       className="text-md text-red-700 hover:text-red-800 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
       onClick={handleConfirm}
     >
-      <span className="text-sm">Supprimer</span>
+      <span className="text-sm mr-2">Supprimer</span>
       <BsTrash2Fill className="" />
     </button>
   );

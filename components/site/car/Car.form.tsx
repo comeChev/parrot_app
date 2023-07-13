@@ -122,6 +122,17 @@ export default function CarForm({ car }: CarFormProps) {
           "Votre nom de famille doit comporter un minimum de 3 lettres et un maximum de 50",
       };
     }
+    // email validation
+    if (
+      !message.car_message_contact_email.match(
+        /^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/i
+      )
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        email: "Votre adresse email est invalide.",
+      };
+    }
 
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {

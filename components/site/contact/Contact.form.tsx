@@ -67,6 +67,17 @@ export default function ContactForm() {
       };
     }
 
+    // email validation
+    if (
+      !message.message_contact_email.match(
+        /^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/i
+      )
+    ) {
+      errorsTemp = {
+        ...errorsTemp,
+        email: "Votre adresse email est invalide.",
+      };
+    }
     // firstName validation
     if (
       message.message_contact_first_name.trim().length < 3 ||
