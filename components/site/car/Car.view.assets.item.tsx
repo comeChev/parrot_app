@@ -3,7 +3,7 @@ import { IconType } from "react-icons";
 
 type CarsListItemAssetProps = {
   Icon: IconType;
-  value: string | number;
+  value: string | number | null;
 };
 
 export default function CarViewAssetsItem({
