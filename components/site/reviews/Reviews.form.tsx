@@ -204,7 +204,7 @@ export default function ReviewsForm() {
         <p className="mb-3 px-4 font-semibold">
           Note <span className="text-red-500">*</span>
         </p>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:items-center md:justify-between md:flex-row">
           <div className="flex items-center space-x-5 ml-4">
             {arrayNote.map((note) => {
               if (review.review_note && review.review_note >= note) {
@@ -233,7 +233,7 @@ export default function ReviewsForm() {
               }
             })}
           </div>
-          <span className="text-light italic text-sm pl-[40px]">{`Note affectée : ${review.review_note} sur 5`}</span>
+          <span className="text-light italic text-sm pl-4 mt-2 md:mt-0 md:pl-[40px]">{`Note affectée : ${review.review_note} sur 5`}</span>
         </div>
         <div className="mt-2 mx-2">
           <FormError error={errors.note} />

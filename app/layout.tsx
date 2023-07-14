@@ -1,26 +1,5 @@
 import NextAuthProvider from "@/providers/Nextauth.provider";
 import "./globals.css";
-import { Assistant, Inter, Lora, Montserrat } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-const monserrat = Montserrat({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  style: ["italic", "normal"],
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-});
-const lora = Lora({
-  weight: ["400", "500", "600", "700"],
-  style: ["italic", "normal"],
-  subsets: ["latin"],
-  variable: "--font-lora",
-});
-const assistant = Assistant({
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
-  style: ["normal"],
-  subsets: ["latin"],
-  variable: "--font-assistant",
-});
 
 export const metadata = {
   title: "Garage V. Parrot",
