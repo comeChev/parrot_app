@@ -18,6 +18,7 @@ export async function getReviews() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
+      cache: "no-cache",
     }
   );
   const reviewsJson = await reviews.json();
@@ -138,6 +139,7 @@ export async function getFreshReviews() {
         "Content-Type": "application/json",
         authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
+      cache: "no-cache",
     }
   );
   const reviewsJson = await reviews.json();

@@ -20,7 +20,6 @@ import { getFreshReviews } from "@/lib/reviews";
 import { Review } from "@prisma/client";
 import UiTextMain from "@/components/ui/Ui.text.main";
 import { prisma } from "@/utils/prisma";
-import HomeSearchCar from "@/components/site/home/Home.searchCar";
 
 const assetsItems = [
   {

@@ -113,6 +113,7 @@ export async function getHours() {
           "Content-Type": "application/json",
           authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
         },
+        cache: "no-cache",
       }
     );
     const responseJson = await response.json();
