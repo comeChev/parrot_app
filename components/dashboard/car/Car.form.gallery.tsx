@@ -4,10 +4,10 @@ import FormBox from "@/components/ui/form/Form.box";
 import FormDelete from "@/components/ui/form/Form.delete";
 import FormFile, { ImageCreate } from "@/components/ui/form/Form.file";
 import { FullCar, deleteCarPicture } from "@/lib/cars";
-import { Car, Car_picture } from "@prisma/client";
+import { Car_picture } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 type CarFormGalleryProps = {
   handleAddImage: (image: ImageCreate, carId?: number) => Promise<{} | null>;

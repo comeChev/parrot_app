@@ -7,7 +7,6 @@ import {
   BsFillPersonFill,
   BsFillStarFill,
   BsImages,
-  BsMailbox2,
   BsTagsFill,
 } from "react-icons/bs";
 import DashboardNavLink from "./Dashboard.nav.link";

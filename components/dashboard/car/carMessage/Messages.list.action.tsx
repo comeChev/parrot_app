@@ -7,7 +7,7 @@ import {
   MessagesListActionMail,
   MessagesListActionPhone,
 } from "./Messages.list.action.buttons";
-import { Car_message, Message } from "@prisma/client";
+import { Car_message } from "@prisma/client";
 
 type MessagesListActionProps = {
   message: Car_message;

@@ -12,7 +12,7 @@ const supabase = createClient(
 // Upload file using standard upload
 export async function uploadFile(file: File, path: string) {
   const { data, error } = await supabase.storage
-    .from("parrot_app")
+    .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET as string)
     .upload(`/${path}/${file.name}`, file);
   if (error) {
     console.log(error);
@@ -24,7 +24,7 @@ export async function uploadFile(file: File, path: string) {
 
 export async function deleteFile(path: string) {
   const { data, error } = await supabase.storage
-    .from("parrot_app")
+    .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET as string)
     .remove([path]);
   if (error) {
     console.log(error);

@@ -9,22 +9,26 @@ import {
 import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
-import { Message, Review } from "@prisma/client";
-import { useRef, useState } from "react";
+import { Review } from "@prisma/client";
+import { useEffect, useRef, useState } from "react";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import { getFullName, getFullStringDate } from "@/utils/globals";
 import MessagesStatus from "./Reviews.status";
-import MessagesListAction from "./Reviews.list.action";
 import ReviewsForm, { defaultReview } from "./Reviews.form";
-import MessagesForm from "./Reviews.form";
 import ReviewsListAction from "./Reviews.list.action";
 import ReviewsNote from "./Reviews.note";
+import UiPagination from "@/components/ui/Ui.pagination";
 
 export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
   const [reviews, setReviews] = useState(reviewsDB);
+  const [reviewsToShow, setReviewsToShow] = useState(reviewsDB);
   const [isNew, setIsNew] = useState<boolean>(true);
   const [currentReview, setCurrentReview] = useState(defaultReview);
   const [isOpenForm, setIsOpenForm] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
   const headersList: TableHeaderProps[] = [
     {
       text: "ID",
@@ -56,7 +60,7 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
     },
   ];
 
-  const bodyItems: BodyItems[] = reviews.map((m) => {
+  const bodyItems: BodyItems[] = reviewsToShow.map((m) => {
     const bodyItem: BodyItemProps[] = [
       // id
       { value: m.review_id, className: "hidden text-center" },
@@ -116,13 +120,25 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
     setIsNew(false);
   }
 
+  useEffect(() => {
+    const start = (page - 1) * itemsPerPage;
+    const end = page * itemsPerPage;
+    setReviewsToShow(reviews.slice(start, end));
+  }, [page, reviews]);
+
   return (
     <div>
-      <div className="flex mb-20">
+      <div className="mb-20">
         <Table reference={tableRef}>
           <TableHeader headersList={headersList} />
           <TableBody bodyItems={bodyItems} />
         </Table>
+        <UiPagination
+          page={page}
+          setPage={setPage}
+          length={reviews.length}
+          itemsPerPage={itemsPerPage}
+        />
       </div>
 
       <div className="mb-16">

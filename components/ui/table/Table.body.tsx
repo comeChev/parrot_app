@@ -1,4 +1,4 @@
-import TableBodyItem, { BodyItemProps, BodyItems } from "./Table.body.item";
+import TableBodyItem, { BodyItems } from "./Table.body.item";
 
 type TableBodyProps = {
   bodyItems: BodyItems[];

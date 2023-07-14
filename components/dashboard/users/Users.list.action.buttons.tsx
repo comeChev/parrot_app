@@ -1,6 +1,5 @@
 import { updateUser } from "@/lib/users";
 import { User } from "@prisma/client";
-import Link from "next/link";
 import { BsEyeFill, BsFillEyeSlashFill, BsPenFill } from "react-icons/bs";
 
 type UserListActionEditProps = {

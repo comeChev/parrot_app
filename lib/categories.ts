@@ -13,7 +13,6 @@ export async function getCategories() {
   );
   const categoriesJson = await categories.json();
   if (categoriesJson.error) {
-    console.log(categoriesJson.error);
     return [];
   }
   return categoriesJson.data;
@@ -29,7 +28,6 @@ export async function getCategory(id: number) {
   );
   const categoryJson = await category.json();
   if (categoryJson.error) {
-    console.log(categoryJson.error);
     return null;
   }
   return categoryJson.data;
@@ -46,7 +44,6 @@ export async function createCategory(category: Omit<Category, "category_id">) {
   );
   const newCategoryJson = await newCategory.json();
   if (newCategoryJson.error) {
-    console.log(newCategoryJson.error);
     return null;
   }
   return newCategoryJson.data;
@@ -62,7 +59,6 @@ export async function deleteCategory(id: number) {
   );
   const deletedCategoryJson = await deletedCategory.json();
   if (deletedCategoryJson.error) {
-    console.log(deletedCategoryJson.error);
     return null;
   }
   return deletedCategoryJson.data;
@@ -79,7 +75,6 @@ export async function updateCategory(category: Category) {
   );
   const updatedCategoryJson = await updatedCategory.json();
   if (updatedCategoryJson.error) {
-    console.log(updatedCategoryJson.error);
     return null;
   }
   return updatedCategoryJson.data;

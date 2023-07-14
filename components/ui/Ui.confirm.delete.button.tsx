@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  BsExclamation,
-  BsExclamationDiamondFill,
-  BsTrash2,
-} from "react-icons/bs";
+import { BsExclamationDiamondFill, BsTrash2 } from "react-icons/bs";
 
 type UiConfirmDeleteButtonProps = {
   textConfirm?: string;

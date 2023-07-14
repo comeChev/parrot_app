@@ -13,7 +13,6 @@ export async function getPictures() {
   );
   const picturesJson = await pictures.json();
   if (picturesJson.error) {
-    console.log(picturesJson.error);
     return [];
   }
   return picturesJson.data;
@@ -32,7 +31,6 @@ export async function createPicture(picture: Partial<Picture>) {
   );
   const picturesJson = await pictures.json();
   if (picturesJson.error) {
-    console.log(picturesJson.error);
     return null;
   }
   return picturesJson.data;
@@ -50,7 +48,6 @@ export async function deletePicture(id: number) {
   );
   const picturesJson = await pictures.json();
   if (picturesJson.error) {
-    console.log(picturesJson.error);
     return null;
   }
   return picturesJson.data;
@@ -68,9 +65,7 @@ export async function updatePicture(id: number, picture: Partial<Picture>) {
     }
   );
   const picturesJson = await pictures.json();
-  console.log("at picture JSON");
   if (picturesJson.error) {
-    console.log(picturesJson.error);
     return null;
   }
   return picturesJson.data;

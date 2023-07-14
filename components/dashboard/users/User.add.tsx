@@ -1,7 +1,6 @@
 "use client";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import { User } from "@prisma/client";
-import React, { useState } from "react";
 import UserForm, { defaultUser } from "./User.form";
 
 type UserAddOrCreateProps = {

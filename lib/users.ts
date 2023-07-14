@@ -15,7 +15,6 @@ export async function getUsers() {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    console.log(responseJson.error);
     return [];
   }
   return responseJson.data;
@@ -35,7 +34,6 @@ export async function updateUser(id: number, data: Partial<User>) {
   );
   const responseJson = await response.json();
   if (responseJson.error) {
-    console.log(responseJson.error);
     return null;
   }
   return responseJson.data;
@@ -58,7 +56,6 @@ export async function createUser(user: Partial<User>) {
     );
     const responseJson = await response.json();
     if (responseJson.error) {
-      console.log(responseJson.error);
       return null;
     }
     return responseJson.data;

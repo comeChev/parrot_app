@@ -10,13 +10,14 @@ import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
 import { Message } from "@prisma/client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import { getFullName, getFullStringDate } from "@/utils/globals";
 import MessagesStatus from "./Messages.status";
 import MessagesListAction from "./Messages.list.action";
 import { defaultMessage } from "./Messages.form";
 import MessagesForm from "./Messages.form";
+import UiPagination from "@/components/ui/Ui.pagination";
 
 export default function MessagesTable({
   messagesDB,
@@ -24,6 +25,9 @@ export default function MessagesTable({
   messagesDB: Message[];
 }) {
   const [messages, setMessages] = useState(messagesDB);
+  const [messagesToShow, setMessagesToShow] = useState(messagesDB);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [isNew, setIsNew] = useState<boolean>(true);
   const [currentMessage, setCurrentMessage] = useState<Message>(defaultMessage);
   const [isOpenForm, setIsOpenForm] = useState(false);
@@ -58,7 +62,7 @@ export default function MessagesTable({
     },
   ];
 
-  const bodyItems: BodyItems[] = messages.map((m) => {
+  const bodyItems: BodyItems[] = messagesToShow.map((m) => {
     const bodyItem: BodyItemProps[] = [
       // id
       { value: m.message_id, className: "hidden text-center" },
@@ -110,24 +114,30 @@ export default function MessagesTable({
 
   const tableRef = useRef(null);
 
-  function handleOpenForm() {
-    setCurrentMessage(defaultMessage);
-    setIsNew(true);
-    setIsOpenForm(true);
-  }
   function handleCloseForm() {
     setCurrentMessage(defaultMessage);
     setIsOpenForm(false);
     setIsNew(false);
   }
+  useEffect(() => {
+    const start = (page - 1) * itemsPerPage;
+    const end = page * itemsPerPage;
+    setMessagesToShow(messages.slice(start, end));
+  }, [page, messages]);
 
   return (
     <div>
-      <div className="flex mb-20">
+      <div className="mb-20">
         <Table reference={tableRef}>
           <TableHeader headersList={headersList} />
           <TableBody bodyItems={bodyItems} />
         </Table>
+        <UiPagination
+          page={page}
+          setPage={setPage}
+          length={messages.length}
+          itemsPerPage={itemsPerPage}
+        />
       </div>
 
       <div className="mb-16">

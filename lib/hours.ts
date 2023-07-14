@@ -117,13 +117,10 @@ export async function getHours() {
     );
     const responseJson = await response.json();
     if (responseJson.error) {
-      console.log(responseJson.error);
       return [];
     }
     return responseJson.data;
-  } catch (error: any) {
-    console.log(error);
-  }
+  } catch (error: any) {}
 }
 
 export async function createHour(hour: Omit<Hour, "hour_id">) {
@@ -140,7 +137,6 @@ export async function createHour(hour: Omit<Hour, "hour_id">) {
   const createdHourJson = await createdHour.json();
 
   if (createdHourJson.error) {
-    console.log(createdHourJson.error);
     return null;
   }
   return createdHourJson.data;
@@ -163,7 +159,6 @@ export async function updateHour(hour: Hour) {
   );
   const updatedHourJson = await updatedHour.json();
   if (updatedHourJson.error) {
-    console.log(updatedHourJson.error);
     return null;
   }
   return updatedHourJson.data;
@@ -176,7 +171,5 @@ export async function deleteHour(id: number) {
   })
     .then((res) => res.json())
     .then((data) => data?.data || data?.error)
-    .catch((error) => {
-      console.error(error);
-    });
+    .catch((error) => {});
 }

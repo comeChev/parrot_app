@@ -33,8 +33,6 @@ export const RegisterForm = () => {
       signIn("email", { callbackUrl: "/" });
     } catch (error: any) {
       setLoading(false);
-      console.error(error);
-      alert(error.message);
     }
   };
 

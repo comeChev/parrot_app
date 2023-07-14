@@ -22,7 +22,6 @@ export async function getReviews() {
   );
   const reviewsJson = await reviews.json();
   if (reviewsJson.error) {
-    console.error(reviewsJson.error);
     return [];
   }
 
@@ -51,7 +50,6 @@ export async function getReview(id: number) {
   );
   const reviewJson = await review.json();
   if (reviewJson.error) {
-    console.error(reviewJson.error);
     return null;
   }
 
@@ -88,7 +86,6 @@ export async function createReview(review: NewReview) {
   );
   const newReviewJson = await newReview.json();
   if (newReviewJson.error) {
-    console.error(newReviewJson.error);
     return null;
   }
   return newReviewJson.data;
@@ -112,7 +109,6 @@ export async function updateReview(id: number, review: Partial<Review>) {
   );
   const updatedReviewJson = await updatedReview.json();
   if (updatedReviewJson.error) {
-    console.error(updatedReviewJson.error);
     return null;
   }
   return updatedReviewJson.data;
@@ -128,7 +124,6 @@ export async function deleteReview(id: number) {
   );
   const deletedReviewJson = await deletedReview.json();
   if (deletedReviewJson.error) {
-    console.error(deletedReviewJson.error);
     return null;
   }
   return deletedReviewJson.data;
@@ -147,7 +142,6 @@ export async function getFreshReviews() {
   );
   const reviewsJson = await reviews.json();
   if (reviewsJson.error) {
-    console.error(reviewsJson.error);
     return [];
   }
   const reverseReviews: Review[] = reviewsJson.data.reverse();

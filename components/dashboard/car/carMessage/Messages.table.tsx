@@ -9,14 +9,14 @@ import {
 import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
-import { Car_message } from "@prisma/client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import { getFullName, getFullStringDate } from "@/utils/globals";
 import MessagesStatus from "./Messages.status";
 import MessagesListAction from "./Messages.list.action";
 import MessagesForm, { defaultMessage } from "./Messages.form";
 import { FullCar } from "@/lib/cars";
+import UiPagination from "@/components/ui/Ui.pagination";
 
 export default function MessagesTable({
   car,
@@ -26,6 +26,9 @@ export default function MessagesTable({
   setCar: React.Dispatch<React.SetStateAction<FullCar>>;
 }) {
   const [messages, setMessages] = useState(car.car_messages);
+  const [messagesToShow, setMessagesToShow] = useState(car.car_messages);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [isNew, setIsNew] = useState<boolean>(true);
   const [currentMessage, setCurrentMessage] = useState(defaultMessage);
   const [isOpenForm, setIsOpenForm] = useState(false);
@@ -60,7 +63,7 @@ export default function MessagesTable({
     },
   ];
 
-  const bodyItems: BodyItems[] = messages.map((m) => {
+  const bodyItems: BodyItems[] = messagesToShow.map((m) => {
     const bodyItem: BodyItemProps[] = [
       // id
       { value: m.car_message_id, className: "hidden text-center" },
@@ -112,24 +115,31 @@ export default function MessagesTable({
 
   const tableRef = useRef(null);
 
-  function handleOpenForm() {
-    setCurrentMessage(defaultMessage);
-    setIsNew(true);
-    setIsOpenForm(true);
-  }
   function handleCloseForm() {
     setCurrentMessage(defaultMessage);
     setIsOpenForm(false);
     setIsNew(false);
   }
 
+  useEffect(() => {
+    const start = (page - 1) * itemsPerPage;
+    const end = page * itemsPerPage;
+    setMessagesToShow(messages.slice(start, end));
+  }, [page, messages]);
+
   return (
     <div>
-      <div className="flex mb-20">
+      <div className="mb-20">
         <Table reference={tableRef}>
           <TableHeader headersList={headersList} />
           <TableBody bodyItems={bodyItems} />
         </Table>
+        <UiPagination
+          page={page}
+          setPage={setPage}
+          length={messages.length}
+          itemsPerPage={itemsPerPage}
+        />
       </div>
 
       <div className="mb-16">

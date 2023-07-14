@@ -1,8 +1,7 @@
 "use client";
 
-import { updateMessage } from "@/lib/messages";
 import { updateReview } from "@/lib/reviews";
-import { Message, Review } from "@prisma/client";
+import { Review } from "@prisma/client";
 import {
   BsExclamationOctagonFill,
   BsExclamationSquareFill,

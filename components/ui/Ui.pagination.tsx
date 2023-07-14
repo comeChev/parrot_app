@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import { IconType } from "react-icons";
 import {
@@ -46,7 +45,7 @@ export default function UiPagination({
   scrollTo,
 }: UiPaginationProps) {
   const numberPage = Math.ceil(length / itemsPerPage);
-  const firstItem = (page - 1) * itemsPerPage + 1;
+  const firstItem = length === 0 ? 0 : (page - 1) * itemsPerPage + 1;
   const lastItem = page * itemsPerPage < length ? page * itemsPerPage : length;
   const txtLength =
     length === 0 ? "0" : length === 1 ? `1 résultat` : `${length} résultats`;
@@ -89,7 +88,7 @@ export default function UiPagination({
         <p>{`Résultats de ${firstItem} à ${lastItem}`}</p>
         <p className="italic font-light text-neutral-500">{`pour un total de ${txtLength}`}</p>
         <p>
-          Page {page} sur {numberPage}
+          Page {length === 0 ? 0 : page} sur {numberPage}
         </p>
       </div>
 

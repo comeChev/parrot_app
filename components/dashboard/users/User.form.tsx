@@ -8,7 +8,7 @@ import userCreate from "@/assets/users/userCreate.jpg";
 import FormSelect from "@/components/ui/form/Form.select";
 import FormBox from "@/components/ui/form/Form.box";
 import FormFile, { ImageCreate } from "@/components/ui/form/Form.file";
-import { deleteFile, uploadFile } from "@/utils/supabase.upload";
+import { deleteFile } from "@/utils/supabase.upload";
 import Image from "next/image";
 import { getInputDate } from "@/utils/globals";
 import FormFooter from "@/components/ui/form/Form.footer";

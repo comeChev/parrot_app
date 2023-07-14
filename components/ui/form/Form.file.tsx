@@ -76,7 +76,6 @@ export default function FormFile({
     //upload on supabase
     const { data, success } = await uploadFile(myNewFile, `${onlinePath}`);
     if (!success) {
-      console.log(data);
       setError(data as string);
       setIsLoading(false);
       return;

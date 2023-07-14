@@ -1,5 +1,4 @@
 import FormBox from "@/components/ui/form/Form.box";
-import { ErrorsProps } from "./Car.form";
 import { FullCar } from "@/lib/cars";
 import MessagesTable from "./carMessage/Messages.table";
 

@@ -24,7 +24,6 @@ export async function getServicesWithPictures(): Promise<
   );
   const servicesJson = await services.json();
   if (servicesJson.error) {
-    console.log(servicesJson.error);
     return [];
   }
   return servicesJson.data;
@@ -43,7 +42,6 @@ export async function getServiceWithPictures(id: number) {
   );
   const serviceJson = await service.json();
   if (serviceJson.error) {
-    console.log(serviceJson.error);
     return null;
   }
   return serviceJson.data;
@@ -62,7 +60,6 @@ export async function createService(service: Partial<ServiceWithPictures>) {
   );
   const newServiceJson = await newService.json();
   if (newServiceJson.error) {
-    console.log(newServiceJson.error);
     return null;
   }
   return newServiceJson.data;
@@ -82,7 +79,6 @@ export async function updateService(
   );
   const updatedServiceJson = await updatedService.json();
   if (updatedServiceJson.error) {
-    console.log(updatedServiceJson.error);
     return null;
   }
   return updatedServiceJson.data;
@@ -98,7 +94,6 @@ export async function deleteService(id: number) {
   );
   const deletedServiceJson = await deletedService.json();
   if (deletedServiceJson.error) {
-    console.log(deletedServiceJson.error);
     return null;
   }
   return deletedServiceJson.data;
@@ -122,7 +117,6 @@ export async function createServicePicture(
   );
   const newServicePictureJson = await newServicePicture.json();
   if (newServicePictureJson.error) {
-    console.log(newServicePictureJson.error);
     return null;
   }
   return newServicePictureJson.data;
@@ -139,7 +133,6 @@ export async function deleteServicePicture(picture: Service_picture) {
   );
   const deletedServicePictureJson = await deletedServicePicture.json();
   if (deletedServicePictureJson.error) {
-    console.log(deletedServicePictureJson.error);
     return null;
   }
   return deletedServicePictureJson.data;
@@ -159,7 +152,6 @@ export async function getServicesByCategory(name: string) {
   );
   const servicesJson = await services.json();
   if (servicesJson.error) {
-    console.log(servicesJson.error);
     return [];
   }
   return servicesJson.data;

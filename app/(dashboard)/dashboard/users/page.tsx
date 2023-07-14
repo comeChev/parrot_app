@@ -1,11 +1,9 @@
-import UserAddOrCreate from "@/components/dashboard/users/User.add";
 import UsersList from "@/components/dashboard/users/Users.list";
-import UiLogoExplanation from "@/components/ui/Ui.logo.explanation";
+import { DescriptionPin, StatusPin } from "@/components/ui/Ui.status.pin";
 import { authOptions } from "@/utils/nextAuth/nextAuth.options";
 import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { BsKeyFill, BsSignStopFill } from "react-icons/bs";
 
 export default async function AdminUserPage() {
   const users = await prisma.user.findMany({});
@@ -20,20 +18,22 @@ export default async function AdminUserPage() {
       {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
       <h2 className="text-3xl font-bold">Liste des utilisateurs</h2>
 
+      {/* explanations status */}
+      <div className="flex items-center mt-5">
+        <div className="flex flex-col">
+          <div className="flex mb-1 items-center">
+            <StatusPin status="ONLINE" />
+            <DescriptionPin label="Utilisateur actif. Visible sur la page de l'équipe." />
+          </div>
+          <div className="flex mb-1 items-center">
+            <StatusPin status="OFFLINE" />
+            <DescriptionPin label="Utilisateur inactif. Non visible sur la page de l'équipe." />
+          </div>
+        </div>
+      </div>
       {/* users list */}
       <UsersList usersDB={users} />
       {/* cars list */}
-
-      <div className="">
-        <UiLogoExplanation
-          Icon={BsKeyFill}
-          text="Vous pouvez réinitialiser le mot de passe de n’importe quel utilisateur. Un nouveau mot de passe est généré aléatoirement. L’utilisateur recevra un email avec son nouveau mot de passe."
-        />
-        <UiLogoExplanation
-          Icon={BsSignStopFill}
-          text="Vous pouvez bloquer l’accès temporairement à un employé (arrêt maladie, absence ...) ou définitivement (départ de l’entreprise)."
-        />
-      </div>
     </div>
   );
 }

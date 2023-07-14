@@ -1,6 +1,4 @@
-import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
 import { Message } from "@prisma/client";
-import { NextResponse } from "next/server";
 
 export interface MessageCreate {
   message_contact_first_name: string;
@@ -35,7 +33,6 @@ export async function getMessages() {
   );
   const messagesJson = await messages.json();
   if (messagesJson.error) {
-    console.log(messagesJson.error);
     return [];
   }
 
@@ -60,7 +57,6 @@ export async function getMessage(id: number) {
     );
     const messageJson = await message.json();
     if (messageJson.error) {
-      console.log(messageJson.error);
       return null;
     }
 
@@ -79,7 +75,6 @@ export async function getMessage(id: number) {
     };
     return decodedMessage;
   } catch (error: any) {
-    console.error(error.message);
     return null;
   }
 }
@@ -107,12 +102,10 @@ export async function createMessage(message: MessageCreate) {
     );
     const messageCreateJson = await messageCreate.json();
     if (messageCreateJson.error) {
-      console.log(messageCreateJson.error);
       return null;
     }
     return messageCreateJson.data;
   } catch (error: any) {
-    console.error(error.message);
     return null;
   }
 }
@@ -131,12 +124,10 @@ export async function updateMessage(id: number, message: Partial<Message>) {
     );
     const messageUpdateJson = await messageUpdate.json();
     if (messageUpdateJson.error) {
-      console.log(messageUpdateJson.error);
       return null;
     }
     return messageUpdateJson.data;
   } catch (error: any) {
-    console.error(error.message);
     return null;
   }
 }
@@ -154,12 +145,10 @@ export async function deleteMessage(id: number) {
     );
     const messageDeleteJson = await messageDelete.json();
     if (messageDeleteJson.error) {
-      console.log(messageDeleteJson.error);
       return null;
     }
     return messageDeleteJson.data;
   } catch (error: any) {
-    console.error(error.message);
     return null;
   }
 }

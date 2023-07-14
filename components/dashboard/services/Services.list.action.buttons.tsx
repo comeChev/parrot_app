@@ -6,7 +6,6 @@ import {
   updateService,
 } from "@/lib/services";
 import { deleteFile } from "@/utils/supabase.upload";
-import { Service } from "@prisma/client";
 import { useState } from "react";
 import {
   BsExclamationDiamondFill,
@@ -168,7 +167,6 @@ export function ServicesListActionDelete({
         if (!success) {
           setServices((prev) => [...prev, service]);
           setIsOpen(false);
-          console.log("error deleting file");
           return;
         }
       });

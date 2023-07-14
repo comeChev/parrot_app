@@ -19,17 +19,6 @@ type LinkWithPathProps = {
   text: string;
 };
 
-function checkUrl(url: string, pathName: string) {
-  const strArray = url.split("");
-  console.log(strArray);
-  if (strArray.some(() => "?")) return pathName === url.split("?")[0];
-  if (strArray.some(() => "#")) {
-    console.log(url.split("#"));
-    return pathName === url.split("#")[0].split("/")[1];
-  }
-  return pathName === url;
-}
-
 const LinkWithPath = ({
   pathName,
   url,
