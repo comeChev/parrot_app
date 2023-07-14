@@ -3,9 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import sendgrid from "@sendgrid/mail";
 import { SendMailBody } from "@/utils/sendgrid";
 
-sendgrid.setApiKey(
-  "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"
-);
+sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY as string);
 
 export async function POST(request: NextRequest) {
   const hasSession = await verifySession();

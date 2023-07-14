@@ -10,166 +10,167 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  user_id     Int     @id @default(autoincrement())
+model User {
+  user_id         Int       @id @default(autoincrement())
   user_first_name String
-  user_last_name String
-  user_email String @unique
-  user_password String
-  user_role String
-  user_status String
-  user_image String?
-  user_fileKey String?
-  user_gender String?
-  user_job String?
-  user_arrival DateTime?
+  user_last_name  String
+  user_email      String    @unique
+  user_password   String
+  user_role       String
+  user_status     String
+  user_image      String?
+  user_fileKey    String?
+  user_gender     String?
+  user_job        String?
+  user_arrival    DateTime?
 }
 
-model Hour{
-  hour_id Int @id @default(autoincrement())
-  hour_day String @unique
-  hour_morning_status Boolean
-  hour_morning_opening String
-  hour_morning_closing String 
-  hour_afternoon_status Boolean
-  hour_afternoon_opening String 
-  hour_afternoon_closing String 
+model Hour {
+  hour_id                Int     @id @default(autoincrement())
+  hour_day               String  @unique
+  hour_morning_status    Boolean
+  hour_morning_opening   String
+  hour_morning_closing   String
+  hour_afternoon_status  Boolean
+  hour_afternoon_opening String
+  hour_afternoon_closing String
 }
 
-model Picture{
-  picture_id Int @id @default(autoincrement())
-  picture_name String
-  picture_image String
-  picture_description String?
+model Picture {
+  picture_id             Int      @id @default(autoincrement())
+  picture_name           String
+  picture_image          String
+  picture_description    String?
   picture_published_date DateTime @default(now())
-  picture_status String
-  picture_fileKey String @unique
+  picture_status         String
+  picture_fileKey        String   @unique
 }
 
-model Category{
-  category_id Int @id @default(autoincrement())
-  category_name String @unique
-  category_description String @default("Aucune description")
-  category_name_url String @default("")
-  category_picture String @default("")
-  category_fileKey String @default("")
-  services Service[]
+model Category {
+  category_id          Int       @id @default(autoincrement())
+  category_name        String    @unique
+  category_description String    @default("Aucune description")
+  category_name_url    String    @default("")
+  category_picture     String    @default("")
+  category_fileKey     String    @default("")
+  services             Service[]
 }
 
-model Service{
-  service_id Int @id @default(autoincrement())
-  service_title String
-  service_paragraph_one String
-  service_paragraph_two String
-  service_end_sentence String
-  service_published_date DateTime @default(now())
-  service_status String
-  service_images Service_picture[]
-  category_id Int
-  category Category @relation(fields: [category_id], references: [category_id])
+model Service {
+  service_id             Int               @id @default(autoincrement())
+  service_title          String
+  service_paragraph_one  String
+  service_paragraph_two  String
+  service_end_sentence   String
+  service_published_date DateTime          @default(now())
+  service_status         String
+  service_images         Service_picture[]
+  category_id            Int
+  category               Category          @relation(fields: [category_id], references: [category_id])
 }
 
-model Service_picture{
-  service_picture_id Int @id @default(autoincrement())
-  service_picture_name String
-  service_picture_image String
+model Service_picture {
+  service_picture_id      Int     @id @default(autoincrement())
+  service_picture_name    String
+  service_picture_image   String
   service_picture_fileKey String
-  service_id Int
-  service Service @relation(fields: [service_id], references: [service_id], onDelete: Cascade, onUpdate: Cascade)
+  service_id              Int
+  service                 Service @relation(fields: [service_id], references: [service_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Message{
-  message_id Int @id @default(autoincrement())
+model Message {
+  message_id                 Int       @id @default(autoincrement())
   message_contact_first_name String
-  message_contact_last_name String
-  message_contact_email String
-  message_contact_phone String?
-  message_content String
-  message_published_date DateTime @default(now())
-  message_status String
-  message_response String?
-  message_response_type String?
-  message_response_date DateTime?
+  message_contact_last_name  String
+  message_contact_email      String
+  message_contact_phone      String?
+  message_content            String
+  message_published_date     DateTime  @default(now())
+  message_status             String
+  message_response           String?
+  message_response_type      String?
+  message_response_date      DateTime?
 }
 
-model Review{
-  review_id Int @id @default(autoincrement())
+model Review {
+  review_id              Int      @id @default(autoincrement())
   review_user_first_name String
-  review_user_last_name String
-  review_user_email String
-  review_comment String
-  review_note Int
-  review_published_date DateTime @default(now())
-  review_status String
+  review_user_last_name  String
+  review_user_email      String
+  review_comment         String
+  review_note            Int
+  review_published_date  DateTime @default(now())
+  review_status          String
 }
 
-model Strength{
-  strength_id Int @id @default(autoincrement())
+model Strength {
+  strength_id   Int            @id @default(autoincrement())
   strength_name String
-  car_strength Car_strength[]
+  car_strength  Car_strength[]
 }
 
-model Car{
-  car_id Int @id @default(autoincrement())
-  car_name String
-  car_price Float
-  car_fuel String
-  car_year DateTime  //@db.Date() for postgresql 
-  car_kilometers Int
-  car_gearbox String
-  car_published_date DateTime @default(now())
-  car_status String
-  car_country String?
+model Car {
+  car_id                Int            @id @default(autoincrement())
+  car_name              String
+  car_price             Float
+  car_fuel              String
+  car_year              DateTime //@db.Date() for postgresql 
+  car_kilometers        Int
+  car_gearbox           String
+  car_published_date    DateTime       @default(now())
+  car_status            String
+  car_country           String?
   car_technical_control Boolean?
-  car_first_hand Boolean?
-  car_owners Int?
-  car_color String?
-  car_doors Int?
-  car_seats Int?
-  car_length Float?
-  car_boot String? 
-  car_fiscal_power Int?
-  car_horse_power Int?
-  car_eu_rule String?
-  car_critair String?
-  car_consumption Float?
-  car_carbon_release Float?
-  car_conversion_bonus Boolean?
-  car_pictures Car_picture[]
-  car_messages Car_message[]
-  car_strengths Car_strength[]
+  car_first_hand        Boolean?
+  car_owners            Int?
+  car_color             String?
+  car_doors             Int?
+  car_seats             Int?
+  car_length            Float?
+  car_boot              String?
+  car_fiscal_power      Int?
+  car_horse_power       Int?
+  car_eu_rule           String?
+  car_critair           String?
+  car_consumption       Float?
+  car_carbon_release    Float?
+  car_conversion_bonus  Boolean?
+  car_pictures          Car_picture[]
+  car_messages          Car_message[]
+  car_strengths         Car_strength[]
 }
 
-model Car_picture{
-  car_picture_id Int @id @default(autoincrement())
-  car_picture_name String
-  car_picture_image String
+model Car_picture {
+  car_picture_id      Int    @id @default(autoincrement())
+  car_picture_name    String
+  car_picture_image   String
   car_picture_fileKey String @unique
-  car_id Int
-  car Car @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
+  car_id              Int
+  car                 Car    @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Car_message{
-  car_message_id Int @id @default(autoincrement())
+model Car_message {
+  car_message_id                 Int       @id @default(autoincrement())
   car_message_contact_first_name String
-  car_message_contact_last_name String
-  car_message_contact_email String
-  car_message_contact_phone String?
-  car_message_content String
-  car_message_published_date DateTime @default(now())
-  car_message_status String
-  car_message_response String?
-  car_message_response_type String?
-  car_message_response_date DateTime?
-  car_id Int
-  car Car @relation(fields: [car_id], references: [car_id], onDelete : Cascade , onUpdate: Cascade)
+  car_message_contact_last_name  String
+  car_message_contact_email      String
+  car_message_contact_phone      String?
+  car_message_content            String
+  car_message_published_date     DateTime  @default(now())
+  car_message_status             String
+  car_message_response           String?
+  car_message_response_type      String?
+  car_message_response_date      DateTime?
+  car_id                         Int
+  car                            Car       @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Car_strength{
+model Car_strength {
   strength_name String
-  strength_id Int
-  car_id Int
-  strength Strength @relation(fields: [strength_id], references: [strength_id])
-  car Car @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
+  strength_id   Int
+  car_id        Int
+  strength      Strength @relation(fields: [strength_id], references: [strength_id])
+  car           Car      @relation(fields: [car_id], references: [car_id], onDelete: Cascade, onUpdate: Cascade)
+
   @@id([car_id, strength_id]) // unique id for the relation
 }
