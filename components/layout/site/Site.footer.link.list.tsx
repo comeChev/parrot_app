@@ -30,7 +30,7 @@ const LinkWithPath = ({
       href={url}
       className={`${originalUrl && originalUrl === pathName && "underline"} ${
         url === pathName && "underline"
-      }`}
+      } hover:underline underline-offset-2`}
     >
       {text}
     </Link>

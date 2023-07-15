@@ -3,7 +3,7 @@ import { Session } from "next-auth";
 import Link from "next/link";
 import { Hour } from "@prisma/client";
 
-import { BsFillCarFrontFill } from "react-icons/bs";
+import { BsFillCarFrontFill, BsGearFill } from "react-icons/bs";
 
 import SiteNavLink from "./Site.nav.link";
 import SiteNavContentHours from "./Site.nav.content.hours";
@@ -87,8 +87,9 @@ export default function SiteNavContent({
         {session ? (
           <SiteNavLogoutButton />
         ) : (
-          <Link href="/login" className="px-4 font-light text-red-300">
-            Espace administrateur
+          <Link href="/login" className="px-4 font-light text-red-300 flex">
+            <BsGearFill className="text-2xl mr-2" />
+            <span>Espace administrateur</span>
           </Link>
         )}
       </div>

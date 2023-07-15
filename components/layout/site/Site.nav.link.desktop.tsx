@@ -12,7 +12,6 @@ type DashboardNavLinkProps = {
 export default function SiteNavLinkDesktop({
   url,
   text,
-
   isCurrent,
   setIsOpen,
 }: DashboardNavLinkProps) {

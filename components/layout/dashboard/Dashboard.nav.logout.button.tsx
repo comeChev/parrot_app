@@ -8,14 +8,14 @@ export default function DashboardNavLogoutButton() {
   const router = useRouter();
   return (
     <button
-      className="text-end px-4 py-2 flex items-center justify-end group flex-1"
+      className="text-end py-2 flex items-center justify-end group flex-1"
       onClick={async () => {
         const response = await signOut({ redirect: false });
-        if (response) router.push("/login");
+        if (response) window.location.reload();
       }}
     >
-      <BsBoxArrowLeft className="mr-4 text-4xl md:text-2xl" />
-      <span className="text-xl">Déconnexion</span>
+      <BsBoxArrowLeft className="mr-4 text-xl" />
+      <span className="text-md">Déconnexion</span>
     </button>
   );
 }

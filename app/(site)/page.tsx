@@ -140,6 +140,8 @@ export default async function Home() {
       <section className="container mx-auto h-[500px] mb-[100px]">
         <div className="flex items-center h-full">
           <Image
+            priority
+            placeholder="blur"
             src={mechanic1}
             alt="illustrationImage"
             className="hidden md:flex h-full object-cover  w-[150px] lg:w-[300px]"
@@ -152,7 +154,7 @@ export default async function Home() {
               proposons une gamme complète de services.
             </p>
             <p>
-              Établi à Toulouse (Gard, France) depuis 2001, le garage V. Parrot
+              Établi à St Claude (Jura, France) depuis 2001, le garage V. Parrot
               est spécialisé dans la{" "}
               <strong className="underline underline-offset-2 font-semibold">
                 mécanique générale
@@ -209,15 +211,6 @@ export default async function Home() {
             text={carItem.text}
             title={carItem.title}
           />
-
-          {/* {servicesItems.map((s) => (
-            <HomeServicesItem
-              url={s.url}
-              imageSrc={s.imageSrc}
-              text={s.text}
-              title={s.title}
-            />
-          ))} */}
         </div>
       </section>
 

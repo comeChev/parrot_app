@@ -1,4 +1,4 @@
-import { Hour } from "@prisma/client";
+import { Category, Hour } from "@prisma/client";
 import { Session } from "next-auth";
 import Link from "next/link";
 import {
@@ -12,6 +12,7 @@ import SiteFooterLinkList from "./Site.footer.link.list";
 type SiteFooterProps = {
   hours: Hour[] | [];
   session: Session | null;
+  categories: Category[];
 };
 
 function showTime(date: Date) {
@@ -48,29 +49,31 @@ const aboutLinks = [
     text: "Vos données personnelles",
   },
   {
-    url: "/sitemap",
+    url: "/sitemap.xml",
     text: "Plan du site",
   },
 ];
 
-const servicesLinks = [
-  {
-    url: "/services?name=mechanic",
-    text: "Entretien et révision mécanique",
-    originalUrl: "/services",
-  },
-  {
-    url: "/services?name=repair",
-    text: "Carrosserie et réparation",
-    originalUrl: "/services",
-  },
-  {
-    url: "/cars",
-    text: "Vente véhicules d'occasion",
-  },
-];
+export default function SiteFooter({
+  hours,
+  session,
+  categories,
+}: SiteFooterProps) {
+  const services = categories.map((category: Category) => {
+    const link = {
+      url: `/services?name=${category.category_name_url}`,
+      text: category.category_name,
+    };
+    return link;
+  });
+  const servicesLinks = [
+    ...services,
+    {
+      url: "/cars",
+      text: "Vente véhicules d'occasion",
+    },
+  ];
 
-export default function SiteFooter({ hours, session }: SiteFooterProps) {
   return (
     <footer className=" min-h-[100px] bg-neutral-700 text-neutral-200">
       {/* content */}
@@ -102,8 +105,8 @@ export default function SiteFooter({ hours, session }: SiteFooterProps) {
             </p>
             <div className="text-sm font-light flex flex-col space-y-2">
               {hours.map((hour) => (
-                <div className="flex space-x-2">
-                  <p className="w-[100px]">{hour.hour_day}</p>
+                <div className="flex space-x-2 items-center border-b border-neutral-500 py-2 ">
+                  <div className="w-[100px]">{hour.hour_day}</div>
                   {hour.hour_morning_status === false &&
                   hour.hour_afternoon_status === false ? (
                     <p>Fermé toute la journée</p>

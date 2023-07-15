@@ -38,6 +38,7 @@ export default function DashboardNav({ session }: DashboardNavProps) {
         {isOpen && (
           <div className="min-h-screen">
             <DashboardNavContent
+              isAdmin={session.user.role === "ADMIN"}
               session={session}
               setIsOpen={setIsOpen}
               pathname={pathname}
@@ -48,6 +49,7 @@ export default function DashboardNav({ session }: DashboardNavProps) {
       {/* desktop */}
       <div className="bg-red-800 hidden sm:flex w-60 h-full">
         <DashboardNavContent
+          isAdmin={session.user.role === "ADMIN"}
           session={session}
           setIsOpen={setIsOpen}
           pathname={pathname}
