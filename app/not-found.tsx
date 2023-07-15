@@ -7,10 +7,12 @@ import Image from "next/image";
 import errorImg from "@/assets/error-img.png";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import { BsArrowLeft } from "react-icons/bs";
+import { getCategories } from "@/lib/categories";
 
 export default async function NotFound() {
   const hours = await getHours();
   const session = await getServerSession(authOptions);
+  const categories = await getCategories();
 
   return (
     <div>
@@ -48,7 +50,7 @@ export default async function NotFound() {
             </div>
           </div>
         </main>
-        <SiteFooter hours={hours} session={session} />
+        <SiteFooter hours={hours} session={session} categories={categories} />
       </div>
     </div>
   );
