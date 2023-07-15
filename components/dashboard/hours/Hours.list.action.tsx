@@ -14,6 +14,7 @@ type HoursListActionProps = {
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: Dispatch<SetStateAction<Hour>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function HoursListAction({
@@ -22,6 +23,7 @@ export default function HoursListAction({
   setIsOpenForm,
   setCurrent,
   setIsNew,
+  list,
 }: HoursListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -36,6 +38,7 @@ export default function HoursListAction({
         hour={hour}
         setOpenForm={setIsOpenForm}
         setIsNew={setIsNew}
+        list={list}
       />
 
       <HoursListActionDelete

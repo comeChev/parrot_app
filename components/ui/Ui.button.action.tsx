@@ -13,7 +13,7 @@ const InsideButton = ({ Icon, text }: { Icon?: IconType; text: string }) => {
   return (
     <div className="flex items-center space-x-3">
       {Icon && <Icon className="text-xl" />}
-      <span className="text-lg">{text}</span>
+      <span className="text-lg truncate">{text}</span>
     </div>
   );
 };

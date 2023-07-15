@@ -31,10 +31,11 @@ export default function MessagesTable({
   const [isNew, setIsNew] = useState<boolean>(true);
   const [currentMessage, setCurrentMessage] = useState<Message>(defaultMessage);
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const list = useRef<HTMLDivElement>(null);
   const headersList: TableHeaderProps[] = [
     {
       text: "ID",
-      className: "hidden w-12 text-center",
+      className: "hidden w-12 lg:table-cell text-center",
     },
     {
       text: "Utilisateur",
@@ -42,49 +43,50 @@ export default function MessagesTable({
     },
     {
       text: "Mail",
-      className: "",
+      className: "hidden md:table-cell md:w-[250px]",
     },
     {
       text: "Contenu",
-      className: "",
+      className: "truncate",
     },
     {
       text: "Date d'envoi",
-      className: "",
+      className: "hidden lg:table-cell lg:w-[200px]",
     },
     {
       text: "Status",
-      className: "",
+      className: "w-12 lg:w-20 truncate",
     },
     {
       text: "",
-      className: "w-12 ",
+      className: "w-6 ",
     },
   ];
 
   const bodyItems: BodyItems[] = messagesToShow.map((m) => {
     const bodyItem: BodyItemProps[] = [
       // id
-      { value: m.message_id, className: "hidden text-center" },
+      { value: m.message_id, className: "hidden lg:table-cell text-center" },
       // user
       {
         value: getFullName(
           decodeURI(m.message_contact_first_name),
           decodeURI(m.message_contact_last_name)
         ),
-        className: "",
+        className: "truncate",
       },
       // mail
       {
         value: m.message_contact_email,
-        className: "text-sm md:text-md lg:text-lg truncate",
+        className:
+          "hidden md:table-cell text-sm md:text-md lg:text-lg truncate",
       },
       // content
       { value: decodeURI(m.message_content), className: "truncate" },
       // published at
       {
         value: getFullStringDate(m.message_published_date),
-        className: "",
+        className: "hidden lg:table-cell ",
       },
       // status
       //message_status: "PENDING" | "REPLIED" | "ARCHIVED";
@@ -105,6 +107,7 @@ export default function MessagesTable({
             setIsOpenForm={setIsOpenForm}
             setIsNew={setIsNew}
             setCurrent={setCurrentMessage}
+            list={list}
           />
         ),
       },
@@ -140,7 +143,7 @@ export default function MessagesTable({
         />
       </div>
 
-      <div className="mb-16">
+      <div className="mb-16" ref={list}>
         <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
           {isOpenForm && (
             <UiButtonAction

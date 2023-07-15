@@ -14,6 +14,7 @@ type ReviewsListActionProps = {
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: Dispatch<SetStateAction<Review>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function ReviewsListAction({
@@ -22,6 +23,7 @@ export default function ReviewsListAction({
   setIsOpenForm,
   setCurrent,
   setIsNew,
+  list,
 }: ReviewsListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -36,6 +38,7 @@ export default function ReviewsListAction({
         setOpenForm={setIsOpenForm}
         setIsOpen={setIsOpenMenuAction}
         setIsNew={setIsNew}
+        list={list}
       />
       <ReviewsListActionToggleStatus
         review={review}

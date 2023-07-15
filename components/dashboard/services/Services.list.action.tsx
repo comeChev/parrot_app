@@ -17,6 +17,7 @@ type ServicesListActionProps = {
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: Dispatch<SetStateAction<ServiceWithPicturesAndCategory>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function ServicesListAction({
@@ -25,6 +26,7 @@ export default function ServicesListAction({
   setIsOpenForm,
   setCurrent,
   setIsNew,
+  list,
 }: ServicesListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -39,6 +41,7 @@ export default function ServicesListAction({
         service={service}
         setOpenForm={setIsOpenForm}
         setIsNew={setIsNew}
+        list={list}
       />
       <ServicesListActionStatus
         service={service}

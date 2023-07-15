@@ -25,6 +25,7 @@ export default function AboutHistoricItem({
         >
           <Image
             src={image}
+            placeholder="blur"
             alt="Illustration de garage"
             className="w-full lg:w-1/2 h-[300px] object-cover rounded-md my-4 md:my-0"
           />

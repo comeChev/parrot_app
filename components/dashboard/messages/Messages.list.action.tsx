@@ -15,6 +15,7 @@ type MessagesListActionProps = {
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: Dispatch<SetStateAction<Message>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function MessagesListAction({
@@ -23,6 +24,7 @@ export default function MessagesListAction({
   setIsOpenForm,
   setCurrent,
   setIsNew,
+  list,
 }: MessagesListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -51,6 +53,7 @@ export default function MessagesListAction({
         message={message}
         setOpenForm={setIsOpenForm}
         setIsNew={setIsNew}
+        list={list}
       />
     </TableBodyItemAction>
   );

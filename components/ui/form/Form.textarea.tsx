@@ -1,3 +1,5 @@
+"use client";
+
 import FormError from "./Form.error";
 
 type FormTextareaProps = {
@@ -12,6 +14,8 @@ type FormTextareaProps = {
   min?: number;
   max?: number;
   disabled?: boolean;
+  cssClasses?: string;
+  valueRows?: number;
 };
 
 export default function FormTextarea({
@@ -26,6 +30,8 @@ export default function FormTextarea({
   disabled = false,
   min = 3,
   max = 500,
+  valueRows = 5,
+  cssClasses = "resize-none",
 }: FormTextareaProps) {
   return (
     <div className="mb-[50px] flex-col">
@@ -44,13 +50,13 @@ export default function FormTextarea({
           onFocus={handleFocus}
           value={value}
           aria-label={label}
-          rows={5}
+          rows={valueRows}
           required={required}
           placeholder={placeholder || label}
-          className="bg-slate-200 resize-none outline-none disabled:select-none disabled:text-slate-500"
+          className={`bg-slate-200 ${cssClasses} outline-none disabled:select-none disabled:text-slate-500 text-sm md:text-base mb-2`}
         />
         {!disabled && value && (
-          <span className="text-xs">{`Caractères restants : ${
+          <span className="text-xs italic text-neutral-500">{`Caractères restants : ${
             max - value.length
           }`}</span>
         )}

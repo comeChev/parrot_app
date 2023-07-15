@@ -4,8 +4,8 @@ import {
   verifySession,
 } from "@/utils/nextAuth/nextAuth.protections";
 import { prisma } from "@/utils/prisma";
-import { Car, Car_message, Car_picture, Strength } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { FullCar } from "@/lib/cars";
 
 export async function GET(request: NextRequest) {
   const isVerified = await verifyAuthorization(request);
@@ -110,32 +110,18 @@ export async function POST(request: NextRequest) {
       return new NextResponse(JSON.stringify({ error: "Accès non autorisé" }), {
         status: 401,
       });
-    const body = await request.json();
-    //const year = new Date(body.car_year, 1);
-    let carToCreate = { ...body };
-    let strengths: Strength[] = [];
-    let pictures: Car_picture[] = [];
-    let messages: Car_message[] = [];
+    const { car_strengths, car_pictures, car_messages, ...rest }: FullCar =
+      await request.json();
 
-    if (body.car_strengths) {
-      strengths = body.car_strengths;
-      delete carToCreate.strengths;
-    }
-    if (body.car_pictures) {
-      pictures = body.car_pictures;
-      delete carToCreate.pictures;
-    }
-    if (body.car_messages) {
-      messages = body.car_messages;
-      delete carToCreate.messages;
-    }
+    const { car_id, ...carWithoutId } = rest;
+    const carToCreate = carWithoutId;
 
     const car = await prisma.car.create({
       data: {
         ...carToCreate,
-        car_strengths: { create: [...strengths] },
-        car_pictures: { create: [...pictures] },
-        car_messages: { create: [...messages] },
+        car_strengths: { create: [...car_strengths] },
+        car_pictures: { create: [...car_pictures] },
+        car_messages: { create: [...car_messages] },
       },
       include: { car_pictures: true, car_strengths: true, car_messages: true },
     });

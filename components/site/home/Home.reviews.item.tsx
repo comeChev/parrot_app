@@ -30,7 +30,7 @@ export default function HomeReviewsItem({ review }: HomeReviewsItemProps) {
         <div className="w-1/2 mx-auto bg-neutral-600 h-[2px] mb-5" />
         <h4 className="text-lg font-semibold">{getFullName(review)}</h4>
         <h4 className="text-sm font-light mb-2 text-neutral-600">
-          {new Date(review.review_published_date).toLocaleDateString([], {
+          {new Date(review.review_published_date).toLocaleDateString("fr-FR", {
             dateStyle: "long",
           })}
         </h4>

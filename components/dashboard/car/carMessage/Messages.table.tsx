@@ -39,11 +39,12 @@ export default function MessagesTable({
     },
     {
       text: "Utilisateur",
-      className: "w-24 sm:w-auto ",
+      className: "w-12 sm:w-auto lg:w-[200px] truncate",
     },
     {
       text: "Mail",
-      className: "",
+      className:
+        "hidden md:w-auto text-sm md:text-md lg:table-cell lg:text-lg lg:w-[200px] truncate",
     },
     {
       text: "Contenu",
@@ -51,11 +52,11 @@ export default function MessagesTable({
     },
     {
       text: "Date d'envoi",
-      className: "",
+      className: "hidden lg:w-[200px] lg:table-cell text-start",
     },
     {
       text: "Status",
-      className: "",
+      className: "w-12 truncate lg:w-20",
     },
     {
       text: "",
@@ -73,19 +74,20 @@ export default function MessagesTable({
           decodeURI(m.car_message_contact_first_name),
           decodeURI(m.car_message_contact_last_name)
         ),
-        className: "",
+        className: "w-12 sm:w-auto truncate",
       },
       // mail
       {
         value: m.car_message_contact_email,
-        className: "text-sm md:text-md lg:text-lg truncate",
+        className:
+          "hidden md:w-auto text-sm md:text-md lg:text-lg lg:table-cell truncate",
       },
       // content
       { value: decodeURI(m.car_message_content), className: "truncate" },
       // published at
       {
         value: getFullStringDate(m.car_message_published_date),
-        className: "",
+        className: "hidden lg:w-[200px] lg:table-cell text-start",
       },
       // status
       //message_status: "PENDING" | "REPLIED" | "ARCHIVED";
@@ -95,7 +97,7 @@ export default function MessagesTable({
             status={m.car_message_status as "PENDING" | "REPLIED" | "ARCHIVED"}
           />
         ),
-        className: "",
+        className: "w-12 w-20 text-center",
       },
       //actions
       {
@@ -108,6 +110,7 @@ export default function MessagesTable({
             setCurrent={setCurrentMessage}
           />
         ),
+        className: "w-12",
       },
     ];
     return bodyItem;

@@ -10,6 +10,7 @@ import Image from "next/image";
 import FormFooter from "@/components/ui/form/Form.footer";
 import carCreation from "@/assets/dashboard/carCreation.jpg";
 import noImage from "@/assets/no-image-available.jpg";
+import blur from "@/assets/blur.png";
 import {
   ServiceWithPicturesAndCategory,
   createService,
@@ -351,6 +352,7 @@ export default function ServicesForm({
           <FormTextarea
             label="Paragraphe 2"
             name="service_paragraph_two"
+            cssClasses="resize-y h-full"
             error={errors.service_paragraph_two}
             handleChange={handleChange}
             handleFocus={handleResetError}
@@ -361,13 +363,13 @@ export default function ServicesForm({
             max={600}
           />
           {/* end sentence */}
-          <FormInput
+          <FormTextarea
             label="Phrase de fin"
-            type="text"
             name="service_end_sentence"
             error={errors.service_end_sentence}
             handleChange={handleChange}
             handleFocus={handleResetError}
+            max={200}
             value={
               service.service_end_sentence ? service.service_end_sentence : ""
             }
@@ -401,14 +403,18 @@ export default function ServicesForm({
           <div className="flex flex-wrap">
             {service.service_images.length > 0 &&
               service.service_images.map((image) => (
-                <div className="relative group">
+                <div
+                  className="relative group"
+                  key={image.service_picture_fileKey}
+                >
                   <Image
-                    key={image.service_picture_fileKey}
                     src={image.service_picture_image || noImage}
                     width={150}
-                    height={150}
+                    height={100}
+                    style={{ width: "auto" }}
                     alt={image.service_picture_name || "no image"}
-                    className="rounded-sm object-cover m-1 "
+                    className="h-40 lg:h-52 rounded-sm object-cover m-1"
+                    blurDataURL="/public/blur.png"
                   />
 
                   <UiConfirmDeleteButton

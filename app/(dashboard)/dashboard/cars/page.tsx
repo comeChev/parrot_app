@@ -32,25 +32,9 @@ export default async function AdminCarPage() {
           </div>
         </div>
       </div>
+
       {/* cars list */}
-
       <CarsList carsDB={cars as FullCar[]} />
-
-      {/* explanations icons */}
-      {/* <div className="absolute bottom-5 w-4/5">
-        <CarsExplanation
-          Icon={BsFillInboxesFill}
-          text="Une annonce archivée correspond à une annonce qui a été vendue (ou
-            passée hors délai). Elle ne peut être remise en ligne."
-        />
-        <CarsExplanation
-          Icon={BsEyeSlashFill}
-          text=" Une annonce en attente de validation correspond à une annonce qui
-            n'apparaît pas sur le site. Cela peut être le cas lorsqu'une annonce
-            est en cours de création ou de modification, ou encore quand le
-            paiement du véhicule est en attente."
-        />
-      </div> */}
     </div>
   );
 }

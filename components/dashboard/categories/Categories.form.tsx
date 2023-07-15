@@ -293,8 +293,9 @@ export default function CategoryForm({
               src={category.category_picture || noImage}
               width={150}
               height={150}
+              style={{ width: "auto" }}
               alt={category.category_fileKey || "no image"}
-              className="rounded-sm object-cover"
+              className="rounded-md object-cover"
             />
           )}
 

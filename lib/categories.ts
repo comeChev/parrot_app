@@ -9,6 +9,7 @@ export async function getCategories() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
+      cache: "no-cache",
     }
   );
   const categoriesJson = await categories.json();

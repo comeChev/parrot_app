@@ -40,7 +40,7 @@ const tableHeaders: TableHeaderProps[] = [
   },
   {
     text: "",
-    className: "w-12",
+    className: "w-6",
   },
 ];
 
@@ -55,7 +55,7 @@ export default function UsersList({ usersDB }: UserListProps) {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const listUsers = useRef<HTMLDivElement>(null);
   const [usersToShow, setUsersToShow] = useState<User[]>(usersDB);
-
+  const list = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 
@@ -82,6 +82,7 @@ export default function UsersList({ usersDB }: UserListProps) {
               setUsers={setUsersToShow}
               setCurrent={setCurentUser}
               setIsOpenForm={setIsOpenForm}
+              list={list}
             />
           ),
           className: "text-center",
@@ -110,7 +111,7 @@ export default function UsersList({ usersDB }: UserListProps) {
           itemsPerPage={itemsPerPage}
         />
       </div>
-      <div className="mb-20">
+      <div className="mb-20" ref={list}>
         <UserAddOrCreate
           setIsNew={setIsNew}
           isNew={isNew}

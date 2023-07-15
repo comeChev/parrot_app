@@ -17,6 +17,7 @@ type HoursListActionEditProps = {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export function HoursListActionEdit({
@@ -25,12 +26,16 @@ export function HoursListActionEdit({
   setOpenForm,
   setIsOpen,
   setIsNew,
+  list,
 }: HoursListActionEditProps) {
   function handleEdit() {
     setCurrent(hour);
     setIsNew(false);
     setOpenForm(true);
     setIsOpen(false);
+    setTimeout(() => {
+      list.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   return (

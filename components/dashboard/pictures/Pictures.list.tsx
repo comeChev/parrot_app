@@ -29,7 +29,7 @@ const tableHeaders: TableHeaderProps[] = [
   },
   {
     text: "Titre",
-    className: "",
+    className: "hidden lg:table-cell",
   },
   {
     text: "Description",
@@ -37,7 +37,7 @@ const tableHeaders: TableHeaderProps[] = [
   },
   {
     text: "Date de publication",
-    className: "hidden lg:table-cell",
+    className: "hidden lg:table-cell lg:w-[200px]",
   },
   {
     text: "État",
@@ -61,7 +61,7 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [picturesToShow, setPicturesToShow] = useState<Picture[]>(picturesDB);
-
+  const list = useRef<HTMLDivElement>(null);
   const listPictures = useRef<HTMLDivElement>(null);
 
   let bodyItems: BodyItems[] = [];
@@ -87,7 +87,7 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
           className: "w-[150px] md:w-[250px]",
         },
         // name
-        { value: p.picture_name, className: "truncate" },
+        { value: p.picture_name, className: "hidden lg:table-cell truncate" },
         // description
         {
           value: p.picture_description,
@@ -114,6 +114,7 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
               setCurrent={setCurrentPicture}
               setIsOpenForm={setIsOpenForm}
               setIsNew={setIsNew}
+              list={list}
             />
           ),
           className: "text-center",
@@ -142,7 +143,7 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
           itemsPerPage={itemsPerPage}
         />
       </div>
-      <div className="mb-20">
+      <div className="mb-20" ref={list}>
         <PicturesAddOrCreate
           setIsNew={setIsNew}
           isNew={isNew}

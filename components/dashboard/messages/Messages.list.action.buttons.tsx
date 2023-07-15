@@ -11,6 +11,7 @@ type MessagesListActionEditProps = {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 type MessagesListActionInfoProps = {
   message: Message;
@@ -26,12 +27,16 @@ export function MessagesListActionEdit({
   setOpenForm,
   setIsOpen,
   setIsNew,
+  list,
 }: MessagesListActionEditProps) {
   function handleEdit() {
     setCurrent(message);
     setIsNew(false);
     setOpenForm(true);
     setIsOpen(false);
+    setTimeout(() => {
+      list.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   return (

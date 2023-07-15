@@ -10,6 +10,8 @@ type FormFooterProps = {
   handleSubmit: () => void;
   disabled?: boolean;
   disabledText?: string;
+  onLoadText?: string;
+  validText?: string;
 };
 
 export default function FormFooter({
@@ -20,14 +22,17 @@ export default function FormFooter({
   handleSubmit,
   disabled = false,
   disabledText = "Enregistrement en cours",
+  onLoadText = "Enregistrement en cours",
+  validText = "Enregistrer",
 }: FormFooterProps) {
   return (
-    <div className="sticky bottom-0 mt-16 py-4 right-0  w-full z-50">
-      <div className="h-full w-full bg-slate-300 border border-neutral-600 bg-opacity-90 rounded-md flex items-center justify-between py-4 px-8">
+    <div className="lg:sticky lg:bottom-0 mt-16 py-4 right-0  w-full z-50">
+      <div className="h-full w-full bg-slate-300 border border-neutral-600 bg-opacity-90 rounded-md flex items-center justify-between py-4 lg:px-8">
+        {/* name & type action */}
         <div className="flex-col hidden lg:flex">
           <p>{`${!isNew ? "Modification" : "Création"} en cours`}</p>
         </div>
-        <div className="justify-end flex">
+        <div className="justify-between flex w-full lg:w-auto px-4">
           {/* back button */}
           {hrefBack && hrefBackText && !loading && (
             <Link
@@ -44,11 +49,7 @@ export default function FormFooter({
             disabled={disabled}
             onClick={handleSubmit}
           >
-            {disabled
-              ? `${disabledText}`
-              : loading
-              ? "Enregistrement en cours"
-              : "Enregistrer"}
+            {disabled ? `${disabledText}` : loading ? onLoadText : validText}
           </button>
         </div>
       </div>

@@ -19,6 +19,7 @@ type PicturesListActionEditProps = {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export function PicturesListActionEdit({
@@ -27,12 +28,16 @@ export function PicturesListActionEdit({
   setOpenForm,
   setIsOpen,
   setIsNew,
+  list,
 }: PicturesListActionEditProps) {
   function handleEdit() {
     setCurrent(picture);
     setIsNew(false);
     setOpenForm(true);
     setIsOpen(false);
+    setTimeout(() => {
+      list.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   return (

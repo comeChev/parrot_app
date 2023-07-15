@@ -14,6 +14,7 @@ type CategoriesListActionProps = {
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: Dispatch<SetStateAction<Category>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function CategoriesListAction({
@@ -22,6 +23,7 @@ export default function CategoriesListAction({
   setIsOpenForm,
   setCurrent,
   setIsNew,
+  list,
 }: CategoriesListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -36,6 +38,7 @@ export default function CategoriesListAction({
         category={category}
         setOpenForm={setIsOpenForm}
         setIsNew={setIsNew}
+        list={list}
       />
 
       <CategoriesListActionDelete

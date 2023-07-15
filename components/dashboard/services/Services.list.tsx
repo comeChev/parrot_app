@@ -26,7 +26,7 @@ const tableHeaders: TableHeaderProps[] = [
   },
   {
     text: "Titre",
-    className: "w-[170px] md:w-[270px]",
+    className: "w-[100px] md:w-[270px] truncate",
   },
   {
     text: "Contenu",
@@ -69,7 +69,7 @@ export default function ServicesList({
     useState<ServiceWithPicturesAndCategory>(defaultService);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
+  const list = useRef<HTMLDivElement>(null);
   const listServices = useRef<HTMLDivElement>(null);
 
   let bodyItems: BodyItems[] = [];
@@ -113,6 +113,7 @@ export default function ServicesList({
               setCurrent={setCurrentService}
               setIsOpenForm={setIsOpenForm}
               setIsNew={setIsNew}
+              list={list}
             />
           ),
           className: "text-center",
@@ -141,7 +142,7 @@ export default function ServicesList({
           itemsPerPage={itemsPerPage}
         />
       </div>
-      <div className="mb-20">
+      <div className="mb-20" ref={list}>
         <ServicesAddOrCreate
           setIsNew={setIsNew}
           isNew={isNew}

@@ -10,7 +10,7 @@ export interface ServiceWithPicturesAndCategory extends ServiceWithPictures {
 }
 
 export async function getServicesWithPictures(): Promise<
-  ServiceWithPictures[]
+  ServiceWithPicturesAndCategory[]
 > {
   const services = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/services`,
@@ -31,7 +31,7 @@ export async function getServicesWithPictures(): Promise<
 
 export async function getServiceWithPictures(id: number) {
   const service = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services.id=${id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/services?id=${id}`,
     {
       method: "GET",
       headers: {

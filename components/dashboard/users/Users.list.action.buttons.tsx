@@ -7,6 +7,7 @@ type UserListActionEditProps = {
   setCurrent: React.Dispatch<React.SetStateAction<User>>;
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export function UserListActionEdit({
@@ -14,11 +15,15 @@ export function UserListActionEdit({
   setCurrent,
   setOpenForm,
   setIsOpen,
+  list,
 }: UserListActionEditProps) {
   function handleEdit() {
     setCurrent(user);
     setOpenForm(true);
     setIsOpen(false);
+    setTimeout(() => {
+      list.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   return (

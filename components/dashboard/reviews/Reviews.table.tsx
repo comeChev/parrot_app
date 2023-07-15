@@ -25,22 +25,22 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
   const [isNew, setIsNew] = useState<boolean>(true);
   const [currentReview, setCurrentReview] = useState(defaultReview);
   const [isOpenForm, setIsOpenForm] = useState(false);
-
+  const list = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const headersList: TableHeaderProps[] = [
     {
       text: "ID",
-      className: "hidden w-12 text-center",
+      className: "hidden lg:table-cell w-12 text-center",
     },
     {
       text: "Utilisateur",
-      className: "w-24 sm:w-auto ",
+      className: "w-24 sm:w-auto truncate ",
     },
     {
       text: "Contenu",
-      className: "",
+      className: "hidden md:table-cell md:w-[250px] truncate",
     },
     {
       text: "Note",
@@ -52,25 +52,25 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
     },
     {
       text: "Status",
-      className: "w-16 text-center",
+      className: "w-12 text-center truncate",
     },
     {
       text: "",
-      className: "w-12 ",
+      className: "w-6 ",
     },
   ];
 
   const bodyItems: BodyItems[] = reviewsToShow.map((m) => {
     const bodyItem: BodyItemProps[] = [
       // id
-      { value: m.review_id, className: "hidden text-center" },
+      { value: m.review_id, className: "hidden lg:table-cell text-center" },
       // user
       {
         value: getFullName(m.review_user_first_name, m.review_user_last_name),
-        className: "",
+        className: "truncate",
       },
       // content
-      { value: m.review_comment, className: "truncate" },
+      { value: m.review_comment, className: "hidden md:table-cell truncate" },
       // note
       {
         value: <ReviewsNote note={m.review_note} />,
@@ -79,7 +79,7 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
       // published at
       {
         value: getFullStringDate(m.review_published_date),
-        className: "hidden lg:table-cell lg:max-32",
+        className: "hidden lg:table-cell ",
       },
       // status
       //message_status: "PENDING" | "ONLINE" | "OFFLINE";
@@ -100,6 +100,7 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
             setIsOpenForm={setIsOpenForm}
             setIsNew={setIsNew}
             setCurrent={setCurrentReview}
+            list={list}
           />
         ),
       },
@@ -141,7 +142,7 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
         />
       </div>
 
-      <div className="mb-16">
+      <div className="mb-16" ref={list}>
         <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
           {isOpenForm ? (
             <UiButtonAction

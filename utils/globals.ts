@@ -1,3 +1,5 @@
+import { Hour } from "@prisma/client";
+
 export function getPrice(price: number) {
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
@@ -60,4 +62,42 @@ export function getOpeningHoursString(
 
 export function getFullName(firstName: string, lastName: string) {
   return `${getUpperCaseFirstLetter(firstName)} ${lastName.toUpperCase()}`;
+}
+
+export function filterArrayWeedDays(array: Hour[]) {
+  interface HourWithDayId extends Hour {
+    day_id: number;
+  }
+
+  const arrayDays: HourWithDayId[] = array.map((day) => {
+    switch (day.hour_day) {
+      case "Lundi":
+        return { ...day, day_id: 1 };
+      case "Mardi":
+        return { day_id: 2, ...day };
+      case "Mercredi":
+        return { day_id: 3, ...day };
+      case "Jeudi":
+        return { day_id: 4, ...day };
+      case "Vendredi":
+        return { day_id: 5, ...day };
+      case "Samedi":
+        return { day_id: 6, ...day };
+      case "Dimanche":
+        return { day_id: 7, ...day };
+      default:
+        return { day_id: 0, ...day };
+    }
+  });
+
+  const arrayDaysSorted: HourWithDayId[] = arrayDays.sort(
+    (a, b) => a.day_id - b.day_id
+  );
+
+  const arrayDaysSortedWithoutId: Hour[] = arrayDaysSorted.map((day) => {
+    const { day_id, ...rest } = day;
+    return rest;
+  });
+
+  return arrayDaysSortedWithoutId;
 }

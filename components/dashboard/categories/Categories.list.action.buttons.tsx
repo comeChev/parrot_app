@@ -16,6 +16,7 @@ type CategoriesListActionEditProps = {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export function CategoriesListActionEdit({
@@ -24,12 +25,16 @@ export function CategoriesListActionEdit({
   setOpenForm,
   setIsOpen,
   setIsNew,
+  list,
 }: CategoriesListActionEditProps) {
   function handleEdit() {
     setCurrent(category);
     setIsNew(false);
     setOpenForm(true);
     setIsOpen(false);
+    setTimeout(() => {
+      list.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   return (

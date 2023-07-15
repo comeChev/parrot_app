@@ -13,6 +13,7 @@ type UsersListActionProps = {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: React.Dispatch<React.SetStateAction<User>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function UsersListAction({
@@ -20,6 +21,7 @@ export default function UsersListAction({
   setUsers,
   setIsOpenForm,
   setCurrent,
+  list,
 }: UsersListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -33,6 +35,7 @@ export default function UsersListAction({
         setIsOpen={setIsOpenMenuAction}
         user={user}
         setOpenForm={setIsOpenForm}
+        list={list}
       />
       <UserListActionStatus
         user={user}

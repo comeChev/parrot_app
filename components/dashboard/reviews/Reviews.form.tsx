@@ -9,9 +9,17 @@ import carCreation from "@/assets/dashboard/carCreation.jpg";
 import { Review } from "@prisma/client";
 import FormTextarea from "@/components/ui/form/Form.textarea";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import { NewReview, createReview, updateReview } from "@/lib/reviews";
+import {
+  NewReview,
+  createReview,
+  deleteReview,
+  updateReview,
+} from "@/lib/reviews";
 import FormInput from "@/components/ui/form/Form.input";
 import FormError from "@/components/ui/form/Form.error";
+import UiButtonAction from "@/components/ui/Ui.button.action";
+import { useSession } from "next-auth/react";
+import UiConfirmDeleteButton from "@/components/ui/Ui.confirm.delete.button";
 
 export const defaultReview: Review = {
   review_id: 0,
@@ -49,6 +57,8 @@ export default function ReviewsForm({
   currentReview,
   setIsOpenForm,
 }: ReviewsFormProps) {
+  const { data: session } = useSession();
+  const isAdmin = session?.user.role === "ADMIN";
   const oldReview = currentReview;
   const [review, setReview] = useState(currentReview);
   const [validation, setValidation] = useState({ success: false, message: "" });
@@ -160,6 +170,7 @@ export default function ReviewsForm({
         setLoading(false);
         return;
       }, 2000);
+      return;
     }
 
     //create review in db
@@ -175,7 +186,16 @@ export default function ReviewsForm({
       return;
     }
     setTimeout(() => {
-      setReviews((prev) => [...prev, response]);
+      setReviews((prev) => [
+        ...prev,
+        {
+          ...response,
+          review_user_email: decodeURI(response.review_user_email),
+          review_user_first_name: decodeURI(response.review_user_first_name),
+          review_user_last_name: decodeURI(response.review_user_last_name),
+          review_comment: decodeURI(response.review_comment),
+        },
+      ]);
       setReview(defaultReview);
       setValidation({
         success: true,
@@ -198,6 +218,37 @@ export default function ReviewsForm({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     setErrors({ ...errors, [e.currentTarget.name]: "" });
+  }
+
+  function handleStatus() {
+    if (review.review_status === "ONLINE") {
+      setReview({ ...review, review_status: "OFFLINE" });
+    } else {
+      setReview({ ...review, review_status: "ONLINE" });
+    }
+  }
+
+  async function handleDelete() {
+    setLoading(true);
+    //optimistic update
+    setReviews((prev) => prev.filter((m) => m.review_id !== review.review_id));
+    // delete message in db
+    const response = await deleteReview(review.review_id);
+    if (!response) {
+      setReviews((prev) => [...prev, review]);
+      setLoading(false);
+      setValidation({
+        success: false,
+        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
+      });
+      return;
+    }
+    setIsOpenForm(false);
+    setLoading(false);
+    setValidation({
+      success: true,
+      message: `Le commentaire a bien été supprimé`,
+    });
   }
 
   return (
@@ -306,7 +357,25 @@ export default function ReviewsForm({
             }
             handleFocus={() => setErrors({ ...errors, comment: "" })}
           />
-
+          <UiButtonAction
+            text={
+              review.review_status === "ONLINE"
+                ? "Masquer ce commentaire"
+                : "Mettre en ligne ce commentaire"
+            }
+            type="button"
+            onClick={handleStatus}
+            href=""
+          />
+          {isAdmin && !isNew && (
+            <UiConfirmDeleteButton
+              cssDiv="mt-5"
+              textConfirm="Confirmer la suppression"
+              textClick="Supprimer ce commentaire"
+              handleDelete={handleDelete}
+              cssConfirmButton="border-red-800 border"
+            />
+          )}
           <FormFooter
             handleSubmit={handleSubmit}
             isNew={isNew}

@@ -15,6 +15,7 @@ type PicturesListActionProps = {
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrent: Dispatch<SetStateAction<Picture>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 
 export default function PicturesListAction({
@@ -23,6 +24,7 @@ export default function PicturesListAction({
   setIsOpenForm,
   setCurrent,
   setIsNew,
+  list,
 }: PicturesListActionProps) {
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
@@ -37,6 +39,7 @@ export default function PicturesListAction({
         picture={picture}
         setOpenForm={setIsOpenForm}
         setIsNew={setIsNew}
+        list={list}
       />
       <PicturesListActionStatus
         picture={picture}

@@ -45,7 +45,7 @@ export default function ServicesAddOrCreate({
         <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
           {isOpenForm ? (
             <UiButtonAction
-              text="Fermer le formulaire"
+              text={isNew ? "Annuler" : "Abandonner les modifications"}
               onClick={handleCloseForm}
               type="button"
               href=""

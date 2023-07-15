@@ -14,6 +14,7 @@ type ReviewsListActionEditProps = {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
+  list: React.RefObject<HTMLDivElement>;
 };
 type ReviewsListActionToggleStatusProps = {
   review: Review;
@@ -29,12 +30,16 @@ export function ReviewsListActionEdit({
   setOpenForm,
   setIsOpen,
   setIsNew,
+  list,
 }: ReviewsListActionEditProps) {
   function handleEdit() {
     setCurrent(review);
     setIsNew(false);
     setOpenForm(true);
     setIsOpen(false);
+    setTimeout(() => {
+      list.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   return (

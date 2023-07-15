@@ -66,7 +66,7 @@ export default async function ServicesPage(params: {
               <div className="flex flex-col md:flex-row md:space-x-5">
                 {servicesItems.map((s) => (
                   <HomeServicesItem
-                    url={s.url}
+                    url={`/services?name=${s.url}`}
                     imageSrc={s.imageSrc}
                     text={s.text}
                     title={s.title}
@@ -80,9 +80,12 @@ export default async function ServicesPage(params: {
 
       {services.length > 0 && (
         <div className="container mx-auto px-4 mb-[100px]">
-          <h2 className="text-center text-4xl font-bold px-4">
-            {services[0].category.category_description}
+          <h2 className="text-center text-4xl font-bold px-4 mb-10">
+            {services[0].category.category_name}
           </h2>
+          <h3 className="text-3xl font-bold mb-10">
+            {services[0].category.category_description}
+          </h3>
           <div>
             {services.map((service, index) => (
               <ServicesListItem key={index} service={service} />

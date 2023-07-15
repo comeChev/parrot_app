@@ -21,11 +21,8 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
   const [isNew, setIsNew] = useState<boolean>(true);
   const [currentHour, setCurrentHour] = useState<Hour>(defaultHour);
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const list = useRef(null);
   const headersList: TableHeaderProps[] = [
-    {
-      text: "ID",
-      className: "hidden w-12 text-center",
-    },
     {
       text: "Jour",
       className: "w-24 sm:w-auto md:text-lg",
@@ -36,30 +33,35 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
     },
     {
       text: "Après-midi",
-      className: "md:text-lg",
+      className: "md:text-lg truncate",
     },
     {
       text: "",
-      className: "w-12 md:text-lg",
+      className: "w-6 md:text-lg",
     },
   ];
 
   const bodyItems: BodyItems[] = hours.map((h) => {
     const bodyItem: BodyItemProps[] = [
-      // id
-      { value: h.hour_id, className: "hidden text-center" },
       // day
       { value: h.hour_day, className: "" },
       // morning
       {
         value: (
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             <HoursActionButton setHours={setHours} isMorning={true} hour={h} />
-            <p className="ml-2">
-              {!h.hour_morning_status
-                ? `Fermé`
-                : `de ${h.hour_morning_opening} à ${h.hour_morning_closing}`}
-            </p>
+            <div className="mt-2 md:ml-2 md:mt-0">
+              {!h.hour_morning_status ? (
+                <span>{"Fermé"}</span>
+              ) : (
+                <div className="flex flex-col md:flex-row">
+                  <span className="hidden md:flex">{"de"}</span>
+                  <span className="px-1">{h.hour_morning_opening}</span>
+                  <span className="hidden md:flex">{"à"}</span>
+                  <span className="px-1">{h.hour_morning_closing}</span>
+                </div>
+              )}
+            </div>
           </div>
         ),
         className: "text-sm md:text-md lg:text-lg",
@@ -67,16 +69,23 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
       // afternoon
       {
         value: (
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             <HoursActionButton setHours={setHours} isMorning={false} hour={h} />
-            <p className="ml-2">
-              {!h.hour_afternoon_status
-                ? `Fermé`
-                : `de ${h.hour_afternoon_opening} à ${h.hour_afternoon_closing}`}
-            </p>
+            <div className="mt-2 md:ml-2 md:mt-0">
+              {!h.hour_morning_status ? (
+                <span>{"Fermé"}</span>
+              ) : (
+                <div className="flex flex-col md:flex-row">
+                  <span className="hidden md:flex">{"de"}</span>
+                  <span className="px-1">{h.hour_afternoon_opening}</span>
+                  <span className="hidden md:flex">{"à"}</span>
+                  <span className="px-1">{h.hour_afternoon_closing}</span>
+                </div>
+              )}
+            </div>
           </div>
         ),
-        className: "text-sm md:text-md md:text-lg",
+        className: "text-sm md:text-md lg:text-lg",
       },
       {
         value: (
@@ -86,6 +95,7 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
             setIsOpenForm={setIsOpenForm}
             setIsNew={setIsNew}
             setCurrent={setCurrentHour}
+            list={list}
           />
         ),
       },
@@ -115,7 +125,7 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
         </Table>
       </div>
 
-      <div className="mb-16">
+      <div className="mb-16" ref={list}>
         <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
           {isOpenForm ? (
             <UiButtonAction

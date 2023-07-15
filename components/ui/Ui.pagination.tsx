@@ -70,7 +70,7 @@ export default function UiPagination({
   return (
     <div className="flex px-4 justify-between items-center my-10 select-none">
       {/* first & previous button */}
-      <div className="flex flex-col sm:flex-row">
+      <div className="flex flex-row">
         <UiPaginationButton
           Icon={MdFirstPage}
           disabled={page === 1}
@@ -84,7 +84,7 @@ export default function UiPagination({
       </div>
 
       {/* text */}
-      <div className="flex flex-col items-center text-xs sm:text-base">
+      <div className="hidden md:flex flex-col items-center text-xs sm:text-base">
         <p>{`Résultats de ${firstItem} à ${lastItem}`}</p>
         <p className="italic font-light text-neutral-500">{`pour un total de ${txtLength}`}</p>
         <p>
@@ -93,7 +93,7 @@ export default function UiPagination({
       </div>
 
       {/* next & last button */}
-      <div className="flex flex-col sm:flex-row">
+      <div className="flex-row">
         <UiPaginationButton
           Icon={MdChevronRight}
           disabled={page === numberPage}

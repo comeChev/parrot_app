@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
     //get all services
     const services = await prisma.service.findMany({
-      include: { service_images: true },
+      include: { service_images: true, category: true },
     });
     if (!services || services.length === 0) {
       throw new Error("Aucun service à afficher");

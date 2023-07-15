@@ -28,7 +28,7 @@ const tableHeaders: TableHeaderProps[] = [
   },
   {
     text: "Description",
-    className: "",
+    className: "truncate",
   },
   {
     text: "Image",
@@ -36,7 +36,7 @@ const tableHeaders: TableHeaderProps[] = [
   },
   {
     text: "",
-    className: "w-12",
+    className: "w-6",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function CategoriesList({ categoriesDB }: CategoriesListProps) {
     useState<Category>(defaultCategory);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
+  const list = useRef<HTMLDivElement>(null);
   const listCategories = useRef<HTMLDivElement>(null);
 
   let bodyItems: BodyItems[] = [];
@@ -94,6 +94,7 @@ export default function CategoriesList({ categoriesDB }: CategoriesListProps) {
               setCurrent={setCurrentCategory}
               setIsOpenForm={setIsOpenForm}
               setIsNew={setIsNew}
+              list={list}
             />
           ),
           className: "text-center",
@@ -122,7 +123,7 @@ export default function CategoriesList({ categoriesDB }: CategoriesListProps) {
           itemsPerPage={itemsPerPage}
         />
       </div>
-      <div className="mb-20">
+      <div className="mb-20" ref={list}>
         <CategoriesAddOrCreate
           setIsNew={setIsNew}
           isNew={isNew}

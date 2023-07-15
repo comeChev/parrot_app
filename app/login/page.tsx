@@ -13,6 +13,7 @@ export default async function LoginPage() {
   return (
     <div className="container mx-auto my-auto text-center flex flex-col h-screen justify-between py-10">
       <Image
+        priority
         src={logo}
         alt="logo garage V. Parrot"
         className="w-3/4 max-w-[700px] mx-auto mb-10 mt-6 select-none"

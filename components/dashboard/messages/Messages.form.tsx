@@ -227,8 +227,8 @@ export default function MessagesForm({
             value={message.message_content}
             disabled={true}
           />
-          <div className="flex items-center mx-3 justify-between">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-col mb-3 lg:flex-row lg:items-center lg:space-x-2">
               <UiButtonAction
                 Icon={BsMailbox2}
                 href=""

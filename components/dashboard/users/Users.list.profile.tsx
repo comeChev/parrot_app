@@ -24,17 +24,17 @@ export default function UsersListProfile({ user }: { user: User }) {
           width={30}
           src={user.user_image}
           alt={getFullName(user)}
-          className="rounded-full mr-2 h-[30px] w-[30px]"
+          className="rounded-full mr-2 h-[30px] w-[30px] hidden lg:block"
         />
       ) : (
         <div
           aria-label={getFullName(user)}
-          className="w-[30px] h-[30px] rounded-full text-sm flex items-center justify-center mr-2 text-neutral-100 bg-violet-700"
+          className="w-[30px] h-[30px] rounded-full text-sm items-center justify-center mr-2 text-neutral-100 bg-violet-700 hidden lg:flex"
         >
           {getInitials(user)}
         </div>
       )}
-      <p>{getFullName(user)}</p>
+      <p className="truncate">{getFullName(user)}</p>
     </div>
   );
 }

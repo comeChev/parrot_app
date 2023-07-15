@@ -2,6 +2,7 @@
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import { User } from "@prisma/client";
 import UserForm, { defaultUser } from "./User.form";
+import { useRef } from "react";
 
 type UserAddOrCreateProps = {
   usersDB: User[];
@@ -34,9 +35,10 @@ export default function UserAddOrCreate({
     setIsNew(false);
   }
 
+  const list = useRef(null);
   return (
     <div>
-      <div className="mb-16">
+      <div className="mb-16" ref={list}>
         {isOpenForm ? (
           <UiButtonAction
             text="Fermer le formulaire"

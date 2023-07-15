@@ -45,7 +45,7 @@ export default function StrengthsAddOrCreate({
             />
           ) : (
             <UiButtonAction
-              text="Ajouter un service"
+              text="Ajouter un point fort"
               onClick={handleOpenForm}
               type="button"
               href=""

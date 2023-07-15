@@ -3,13 +3,7 @@ import { prisma } from "@/utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const hasSession = await verifySession();
   try {
-    if (!hasSession)
-      return new NextResponse(JSON.stringify({ error: "Accès non autorisé" }), {
-        status: 401,
-      });
-
     //get category by id
     if (request.nextUrl.searchParams.get("id")) {
       const id = Number(request.nextUrl.searchParams.get("id"));

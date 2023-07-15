@@ -205,7 +205,7 @@ export default function PicturesForm({
           imgSrc={pictureCreate}
         >
           {/* name & status */}
-          <div className="flex items-center">
+          <div className="flex flex-col md:flex-row md:items-center">
             {/* name */}
             <FormInput
               label="Nom de l'image"

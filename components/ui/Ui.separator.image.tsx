@@ -9,6 +9,7 @@ export default function SeparatorImage({ image }: SeparatorImageProps) {
     <div className="w-full h-[400px] mb-10 md:mb-[70px]">
       <Image
         src={image}
+        placeholder="blur"
         alt="image de présentation garage V. Parrot"
         className="w-full h-full object-cover"
       />
