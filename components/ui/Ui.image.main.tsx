@@ -18,7 +18,7 @@ export default function UiImageMain({ image }: UiImageMainProps) {
         <h1 className="bottom-4 text-white text-4xl font-extrabold">
           GARAGE V. PARROT
         </h1>
-        <h2 className="text-xl text-neutral-400">
+        <h2 className="text-xl text-neutral-600">
           Toulouse, Zone artisanale du moulin
         </h2>
       </div>

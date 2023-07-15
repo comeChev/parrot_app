@@ -125,7 +125,7 @@ export default async function Home() {
       <UiTextMain text="Plus de 15 d'expérience à votre service" />
 
       {/* section 1 - assets */}
-      <section className="container mx-auto hidden md:flex mb-[100px]">
+      <div className="container mx-auto hidden md:flex mb-[100px]">
         {/* assets */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-10 my-10 gap-5">
           {assetsItems.map((item, index) => (
@@ -137,10 +137,10 @@ export default async function Home() {
             />
           ))}
         </div>
-      </section>
+      </div>
 
       {/* section 2 - presentation */}
-      <section className="container mx-auto h-[500px] mb-[100px]">
+      <div className="container mx-auto h-[500px] mb-[100px]">
         <div className="flex items-center h-full">
           <Image
             priority
@@ -192,10 +192,10 @@ export default async function Home() {
             className="hidden md:flex h-full object-cover w-[150px] lg:w-[300px]"
           />
         </div>
-      </section>
+      </div>
 
       {/* section 3 - services */}
-      <section className="container mx-auto px-4 mb-[100px]" id="services">
+      <div className="container mx-auto px-4 mb-[100px]" id="services">
         <h3 className="text-3xl font-bold mb-10">
           Les services que nous vous proposons
         </h3>
@@ -215,7 +215,7 @@ export default async function Home() {
             title={carItem.title}
           />
         </div>
-      </section>
+      </div>
 
       {/* Reasons to choose garage */}
       <UiReasons />
@@ -224,7 +224,7 @@ export default async function Home() {
       <SeparatorImage image={electric} />
 
       {/* section 3 - reviews */}
-      <section className="container mx-auto px-4 mb-[100px] text-center select-none">
+      <div className="container mx-auto px-4 mb-[100px] text-center select-none">
         <h3 className="text-3xl font-bold mb-24">
           Ils nous ont fait confiance
         </h3>
@@ -239,7 +239,7 @@ export default async function Home() {
         >
           Consulter notre livre d'Or
         </Link>
-      </section>
+      </div>
     </div>
   );
 }

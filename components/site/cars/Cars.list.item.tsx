@@ -43,9 +43,9 @@ export default function CarsListItem({ car }: CarsListItemProps) {
           </span>
         </div>
         <div className="p-4">
-          <h4 className="text-xl font-extrabold h-[50px] lg:h-[100px]">
+          <h3 className="text-xl font-extrabold h-[50px] lg:h-[100px]">
             {car.car_name.toUpperCase()}
-          </h4>
+          </h3>
           <div className="mt-3 pl-3 flex flex-col space-y-2 pb-4 border-b-2 border-neutral-300">
             <CarsListItemAsset
               Icon={FaCalendarDay}
@@ -73,7 +73,6 @@ export default function CarsListItem({ car }: CarsListItemProps) {
           </div>
           <Link
             href={`/car?id=${car.car_id}`}
-            type="button"
             className="inline-block mt-5 mb-2 py-2 px-4 bg-red-800 text-neutral-100 font-semibold shadow-sm shadow-neutral-700 rounded-lg hover:bg-red-900 transition-all duration-300 ease-in-out"
           >
             En savoir plus

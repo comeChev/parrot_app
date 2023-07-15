@@ -61,7 +61,7 @@ export default function FormInput({
   return (
     <div className="mb-3 flex-col flex-1">
       <p className="mb-3 px-4 font-semibold">
-        {label} {required && <span className="text-red-500">*</span>}
+        {label} {required && <span className="text-red-800">*</span>}
       </p>
       <input
         disabled={disabled}

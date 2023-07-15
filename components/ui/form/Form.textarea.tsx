@@ -40,7 +40,7 @@ export default function FormTextarea({
       </p>
       <div
         className={`flex-1 flex flex-col bg-slate-200 py-2 px-4 rounded-md border-2 border-slate-300 mb-1 ${
-          error && error.length > 0 && "border-red-500"
+          error && error.length > 0 && "border-red-800"
         }`}
       >
         <textarea

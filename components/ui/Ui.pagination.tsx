@@ -11,15 +11,18 @@ type UiPaginationButtonProps = {
   Icon: IconType;
   disabled?: boolean;
   handleClick: () => void;
+  label: string;
 };
 
 const UiPaginationButton = ({
   Icon,
   disabled = false,
   handleClick,
+  label,
 }: UiPaginationButtonProps) => {
   return (
     <button
+      aria-label={label}
       onClick={handleClick}
       disabled={disabled}
       className="px-2 py-1 m-1 border-[1px] bg-red-800 text-neutral-100 border-red-900 rounded-md hover:bg-red-900 disabled:bg-neutral-400 disabled:border-neutral-400 disabled:opacity-50"
@@ -75,11 +78,13 @@ export default function UiPagination({
           Icon={MdFirstPage}
           disabled={page === 1}
           handleClick={handleFirstPage}
+          label="Aller à la première page"
         />
         <UiPaginationButton
           Icon={MdChevronLeft}
           disabled={page === 1}
           handleClick={handlePreviousPage}
+          label="Aller à la page précédente"
         />
       </div>
 
@@ -98,11 +103,13 @@ export default function UiPagination({
           Icon={MdChevronRight}
           disabled={page === numberPage}
           handleClick={handleNextPage}
+          label="Aller à la page suivante"
         />
         <UiPaginationButton
           Icon={MdLastPage}
           disabled={page === numberPage}
           handleClick={handleLastPage}
+          label="Aller à la dernière page"
         />
       </div>
     </div>

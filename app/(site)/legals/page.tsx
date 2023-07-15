@@ -193,9 +193,9 @@ export default function LegalsPage() {
         <div className="container mx-auto mb-[100px]">
           {textItems.map((item, index) => (
             <div key={index} className="mb-[50px] lg:px-[200px]">
-              <h4 className="text-lg font-semibold mb-3">
+              <h3 className="text-lg font-semibold mb-3">
                 Article {index + 1} - {item.title}
-              </h4>
+              </h3>
               <div className="pl-2">
                 {item.text.map((text, index) => (
                   <p key={index} className="mb-2">

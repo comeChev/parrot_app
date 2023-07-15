@@ -24,7 +24,7 @@ export default function FormPhone({
   return (
     <div className="mb-[50px] flex-col flex-1">
       <p className="mb-3 px-4 font-semibold">
-        {label} {required && <span className="text-red-500">*</span>}
+        {label} {required && <span className="text-red-800">*</span>}
       </p>
       <input
         aria-label={label}
