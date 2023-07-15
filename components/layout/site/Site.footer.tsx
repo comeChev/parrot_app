@@ -156,7 +156,7 @@ export default function SiteFooter({
           </div>
 
           {/* admin link */}
-          <div className="mx-10 mt-10 flex flex-col text-neutral-400">
+          <div className="mx-10 mt-10 flex flex-col text-neutral-200">
             {session ? (
               <Link href="/dashboard">Dashboard</Link>
             ) : (
