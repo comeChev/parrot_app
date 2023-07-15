@@ -74,7 +74,6 @@ export function CategoriesListActionDelete({
       if (!success) {
         setCategories((prev) => [...prev, category]);
         setIsOpen(false);
-        console.log("error deleting file");
         return;
       }
     }

@@ -33,7 +33,7 @@ export default function SiteNavContent({
 }: SiteNavContentProps) {
   return (
     <div className="flex flex-col w-full justify-between select-none">
-      <div className="flex flex-col items-stretch min-h-[90vh]">
+      <div className="flex flex-col items-stretch min-h-[90vh] pb-24">
         <div className="flex-1 flex flex-col">
           {/* session name & link to profile page */}
           {session && (
@@ -87,7 +87,10 @@ export default function SiteNavContent({
         {session ? (
           <SiteNavLogoutButton />
         ) : (
-          <Link href="/login" className="px-4 font-light text-red-300 flex">
+          <Link
+            href="/login"
+            className="px-4 font-light text-red-200 flex hover:underline underline-offset-2"
+          >
             <BsGearFill className="text-2xl mr-2" />
             <span>Espace administrateur</span>
           </Link>

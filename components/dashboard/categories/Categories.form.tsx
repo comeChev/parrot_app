@@ -128,7 +128,6 @@ export default function CategoryForm({
 
       // update picture in db
       const categoryToUpdate = { ...category };
-      console.log(categoryToUpdate);
       const response = await updateCategory(categoryToUpdate);
       // if error, rollback
       if (!response) {

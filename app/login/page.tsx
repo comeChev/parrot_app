@@ -11,7 +11,7 @@ export default async function LoginPage() {
   hasSession && redirect("/dashboard");
 
   return (
-    <div className="container mx-auto my-auto text-center flex flex-col h-screen justify-between py-10">
+    <div className="container mx-auto my-auto text-center flex flex-col min-h-screen justify-between py-10 mb-24">
       <Image
         priority
         src={logo}
@@ -26,7 +26,6 @@ export default async function LoginPage() {
       <LoginForm />
 
       <Link
-        type="button"
         href="/"
         className="text-neutral-400 bg-white-700 text-2xl font-medium w-3/4 rounded-md py-4 mx-auto mt-10 border border-neutral-400 hover:border-gray-600"
       >

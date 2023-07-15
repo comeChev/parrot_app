@@ -102,7 +102,10 @@ export default async function Home() {
       <div className="relative w-full h-[500px] mb-10 md:mb-[150px]">
         <Image
           src={mainImage}
-          alt="image de présentation garage V. Parrot"
+          alt="image d'outils garage V. Parrot"
+          height={500}
+          width={1920}
+          style={{ height: "auto" }}
           className="w-full h-full object-cover brightness-75"
         />
         {/* Title with name of the enterprise */}
@@ -111,7 +114,7 @@ export default async function Home() {
             GARAGE V. PARROT
           </h1>
           <h2 className="text-xl text-neutral-400">
-            St Claude, Zone artisanale du moulin
+            Toulouse, Zone artisanale du moulin
           </h2>
         </div>
 
@@ -143,7 +146,7 @@ export default async function Home() {
             priority
             placeholder="blur"
             src={mechanic1}
-            alt="illustrationImage"
+            alt="image de mécanicien"
             className="hidden md:flex h-full object-cover  w-[150px] lg:w-[300px]"
           />
           <div className="flex flex-col px-4 md:flex-1 space-y-5 text-lg font-light">
@@ -154,8 +157,8 @@ export default async function Home() {
               proposons une gamme complète de services.
             </p>
             <p>
-              Établi à St Claude (Jura, France) depuis 2001, le garage V. Parrot
-              est spécialisé dans la{" "}
+              Établi à St Toulouse (Haute Garonne, France) depuis 2001, le
+              garage V. Parrot est spécialisé dans la{" "}
               <strong className="underline underline-offset-2 font-semibold">
                 mécanique générale
               </strong>{" "}
@@ -185,7 +188,7 @@ export default async function Home() {
           </div>
           <Image
             src={mechanic2}
-            alt="illustrationImage"
+            alt="image d'un autre mécanicien"
             className="hidden md:flex h-full object-cover w-[150px] lg:w-[300px]"
           />
         </div>

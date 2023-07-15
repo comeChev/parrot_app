@@ -10,7 +10,6 @@ import {
 export function TableActionsButtonsEdit({ href }: { href: string }) {
   return (
     <Link
-      type="button"
       href={href}
       className="text-md text-teal-500 hover:text-teal-700 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
     >

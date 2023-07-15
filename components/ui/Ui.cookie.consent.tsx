@@ -33,9 +33,9 @@ export default function UiCookieConsent() {
               height={50}
               className="mr-2"
             />
-            <p className="text-lg font-bold text-neutral-100">
+            <h3 className="text-lg font-bold text-neutral-100">
               Ce site utilise des cookies
-            </p>
+            </h3>
           </div>
           <p className="text-sm mb-1">
             Nous utilisons des cookies pour nous aider à personnaliser le

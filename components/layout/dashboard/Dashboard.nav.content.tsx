@@ -125,7 +125,7 @@ export default function DashboardNavContent({
                   </h2>
                 </div>
               </div>
-              <div className="pl-2 pr-3 mt-2 flex items-center justify-between w-full md:hidden">
+              <div className="pl-2 pr-3 mt-4 w-full md:hidden ">
                 <Link href={"/"} className="flex items-center">
                   <BsHouseExclamation className="text-xl mr-4" />
                   Retour au site
@@ -137,7 +137,7 @@ export default function DashboardNavContent({
         )}
 
         {/* nav links */}
-        <div className="mt-5 lg:mt-10 flex-1">
+        <div className="mt-5 lg:mt-10 flex-1 overflow-y-scroll">
           {navItems.map((item, index) =>
             item.access === "ALL" ? (
               <DashboardNavLink

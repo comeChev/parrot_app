@@ -19,7 +19,7 @@ const textItems: TextItem[] = [
     title: "Mentions légales",
     text: [
       "1.1 Site (ci-après « le site ») : GARAGE V.PARROT",
-      "1.2 Éditeur (ci-après « l'éditeur ») : GARAGE V.PARROT SARL au capital de 15 000€, dont le siège social est situé à Zone artisanale du Moulin, ST CLAUDE (39190) représenté par Vincent PARROT, en sa qualité de gérant, immatriculé au RCS de ST CLAUDE (39190), joignable au 0687654321 ou par mail à garage@garage_parrot.com",
+      "1.2 Éditeur (ci-après « l'éditeur ») : GARAGE V.PARROT SARL au capital de 15 000€, dont le siège social est situé à Zone artisanale du Moulin, TOULOUSE (31000) représenté par Vincent PARROT, en sa qualité de gérant, immatriculé au RCS de TOULOUSE (31000), joignable au 0687654321 ou par mail à garage@garage_parrot.com",
       "1.3 Hébergeur (ci-après « l'hébergeur ») : OVH, dont le siège social est situé à 2 rue Kellermann, 59100 Roubaix, joignable par téléphone au 1007.",
       "1.4 Directeur de publication : Vincent PARROT",
       "1.5 Responsable de la rédaction : Vincent PARROT",
@@ -76,7 +76,7 @@ const textItems: TextItem[] = [
       "le droit à la limitation du traitement : les utilisateurs peuvent de demander à la Plateforme de limiter le traitement des données personnelles conformément aux hypothèses prévues par le RGPD,",
       "le droit de s’opposer au traitement des données : les utilisateurs peuvent s’opposer à ce que ses données soient traitées conformément aux hypothèses prévues par le RGPD,",
       "le droit à la portabilité : ils peuvent réclamer que la Plateforme leur remette les données personnelles qui lui sont fournies pour les transmettre à une nouvelle Plateforme.",
-      "Vous pouvez exercer ce droit en nous contactant, à l’adresse suivante : garage@garage_parrot.com, ou par courrier postal à l’adresse suivante : GARAGE V.PARROT – Zone artisanale du Moulin, ST CLAUDE (39190).",
+      "Vous pouvez exercer ce droit en nous contactant, à l’adresse suivante : garage@garage_parrot.com, ou par courrier postal à l’adresse suivante : GARAGE V.PARROT – Zone artisanale du Moulin, TOULOUSE (31000).",
       "Vous pouvez aussi vous adresser à notre DPO par mail à l'adresse suivante : dpo@garage_parrot.com, qui est à votre disposition pour toute question relative à la protection de vos données personnelles.",
       "Toute demande doit être accompagnée de la photocopie d’un titre d’identité en cours de validité signé et faire mention de l’adresse à laquelle l'éditeur pourra contacter le demandeur. La réponse sera adressée dans le mois suivant la réception de la demande. Ce délai d'un mois peut être prolongé de deux mois si la complexité de la demande et/ou le nombre de demandes l'exigent.",
       "De plus, et depuis la loi n°2016-1321 du 7 octobre 2016, les personnes qui le souhaitent, ont la possibilité d’organiser le sort de leurs données après leur décès. Pour plus d’information sur le sujet, vous pouvez consulter le site Internet de la CNIL : https://www.cnil.fr/",

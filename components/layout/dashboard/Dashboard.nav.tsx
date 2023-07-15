@@ -15,7 +15,7 @@ export default function DashboardNav({ session }: DashboardNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="w-full sm:w-60 text-neutral-100 text-title select-none">
+    <nav className="w-full sm:w-60 text-neutral-100 text-title select-none min-h-screen">
       {/* mobile */}
       <div className="bg-red-800 w-full sm:hidden z-50 fixed">
         <div className="w-full flex justify-end py-4 px-3">

@@ -25,7 +25,6 @@ export default function SiteNavLink({
   return (
     <Link
       onClick={handleMenu}
-      type="button"
       href={url}
       className={`w-full flex items-center text-xl space-x-3 px-3 py-3 ${
         isCurrent ? "bg-red-50 text-red-800" : "bg-red-800 hover:bg-neutral-800"

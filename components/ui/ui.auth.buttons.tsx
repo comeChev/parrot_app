@@ -17,7 +17,6 @@ export const LoginButton = () => {
 export const RegisterButton = () => {
   return (
     <Link
-      type="button"
       href="/register"
       className="px-4 py-2 bg-green-600 text-white rounded-md"
     >

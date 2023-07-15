@@ -33,7 +33,6 @@ export default function SiteNavContentDesktop({
           />
         ))}
         <Link
-          type="button"
           href={"/cars"}
           className={`flex items-center text-xl space-x-3 px-4 py-3 bg-red-900 border-2 border-red-900 rounded-md ml-3 hover:border-neutral-100 text-neutral-100 transition-all duration-300 ease-in-out`}
         >

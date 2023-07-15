@@ -191,7 +191,6 @@ export async function PATCH(request: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    console.log(error.message);
     return new NextResponse(
       JSON.stringify({
         error: error.message,

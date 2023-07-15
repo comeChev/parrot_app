@@ -8,7 +8,7 @@ export default function UiImageMain({ image }: UiImageMainProps) {
     <div className="relative w-full h-[500px] mb-10 md:mb-[100px]">
       <Image
         src={image}
-        alt="image de présentation garage V. Parrot"
+        alt="Image principale - garage V. Parrot"
         fill={true}
         className="w-full h-full object-cover brightness-75"
         placeholder="blur"
@@ -19,7 +19,7 @@ export default function UiImageMain({ image }: UiImageMainProps) {
           GARAGE V. PARROT
         </h1>
         <h2 className="text-xl text-neutral-400">
-          St Claude, Zone artisanale du moulin
+          Toulouse, Zone artisanale du moulin
         </h2>
       </div>
     </div>

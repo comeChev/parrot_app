@@ -39,7 +39,7 @@ export default function SiteNav({
           </div>
         ) : (
           <div className="w-full flex justify-between items-center h-[80px]">
-            <Link href="/" type="button" aria-label="Retour à l'accueil">
+            <Link href="/" aria-label="Retour à l'accueil">
               <Image
                 src={logo}
                 alt="logo garage V. Parrot"

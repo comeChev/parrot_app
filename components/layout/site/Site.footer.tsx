@@ -86,10 +86,9 @@ export default function SiteFooter({
             </p>
             <div className="text-sm font-light">
               <p>Zone artisanale du Moulin</p>
-              <p>39190 ST CLAUDE</p>
+              <p>31000 TOULOUSE</p>
             </div>
             <a
-              type="button"
               href="tel:+33987654321"
               className="flex items-center mt-4 space-x-2 bg-red-800 w-[170px] justify-center py-2 px-2 rounded-lg font-bold"
             >
@@ -143,13 +142,25 @@ export default function SiteFooter({
               SUIVEZ-NOUS
             </p>
             <div className="text-3xl font-light flex space-x-4">
-              <a href="https://www.facebook.fr" target="_blank">
+              <a
+                href="https://www.facebook.fr"
+                target="_blank"
+                aria-label="Allez sur notre page Facebook"
+              >
                 <BsFacebook />
               </a>
-              <a href="https://www.twitter.fr" target="_blank">
+              <a
+                href="https://www.twitter.fr"
+                target="_blank"
+                aria-label="Allez sur notre page Twitter"
+              >
                 <BsTwitter />
               </a>
-              <a href="https://www.instagram.fr" target="_blank">
+              <a
+                href="https://www.instagram.fr"
+                target="_blank"
+                aria-label="Aller sur notre page Instagram"
+              >
                 <BsInstagram />
               </a>
             </div>

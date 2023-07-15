@@ -27,7 +27,6 @@ export async function deleteFile(path: string) {
     .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET as string)
     .remove([path]);
   if (error) {
-    console.log(error);
     return { success: false, data: error.message };
   } else {
     return { success: true, data: "Supprimé avec succès" };

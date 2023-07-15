@@ -23,7 +23,6 @@ export default function SiteNavLinkDesktop({
   return (
     <Link
       onClick={handleMenu}
-      type="button"
       href={url}
       className={`border-b-2 lg:border-b-4 border-0 border-transparent flex items-center text-xl space-x-3 px-3 pt-2 pb-1 ${
         isCurrent

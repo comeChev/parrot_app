@@ -35,7 +35,6 @@ export default function LoginForm() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(verifyEmail(form.email));
     if (!verifyEmail(form.email)) {
       setErrors({
         ...errors,
