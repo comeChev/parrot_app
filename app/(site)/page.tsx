@@ -102,18 +102,16 @@ export default async function Home() {
       <div className="relative w-full h-[500px] mb-10 md:mb-[150px]">
         <Image
           src={mainImage}
-          alt="image d'outils garage V. Parrot"
-          height={500}
-          width={1920}
-          style={{ height: "auto" }}
+          alt="image principale garage V. Parrot"
           className="w-full h-full object-cover brightness-75"
+          priority={true}
         />
         {/* Title with name of the enterprise */}
-        <div className="absolute bottom-32 w-full h-10 items-center flex flex-col">
+        <div className="absolute bottom-32 w-3/4 left-1/2 transform -translate-x-1/2 items-center flex flex-col py-3 rounded-md bg-opacity-70 bg-red-800">
           <h1 className="bottom-4 text-white text-4xl font-extrabold">
             GARAGE V. PARROT
           </h1>
-          <h2 className="text-xl text-neutral-400">
+          <h2 className="text-xl text-neutral-200">
             Toulouse, Zone artisanale du moulin
           </h2>
         </div>
