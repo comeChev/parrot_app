@@ -27,7 +27,7 @@ export default async function LoginPage() {
 
       <Link
         href="/"
-        className="text-neutral-400 bg-white-700 text-2xl font-medium w-3/4 rounded-md py-4 mx-auto mt-10 border border-neutral-400 hover:border-gray-600"
+        className="text-neutral-600 bg-neutral-100 text-2xl font-medium w-3/4 rounded-md py-4 mx-auto mt-10 border border-neutral-400 hover:border-slate-600"
       >
         Retourner au site
       </Link>

@@ -1,5 +1,6 @@
 import { deleteFile } from "@/utils/supabase.upload";
 import { Car, Car_message, Car_picture, Strength } from "@prisma/client";
+import { decode } from "punycode";
 
 export interface FullCar extends Car {
   car_status: "ONLINE" | "OFFLINE" | "ARCHIVED";
@@ -187,7 +188,7 @@ export type CarMessage = {
 
 export async function createCarMessage(
   carId: number,
-  car_message: Partial<Car_message>
+  car_message: Car_message
 ) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/messages?carId=${carId}`,

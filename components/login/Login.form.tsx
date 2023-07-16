@@ -5,7 +5,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BsFillPersonFill, BsFillKeyFill } from "react-icons/bs";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { UiAlertError } from "../ui/Ui.alert.windows";
 import { useRouter } from "next/navigation";
 
@@ -87,7 +86,7 @@ export default function LoginForm() {
           className={`flex items-center space-x-2 border-2 rounded-md ${
             errors.email !== ""
               ? "border-red-500 bg-red-200"
-              : "border-neutral-300 bg-neutral-200"
+              : "border-slate-300 bg-slate-200"
           }`}
         >
           <BsFillPersonFill className="text-4xl ml-2" />
@@ -98,7 +97,7 @@ export default function LoginForm() {
             name="email"
             id="email"
             placeholder="Email"
-            className="w-full bg-neutral-200 text-xl outline-none placeholder-neutral-500 py-2 px-2"
+            className="w-full bg-slate-200 text-xl outline-none placeholder-neutral-500 py-2 px-2"
           />
         </div>
         {errors.email !== "" && (
@@ -132,7 +131,7 @@ export default function LoginForm() {
           className={`flex items-center space-x-2 border-2 rounded-md ${
             errors.password !== ""
               ? "border-red-500 bg-red-100"
-              : "border-neutral-300 bg-neutral-200"
+              : "border-slate-300 bg-slate-200"
           }`}
         >
           <BsFillKeyFill className="text-4xl ml-2" />
@@ -144,7 +143,7 @@ export default function LoginForm() {
             name="password"
             id="password"
             placeholder="Mot de passe"
-            className={`w-full bg-neutral-200 text-xl outline-none placeholder-neutral-500 py-2 px-2`}
+            className={`w-full bg-slate-200 text-xl outline-none placeholder-neutral-500 py-2 px-2  `}
           />
         </div>
 
@@ -159,14 +158,14 @@ export default function LoginForm() {
 
       {/* submit button */}
       <button
-        className="text-white bg-red-700 text-2xl font-semibold w-full rounded-md py-4 hover:bg-red-800 disabled:bg-neutral-200"
+        className="text-white bg-red-700 text-2xl font-semibold w-full rounded-md py-4 hover:bg-red-800 disabled:bg-gray-200"
         disabled={form.email === "" || form.password === ""}
       >
         Se connecter
       </button>
-      <Link href={"/"} className="underline text-neutral-500 italic">
+      {/* <Link href={"/"} className="underline text-neutral-500 italic">
         Mot de passe oublié ? Cliquez ici.
-      </Link>
+      </Link> */}
 
       {/* error message */}
       {!validation.success && validation.message !== "" && (
