@@ -147,14 +147,13 @@ export default function HourForm({
         return;
       }
       setTimeout(() => {
-        setLoading(false);
         setHour(defaultHour);
         setValidation({
           success: true,
           message: `L'horaire a bien été mis à jour.`,
         });
         setIsOpenForm(false);
-        return;
+        setLoading(false);
       }, 2000);
 
       return;
@@ -175,7 +174,7 @@ export default function HourForm({
           setIsOpenForm(false);
           setLoading(false);
           return;
-        }, 4000);
+        }, 2000);
         // if error, rollback
         if (!response) {
           setValidation({

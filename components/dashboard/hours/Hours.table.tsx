@@ -72,7 +72,7 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
           <div className="flex flex-col md:flex-row">
             <HoursActionButton setHours={setHours} isMorning={false} hour={h} />
             <div className="mt-2 md:ml-2 md:mt-0">
-              {!h.hour_morning_status ? (
+              {!h.hour_afternoon_status ? (
                 <span>{"Fermé"}</span>
               ) : (
                 <div className="flex flex-col md:flex-row">

@@ -94,7 +94,7 @@ Si vous souhaitez changer de type de base de données, vous pouvez modifier la v
 
 ```bash
 # variable de connection à la base de données
-DATABASE_URL="file:./dev.db""
+DATABASE_URL="file:./dev.db"
 ```
 
 Ainsi que vous rendre sur le fichier `schema.prisma` et renseigner la variable suivante
