@@ -69,6 +69,7 @@ export function filterArrayWeedDays(array: Hour[]) {
     day_id: number;
   }
 
+  if (array.length === 0) return;
   const arrayDays: HourWithDayId[] = array.map((day) => {
     switch (day.hour_day) {
       case "Lundi":

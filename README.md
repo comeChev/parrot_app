@@ -14,11 +14,13 @@ La base de données ainsi que les images sont stockées sur le site de [Supabase
 - [Lancer le projet](#lancer-le-projet)
   - [Installation](#installation)
   - [Définir les variables](#variables)
-  - [Lancer le serveur](#lancer-le-serveur)
 - [Initialiser la base de données](#initialiser-la-base-de-données)
+
   - [Changer de type de base de données](#changer-de-base-de-données)
   - [Insérer un premier utilisateur](#insérer-un-premier-utilisateur)
+  - [Lancer le serveur](#lancer-le-serveur)
   - [Commencer à remplir le site web](#commencer-à-remplir-le-site-web)
+
 - [Informations complémentaires](#informations-complémentaires)
   - [Supabse](#supabase)
   - [Sendgrid](#sendgrid)
@@ -26,6 +28,7 @@ La base de données ainsi que les images sont stockées sur le site de [Supabase
 ## Lancer le projet
 
 Une fois, le projet téléchargé ou **_forké_**, rendez-vous sur le terminal à la racine du projet.
+Assurez d'abord d'avoir [Node](https://nodejs.org/en) d'installer sur votre ordinateur ainsi qu'un package manager.
 
 ### Installation
 
@@ -53,7 +56,7 @@ NEXTAUTH_URL      # -->L'adresse racine de votre site web ou 'http://localhost:3
 
 # variables identification à supabase (obligatoire pour les images stockées)
 NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_STORAGE_URL
+NEXT_PUBLIC_SUPABASE_STORAGE_URL #l'addresse de votre accès supabse + /storage/v1/object/public/ + le nom de votre bucket
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET
 
@@ -64,20 +67,6 @@ NEXT_PUBLIC_BASE_URL  # --> L'adresse racine de votre site web ou 'http://localh
 # variable pour envoyer des mail via Sengrid
 NEXT_PUBLIC_SENDGRID_API_KEY
 ```
-
-### Lancer le serveur
-
-Vous pouvez lancer le serveur avec les commandes suivantes :
-
-```bash
-npm run dev
-# ou
-yarn dev
-# ou
-pnpm dev
-```
-
-Vous pouvez ouvrir votre navigateur à l'adresse suivante [http://localhost:3000](http://localhost:3000) pour observer le rendu du site.
 
 ## Initialiser la base de données
 
@@ -99,12 +88,14 @@ Si vous souhaitez changer de type de base de données, vous pouvez modifier la v
 
 ```bash
 # variable de connection à la base de données
-DATABASE_URL="file:./db/dev.db"
+DATABASE_URL="file:./dev.db""
 ```
 
-Ainsi que vous rendre sur le fichier **_schema.prisma_** (/prisma/schema.prisma)
+Ainsi que vous rendre sur le fichier `schema.prisma` et renseigner la variable suivante
 
 `provider = "sqlite"`
+
+⚠️ N'oubliez pas de supprimer les migrations précédentes sinon Prisma ne saura pas vous créer une nouvelle migration d'après l'ancienne puisque ce n'est pas le même type de base de données. ⚠️
 
 ### Insérer un premier utilisateur
 
@@ -125,6 +116,20 @@ npx prisma db seed
 ```
 
 Vous pourrez apercevoir le résultat dans la console. Le mot de passe apparaît bien crypté.
+
+### Lancer le serveur
+
+Vous pouvez lancer le serveur avec les commandes suivantes :
+
+```bash
+npm run dev
+# ou
+yarn dev
+# ou
+pnpm dev
+```
+
+Vous pouvez ouvrir votre navigateur à l'adresse suivante [http://localhost:3000](http://localhost:3000) pour observer le rendu du site.
 
 ### Commencer à remplir le site web
 
