@@ -51,18 +51,24 @@ Il faudra définir les variables d'environnement suivantes dans le fichier `.env
 DATABASE_URL
 
 # variable d'identification pour next auth
-NEXTAUTH_SECRET   # -->Vous devez définir un secret (peut importe le texte)
-NEXTAUTH_URL      # -->L'adresse racine de votre site web ou 'http://localhost:3000' en local
+NEXTAUTH_SECRET
+# -->Vous devez définir un secret (peut importe le texte)
+NEXTAUTH_URL
+# -->L'adresse racine de votre site web ou 'http://localhost:3000' en local
+
 
 # variables identification à supabase (obligatoire pour les images stockées)
 NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_STORAGE_URL #l'addresse de votre accès supabse + /storage/v1/object/public/ + le nom de votre bucket
+NEXT_PUBLIC_SUPABASE_STORAGE_URL
+#l'addresse de votre accès supabse + /storage/v1/object/public/ + le nom de votre bucket
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET
 
 # variable interne au projet
-NEXT_PUBLIC_API_KEY   # --> Vous devez définir une clef afin de protéger l'accès à l'API du site
-NEXT_PUBLIC_BASE_URL  # --> L'adresse racine de votre site web ou 'http://localhost:3000' en local
+NEXT_PUBLIC_API_KEY
+# --> Vous devez définir une clef afin de protéger l'accès à l'API du site
+NEXT_PUBLIC_BASE_URL
+# --> L'adresse racine de votre site web ou 'http://localhost:3000' en local
 
 # variable pour envoyer des mail via Sengrid
 NEXT_PUBLIC_SENDGRID_API_KEY
@@ -105,7 +111,8 @@ En effet, il n'est pas possible dans ce projet de se créer un compte via une pa
 Il faudra donc définir deux nouvelles variables (afin que vous puissiez définir par vous même mot de passe et email de connexion).
 
 ```bash
-NEXT_PUBLIC_ADMIN_PASSWORD #le mot de passe en clair (il sera crypté après)
+NEXT_PUBLIC_ADMIN_PASSWORD
+#le mot de passe en clair (il sera crypté après)
 NEXT_PUBLIC_ADMIN_MAIL
 ```
 
@@ -142,10 +149,14 @@ Vous pouvez commencer à utiliser la partie administrateur du site. Vous pouvez 
 Si vous pouvez tester l'ensemble de l'application en local, certaines fonctionnalités se retrouveront perturbées. L'upload d'image, dû au fonctionnement même de NextJS peut se faire en local mais pas en environnement de production. C'est la raison pour laquelle a été privilégié la solution avec [Supabase Storage](https://supabase.com/storage). Vous pouvez assez facilement créer un compte et récuérer les éléments nécessaires :
 
 ```bash
-NEXT_PUBLIC_SUPABASE_URL #correspond à l'url d'acc§s à votre projet Supabase
-NEXT_PUBLIC_SUPABASE_STORAGE_URL #correspond à l'url d'accès à votre projet Supabse Storage
-NEXT_PUBLIC_SUPABASE_ANON_KEY #votre anon key sur Supabase
-NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET # le nom de votre bucket storage
+NEXT_PUBLIC_SUPABASE_URL
+#correspond à l'url d'acc§s à votre projet Supabase
+NEXT_PUBLIC_SUPABASE_STORAGE_URL
+#correspond à l'url d'accès à votre projet Supabse Storage
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+#votre anon key sur Supabase
+NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET
+# le nom de votre bucket storage
 ```
 
 Attention ⚠️ Pensez à bien mettre votre projet storage en public
@@ -157,5 +168,6 @@ Attention ⚠️⚠️ La clef annon doit être celle qui permet de surpasser le
 La fonction de réponse aux messages de contact repose sur l'utilisaire Sendgrid. De même que pour Supabase, vous ne pourrez pas tester en local le service d'envoi de mail. Pour cela, il faudra relier un compte [SendGrid](https://sendgrid.com) (gratuit) à l'application. Vous devrez renseigner les éléments suivants :
 
 ```bash
-NEXT_PUBLIC_SENDGRID_API_KEY #correpond à la clef d'API de Sendgrid (vous devez en créer une si pas encore fait)
+NEXT_PUBLIC_SENDGRID_API_KEY
+#correpond à la clef d'API de Sendgrid (vous devez en créer une si pas encore fait)
 ```
