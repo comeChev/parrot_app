@@ -188,7 +188,7 @@ export type CarMessage = {
 
 export async function createCarMessage(
   carId: number,
-  car_message: Car_message
+  car_message: Partial<Car_message>
 ) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/cars/messages?carId=${carId}`,
