@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   !session && redirect("/login");
   return (
     session && (
-      <div className="flex flex-col sm:flex-row min-h-screen font-title">
+      <div className="flex flex-col md:flex-row min-h-screen font-title">
         <DashboardNav session={session} />
         <main className="flex-1 px-4 py-2 mt-12 md:mt-2 min-h-screen">
           {children}

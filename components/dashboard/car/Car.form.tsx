@@ -414,7 +414,7 @@ export default function CarForm({ carDB }: CarFormProps) {
 
         {/* car messages */}
         {car.car_messages && car.car_messages.length > 0 && (
-          <div className="md:mr-10">
+          <div className="">
             <CarFormMessages car={car} setCar={setCar} />
           </div>
         )}

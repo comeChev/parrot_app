@@ -7,7 +7,7 @@ import { StaticImageData } from "next/image";
 type FormProps = {
   explanations?: string[];
   children: React.ReactNode;
-
+  mainContainerCSS?: string;
   loading: boolean;
   validation: {
     success: boolean;
@@ -22,14 +22,14 @@ type FormProps = {
 export default function Form({
   explanations,
   children,
-
   loading,
+  mainContainerCSS = "container mx-auto",
   validation,
   setValidation,
   imgSrc = mailSendingPic,
 }: FormProps) {
   return (
-    <div className="container mx-auto px-4 relative">
+    <div className={`${mainContainerCSS} px-4 relative`}>
       {/* Explanations */}
       {explanations && (
         <div className="mb-10">

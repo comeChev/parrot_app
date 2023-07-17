@@ -52,7 +52,9 @@ export default function GalleryPictures({
         }`}
       >
         {pictures && pictures[4] && (
-          <GalleryPicturesItem key={4} picture={pictures[4]} />
+          <div className="p-1 w-full h-full">
+            <GalleryPicturesItem key={4} picture={pictures[4]} />
+          </div>
         )}
       </div>
     </div>

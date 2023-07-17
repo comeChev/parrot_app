@@ -80,6 +80,8 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
                 height={34}
                 width={150}
                 className="h-full w-full rounded-md"
+                placeholder="blur"
+                blurDataURL="/public/blur.png"
                 alt={p.picture_name}
               />
             </div>

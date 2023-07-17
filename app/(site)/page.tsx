@@ -105,6 +105,7 @@ export default async function Home() {
           alt="image principale garage V. Parrot"
           className="w-full h-full object-cover brightness-75"
           priority={true}
+          placeholder="blur"
         />
         {/* Title with name of the enterprise */}
         <div className="absolute bottom-32 w-3/4 left-1/2 transform -translate-x-1/2 items-center flex flex-col py-3 rounded-md bg-opacity-70 bg-red-800">

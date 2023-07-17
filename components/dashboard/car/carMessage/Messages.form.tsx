@@ -220,6 +220,7 @@ export default function MessagesForm({
           setValidation={setValidation}
           loading={loading}
           imgSrc={carCreation}
+          mainContainerCSS=""
         >
           {/* user */}
           <div className="px-3 font-medium">
@@ -244,8 +245,8 @@ export default function MessagesForm({
             value={message.car_message_content}
             disabled={true}
           />
-          <div className="flex items-center mx-3 justify-between">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col md:items-center mx-3 md:justify-between">
+            <div className="flex items-center space-x-2 mb-3 md:mb-0">
               <UiButtonAction
                 Icon={BsMailbox2}
                 href=""

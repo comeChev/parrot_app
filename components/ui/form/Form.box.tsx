@@ -16,7 +16,7 @@ export default function FormBox({
 }: FormBoxProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
-    <div className="mt-10 flex-1 mr-10 w-full md:min-w-[400px]">
+    <div className="mt-10 flex-1 w-full md:min-w-[400px]">
       <div
         className="flex items-center cursor-pointer p-4 border-2 border-slate-300 bg-slate-200 rounded-md"
         onClick={() => setIsOpen(!isOpen)}

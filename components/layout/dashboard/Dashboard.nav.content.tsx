@@ -89,7 +89,7 @@ export default function DashboardNavContent({
 }: DashboardNavMobileProps) {
   return (
     <div className="flex flex-col w-full justify-between ">
-      <div className="flex flex-col min-h-[85vh] sm:h-[99vh] fixed w-full sm:w-60">
+      <div className="flex flex-col min-h-[85vh] sm:h-[99vh] fixed w-full md:w-60">
         {/* session name & link to profile page */}
         {session && (
           <div className="flex items-center md:flex-col md:items-start mt-2 md:mt-10 ml-5">
@@ -125,7 +125,7 @@ export default function DashboardNavContent({
                   </h2>
                 </div>
               </div>
-              <div className="pl-2 pr-3 mt-4 w-full md:hidden ">
+              <div className="flex flex-row pl-2 pr-3 mt-4 w-full md:hidden ">
                 <Link href={"/"} className="flex items-center">
                   <BsHouseExclamation className="text-xl mr-4" />
                   Retour au site

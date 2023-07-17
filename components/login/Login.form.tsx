@@ -24,6 +24,7 @@ export default function LoginForm() {
   });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [validation, setValidation] = useState({ success: false, message: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -41,7 +42,7 @@ export default function LoginForm() {
           "Cette valeur ne correspond pas à un mail (type : email@example.com)",
       });
     }
-
+    setIsLoading(true);
     const result = await signIn("credentials", {
       email: form.email,
       password: form.password,
@@ -49,12 +50,16 @@ export default function LoginForm() {
     });
 
     if (result && (!result.ok || result.error)) {
+      setIsLoading(false);
       setValidation({
         success: false,
         message: "Erreur lors de la connexion, veuillez réessayer.",
       });
     } else {
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+        setIsLoading(false);
+      }, 1000);
     }
   }
 
@@ -173,6 +178,14 @@ export default function LoginForm() {
           message={validation.message}
           handleClose={() => setValidation({ success: false, message: "" })}
         />
+      )}
+      {/* waiting screen */}
+      {isLoading && (
+        <div className="absolute top-0 left-0 w-full h-full bg-neutral bg-opacity-70 flex items-center justify-center">
+          <div className="w-1/3 h-1/3 bg-white rounded-md flex items-center justify-center">
+            <BsFillPersonFill className="text-6xl text-neutral-700 animate-spin" />
+          </div>
+        </div>
       )}
     </form>
   );

@@ -15,9 +15,9 @@ export default function DashboardNav({ session }: DashboardNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="w-full sm:w-60 text-neutral-100 text-title select-none min-h-screen">
+    <nav className="w-full md:w-60 text-neutral-100 text-title select-none md:min-h-screen">
       {/* mobile */}
-      <div className="bg-red-800 w-full sm:hidden z-50 fixed">
+      <div className="bg-red-800 w-full md:hidden z-50 fixed">
         <div className="w-full flex justify-end py-4 px-3">
           {isOpen ? (
             <AiOutlineClose
@@ -36,7 +36,7 @@ export default function DashboardNav({ session }: DashboardNavProps) {
           )}
         </div>
         {isOpen && (
-          <div className="min-h-screen">
+          <div className="min-h-screen w-full">
             <DashboardNavContent
               isAdmin={session.user.role === "ADMIN"}
               session={session}
@@ -47,7 +47,7 @@ export default function DashboardNav({ session }: DashboardNavProps) {
         )}
       </div>
       {/* desktop */}
-      <div className="bg-red-800 hidden sm:flex w-60 h-full">
+      <div className="bg-red-800 hidden md:flex w-60 h-full">
         <DashboardNavContent
           isAdmin={session.user.role === "ADMIN"}
           session={session}
