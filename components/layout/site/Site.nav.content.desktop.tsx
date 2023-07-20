@@ -20,7 +20,9 @@ export default function SiteNavContentDesktop({
   return (
     <div className="flex w-full h-20 items-center">
       <div className=" hidden lg:w-[280px] bg-white h-full lg:flex items-center pl-10">
-        <Image src={logo} alt="logo Parrot" className="h-20 w-auto" />
+        <Link href="/">
+          <Image src={logo} alt="logo Parrot" className="h-20 w-auto" />
+        </Link>
       </div>
       {/* nav links */}
       <div className="flex-1 flex items-center justify-end pr-4 lg:pr-6 lg:mt-1 h-full">

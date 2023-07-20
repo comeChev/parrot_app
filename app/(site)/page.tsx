@@ -20,6 +20,7 @@ import { getFreshReviews } from "@/lib/reviews";
 import { Review } from "@prisma/client";
 import UiTextMain from "@/components/ui/Ui.text.main";
 import { prisma } from "@/utils/prisma";
+import UiImageMain from "@/components/ui/Ui.image.main";
 
 const assetsItems = [
   {
@@ -99,27 +100,8 @@ export default async function Home() {
   return (
     <div className="min-h-screen">
       {/* main image */}
-      <div className="relative w-full h-[500px] mb-10 md:mb-[150px]">
-        <Image
-          src={mainImage}
-          alt="image principale garage V. Parrot"
-          className="w-full h-full object-cover brightness-75"
-          priority={true}
-          placeholder="blur"
-        />
-        {/* Title with name of the enterprise */}
-        <div className="absolute bottom-32 w-3/4 left-1/2 transform -translate-x-1/2 items-center flex flex-col py-3 rounded-md bg-opacity-70 bg-red-800">
-          <h1 className="bottom-4 text-white text-4xl font-extrabold">
-            GARAGE V. PARROT
-          </h1>
-          <h2 className="text-xl text-neutral-200">
-            Toulouse, Zone artisanale du moulin
-          </h2>
-        </div>
 
-        {/* searchForm */}
-        {/* <HomeSearchCar /> */}
-      </div>
+      <UiImageMain image={mainImage} />
 
       <UiTextMain text="Plus de 15 d'expérience à votre service" />
 

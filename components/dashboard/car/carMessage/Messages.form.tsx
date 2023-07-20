@@ -156,33 +156,6 @@ export default function MessagesForm({
       ),
     }));
 
-    // // update message in db
-    // const messageToUpdate = {
-    //   ...message,
-    //   car_message_status: "REPLIED",
-    //   car_message_response_date: new Date(),
-    // };
-    // const response = await updateCarMessage(
-    //   message.car_message_id,
-    //   messageToUpdate
-    // );
-
-    // if error, rollback
-    // if (!response) {
-    //   alert("Une erreur est survenue. Veuillez réessayer plus tard.");
-    //   setValidation({
-    //     success: false,
-    //     message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-    //   });
-    //   setMessages((prev) =>
-    //     prev.map((m) =>
-    //       m.car_message_id === oldMessage.car_message_id ? oldMessage : m
-    //     )
-    //   );
-    //   setLoading(false);
-    //   return;
-    // }
-
     setTimeout(() => {
       setValidation({
         success: true,
@@ -245,7 +218,7 @@ export default function MessagesForm({
             value={message.car_message_content}
             disabled={true}
           />
-          <div className="flex flex-col md:items-center mx-3 md:justify-between">
+          <div className="flex flex-col md:flex-row md:items-center mx-3 md:justify-between">
             <div className="flex items-center space-x-2 mb-3 md:mb-0">
               <UiButtonAction
                 Icon={BsMailbox2}
