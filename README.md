@@ -24,6 +24,7 @@ La base de données ainsi que les images sont stockées sur le site de [Supabase
 - [Informations complémentaires](#informations-complémentaires)
   - [Supabse](#supabase)
   - [Sendgrid](#sendgrid)
+  - [Logins temporaires](#logins-temporaires)
 
 ## Lancer le projet
 
@@ -171,3 +172,6 @@ La fonction de réponse aux messages de contact repose sur l'utilisaire Sendgrid
 NEXT_PUBLIC_SENDGRID_API_KEY
 #correpond à la clef d'API de Sendgrid (vous devez en créer une si pas encore fait)
 ```
+### Logins temporaires
+
+Des logins temporaires (valables jusqu'au 01/08/2023 permettent de tester les fonctionnalités de l'interface administrateur. Passée cette date, tous les changements effectués sur la base de données seront annulés. Valable dans une optique éducative. Merci de respecter ces considérations.
