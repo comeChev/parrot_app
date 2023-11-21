@@ -1,5 +1,9 @@
-import SiteNavContentHoursItem from "./Site.nav.content.hours.item";
+"use client";
+
+import { BsCaretDown, BsCaretDownFill } from "react-icons/bs";
+
 import { Hour } from "@prisma/client";
+import SiteNavContentHoursItem from "./Site.nav.content.hours.item";
 
 export default function SiteNavContentHours({ hours }: { hours: Hour[] }) {
   return (

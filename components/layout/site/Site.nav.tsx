@@ -24,49 +24,42 @@ export default function SiteNav({
   const pathname = usePathname();
 
   return (
-    <header className="container mx-auto text-neutral-100 text-title">
+    <header className="container mx-auto text-neutral-100 text-title relative">
       {/* mobile */}
       <div className="bg-red-800 w-full md:hidden">
-        {isOpen ? (
-          <div className="w-full flex justify-end items-center h-[80px]">
-            <AiOutlineClose
-              aria-label="fermer le menu"
-              type="button"
-              className="text-4xl cursor-pointer mr-4 "
-              onClick={() => setIsOpen(false)}
-            />
+        <div className="w-full flex justify-between items-center h-[80px] overflow-hidden">
+          <div className="h-full bg-white items-center flex px-5 -skew-x-12 -translate-x-3 ">
+            <Link href="/" aria-label="Retour à l'accueil">
+              <Image
+                src={logo}
+                height={81}
+                width={190.5}
+                alt="logo garage V. Parrot"
+                className="w-auto object-cover h-[50px] pl-2"
+              />
+            </Link>
           </div>
-        ) : (
-          <div className="w-full flex justify-between items-center h-[80px]">
-            <div className="h-full bg-white items-center flex px-5">
-              <Link href="/" aria-label="Retour à l'accueil">
-                <Image
-                  src={logo}
-                  height={81}
-                  width={190.5}
-                  alt="logo garage V. Parrot"
-                  className="w-auto object-cover h-[50px]"
-                />
-              </Link>
-            </div>
-            <AiOutlineMenu
-              aria-label="ouvrir le menu"
-              type="button"
-              className="text-4xl cursor-pointer mr-4"
-              onClick={() => setIsOpen(true)}
-            />
-          </div>
-        )}{" "}
-        {isOpen && (
-          <div className="min-h-screen">
-            <SiteNavContent
-              session={session}
-              setIsOpen={setIsOpen}
-              hours={hours}
-              pathname={pathname}
-            />
-          </div>
-        )}
+          <button
+            aria-label="ouvrir le menu"
+            type="button"
+            className="text-4xl cursor-pointer mr-4"
+            onClick={() => setIsOpen(true)}
+          >
+            <AiOutlineMenu />
+          </button>
+        </div>
+
+        <div
+          className={`h-screen overflow-y-scroll fixed top-0 -left-[calc(100vw+10rem)] transition-transform duration-200 bg-red-800 z-50 
+          ${isOpen && "translate-x-[calc(100vw+10rem)]"}`}
+        >
+          <SiteNavContent
+            session={session}
+            setIsOpen={setIsOpen}
+            hours={hours}
+            pathname={pathname}
+          />
+        </div>
       </div>
 
       {/* desktop */}

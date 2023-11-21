@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import UiLoadingWindow from "../Ui.loading.window";
 import { UiAlertError, UiAlertSuccess } from "../Ui.alert.windows";
-import mailSendingPic from "@/assets/contact/message_sending.gif";
+
 import { StaticImageData } from "next/image";
+import UiLoadingWindow from "../Ui.loading.window";
+import mailSendingPic from "@/assets/contact/message_sending.gif";
 
 type FormProps = {
   explanations?: string[];
@@ -32,7 +33,7 @@ export default function Form({
     <div className={`${mainContainerCSS} px-4 relative`}>
       {/* Explanations */}
       {explanations && (
-        <div className="mb-10">
+        <div className="mb-10 leading-relaxed">
           {explanations.map((explanation, index) => (
             <p key={index} className="mb-2">
               {explanation}

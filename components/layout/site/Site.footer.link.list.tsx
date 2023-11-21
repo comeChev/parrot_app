@@ -28,8 +28,10 @@ const LinkWithPath = ({
   return (
     <Link
       href={url}
-      className={`${originalUrl && originalUrl === pathName && "underline"} ${
-        url === pathName && "underline"
+      className={`${
+        originalUrl && originalUrl === pathName && "underline font-bold"
+      } ${
+        url === pathName && "underline font-bold"
       } hover:underline underline-offset-2 py-4 px-2 md:py-1 md:px-0`}
     >
       {text}
@@ -44,7 +46,7 @@ export default function SiteFooterLinkList({
   const pathName = usePathname();
   return (
     <div className="mx-10 mt-10 flex flex-col">
-      <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold">
+      <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold font-title">
         {title}
       </p>
       <div className="text-sm font-light flex flex-col space-y-2">

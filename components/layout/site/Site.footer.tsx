@@ -1,12 +1,15 @@
-import { Category, Hour } from "@prisma/client";
-import { Session } from "next-auth";
-import Link from "next/link";
 import {
-  BsFillTelephoneFill,
+  BsCaretDownFill,
   BsFacebook,
-  BsTwitter,
+  BsFillTelephoneFill,
   BsInstagram,
+  BsTwitter,
 } from "react-icons/bs";
+import { Category, Hour } from "@prisma/client";
+
+import Link from "next/link";
+import { Session } from "next-auth";
+import SiteFooterHours from "./Site.footer.hours";
 import SiteFooterLinkList from "./Site.footer.link.list";
 
 type SiteFooterProps = {
@@ -14,13 +17,6 @@ type SiteFooterProps = {
   session: Session | null;
   categories: Category[];
 };
-
-function showTime(date: Date) {
-  return date.toLocaleTimeString("fr_FR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 const aboutLinks = [
   {
@@ -75,13 +71,13 @@ export default function SiteFooter({
   ];
 
   return (
-    <footer className=" min-h-[100px] bg-neutral-700 text-neutral-200">
+    <footer className="container mx-auto min-h-[100px] bg-neutral-700 text-neutral-200">
       {/* content */}
       <div className="flex mb-10 flex-wrap">
         <div className="flex-1 flex flex-wrap">
           {/* adresse */}
           <div className="mx-10 mt-10 flex flex-col">
-            <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold">
+            <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold font-title">
               GARAGE V. PARROT
             </p>
             <div className="text-sm font-light">
@@ -90,7 +86,7 @@ export default function SiteFooter({
             </div>
             <a
               href="tel:+33987654321"
-              className="flex items-center mt-4 space-x-2 bg-red-800 w-[170px] justify-center py-2 px-2 rounded-lg font-bold"
+              className="flex items-center mt-4 space-x-2 bg-red-800 w-[170px] justify-center py-2 px-2 rounded-lg font-bold font-title hover:scale-105 transition duration-500"
             >
               <BsFillTelephoneFill />
               <span>09 87 65 43 21</span>
@@ -98,35 +94,7 @@ export default function SiteFooter({
           </div>
 
           {/* hours */}
-          <div className="mx-10 mt-10 flex flex-col">
-            <p className="w-[200px] border-0 border-b-2 border-neutral-200 pb-2 mb-4 font-semibold">
-              HEURES D'OUVERTURE
-            </p>
-            <div className="text-sm font-light flex flex-col space-y-2">
-              {hours.map((hour) => (
-                <div className="flex space-x-2 items-center border-b border-neutral-500 py-2 ">
-                  <div className="w-[100px]">{hour.hour_day}</div>
-                  {hour.hour_morning_status === false &&
-                  hour.hour_afternoon_status === false ? (
-                    <p>Fermé toute la journée</p>
-                  ) : (
-                    <div className="flex flex-col">
-                      <p>
-                        {hour.hour_morning_status === true
-                          ? `de ${hour.hour_morning_opening} à ${hour.hour_morning_closing}`
-                          : "Fermé le matin"}
-                      </p>
-                      <p>
-                        {hour.hour_afternoon_status === true
-                          ? `de ${hour.hour_afternoon_opening} à ${hour.hour_afternoon_closing}`
-                          : "Fermé l'après-midi"}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          <SiteFooterHours hours={hours} />
           {/* about */}
           <SiteFooterLinkList title="A PROPOS" links={aboutLinks} />
 
@@ -146,6 +114,7 @@ export default function SiteFooter({
                 href="https://www.facebook.fr"
                 target="_blank"
                 aria-label="Allez sur notre page Facebook"
+                className="hover:scale-105 transition duration-500"
               >
                 <BsFacebook />
               </a>
@@ -153,6 +122,7 @@ export default function SiteFooter({
                 href="https://www.twitter.fr"
                 target="_blank"
                 aria-label="Allez sur notre page Twitter"
+                className="hover:scale-105 transition duration-500"
               >
                 <BsTwitter />
               </a>
@@ -160,6 +130,7 @@ export default function SiteFooter({
                 href="https://www.instagram.fr"
                 target="_blank"
                 aria-label="Aller sur notre page Instagram"
+                className="hover:scale-105 transition duration-500"
               >
                 <BsInstagram />
               </a>
@@ -167,7 +138,7 @@ export default function SiteFooter({
           </div>
 
           {/* admin link */}
-          <div className="mx-10 mt-10 flex flex-col text-neutral-200">
+          <div className="mx-10 mt-10 flex flex-col text-neutral-200 hover:underline hover:underline-offset-2">
             {session ? (
               <Link href="/dashboard">Dashboard</Link>
             ) : (
@@ -178,8 +149,8 @@ export default function SiteFooter({
       </div>
 
       {/* credits */}
-      <div className="flex flex-col items-center text-xs text-neutral-300">
-        <p>Garage V.Parrot - Copyright 2023</p>
+      <div className="flex flex-col items-center text-xs text-neutral-300 pb-2">
+        <p>Garage V.Parrot | &copy; 2023</p>
         <p>
           Site réalisé par{" "}
           <a

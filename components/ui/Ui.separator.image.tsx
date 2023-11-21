@@ -6,13 +6,13 @@ type SeparatorImageProps = {
 
 export default function SeparatorImage({ image }: SeparatorImageProps) {
   return (
-    <div className="container mx-auto h-[400px] mb-10 md:mb-[70px] relative">
+    <div className="container mx-auto h-[400px] mb-10 md:mb-[70px] relative shadow-lg">
       <Image
         src={image}
         fill
         placeholder="blur"
         alt="image d'outils garage V. Parrot"
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover md:rounded-md"
         loading="lazy"
       />
     </div>

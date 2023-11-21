@@ -10,7 +10,10 @@ export default function UiTextMain({
   return (
     <div className=" mb-12 px-4">
       {textArray.map((text, index) => (
-        <h2 key={index} className="text-center text-4xl font-bold mb-1">
+        <h2
+          key={index}
+          className="text-center text-4xl font-bold font-title mb-1"
+        >
           {text}
         </h2>
       ))}

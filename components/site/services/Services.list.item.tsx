@@ -1,8 +1,8 @@
-import { ServiceWithPicturesAndCategory } from "@/lib/services";
-import Image from "next/image";
-import noImageAvailable from "@/assets/no-image-available.jpg";
 import { BsFillTelephoneFill } from "react-icons/bs";
+import Image from "next/image";
+import { ServiceWithPicturesAndCategory } from "@/lib/services";
 import UiButtonAction from "@/components/ui/Ui.button.action";
+import noImageAvailable from "@/assets/no-image-available.jpg";
 
 type ServiceListItemProps = {
   service: ServiceWithPicturesAndCategory;
@@ -14,10 +14,14 @@ export default function ServicesListItem({ service }: ServiceListItemProps) {
   return (
     <div className="mt-[50px] mb-[150px]">
       {/* title */}
-      <h4 className="font-bold text-2xl mb-10">{service.service_title}</h4>
+      <h4 className="font-semibold font-subtitle text-lg mt-5 px-2 mb-4">
+        {service.service_title}
+      </h4>
 
       {/* paragraph 1 */}
-      <p className="px-2 font-light">{service.service_paragraph_one}</p>
+      <p className="px-6 font-light font-body leading-relaxed">
+        {service.service_paragraph_one}
+      </p>
 
       {/* images */}
       <div className="grid grid-cols-2 md:grid-cols-3 w-full gap-2 my-5 px-2">
@@ -46,10 +50,12 @@ export default function ServicesListItem({ service }: ServiceListItemProps) {
       </div>
 
       {/* paragraph 2 */}
-      <p className="px-2 font-light">{service.service_paragraph_two}</p>
+      <p className="px-6 font-light leading-relaxed">
+        {service.service_paragraph_two}
+      </p>
 
       {/* end sentence */}
-      <h5 className="font-semibold text-lg mt-5 px-2">
+      <h5 className="font-semibold font-subtitle text-lg mt-5 px-2">
         {service.service_end_sentence}
       </h5>
 

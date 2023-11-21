@@ -1,7 +1,8 @@
 "use client";
 
-import { Review } from "@prisma/client";
 import { useRef, useState } from "react";
+
+import { Review } from "@prisma/client";
 import ReviewsCommentsItem from "./Reviews.comments.item";
 
 type ReviewsCommentsProps = {
@@ -43,7 +44,7 @@ export default function ReviewsComments({ reviews }: ReviewsCommentsProps) {
           ref={showMoreRef}
           onClick={handleShowMore}
           disabled={resultsShown >= reviewsData.length}
-          className="bg-red-700 text-white px-4 py-2 rounded-md shadow-md hover:shadow-lg disabled:opacity-50 disabled:bg-neutral-500 mt-5"
+          className="bg-red-700 text-white px-4 py-2 rounded-md shadow-md hover:shadow-lg disabled:opacity-50 cursor-not-allowed mt-5"
         >
           {reviewsData.length === 0
             ? "Soyez le premier à donner votre avis"

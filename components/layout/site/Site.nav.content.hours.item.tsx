@@ -11,8 +11,8 @@ function showTime(date: Date) {
 
 export default function SiteNavContentHoursItem({ day }: HourItemProps) {
   return (
-    <div className="flex text-md py-2 font-text items-center border-b border-red-300 border-opacity-50">
-      <p className="w-32 text-lg">{day.hour_day}</p>
+    <div className="flex py-2 font-text items-center border-b border-red-300 border-opacity-50 text-sm md:text-lg">
+      <p className="w-32 ">{day.hour_day}</p>
 
       <p className="w-40">
         {day.hour_morning_status

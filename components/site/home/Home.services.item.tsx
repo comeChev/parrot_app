@@ -18,7 +18,7 @@ export default function HomeServicesItem({
   url,
 }: HomeServicesItemProps) {
   return (
-    <div className="border-0 border-y-2 border-red-800 flex-1 m-3">
+    <div className="border-0 border-y-2 border-red-800 bg-gray-50 flex-1 m-3 hover:scale-105 transition-all duration-500 shadow-xl">
       <div className="h-[200px] w-full relative">
         <Image
           src={imageSrc}
@@ -28,18 +28,17 @@ export default function HomeServicesItem({
           className="h-full w-full object-cover"
         />
       </div>
-      <div className="pt-6 flex flex-col justify-between pb-7">
-        <div className="mb-4">
-          <h4 className="text-lg font-semibold mb-2">{title}</h4>
-          <p className="font-light text-base text-neutral-700 overflow-clip">
-            {text}
-          </p>
+      <div className="pt-6 flex flex-col pb-7 h-[300px] px-5">
+        <h3 className="text-lg font-semibold mb-2 font-subtitle">{title}</h3>
+        <div className="flex-1 font-light text-base text-neutral-700">
+          <p className="line-clamp-3 leading-relaxed">{text}</p>
         </div>
+
         <Link
           href={url}
           className="flex items-center space-x-3 border-b-2 border-transparent hover:underline underline-offset-2 text-red-800"
         >
-          <span className="text-base font-light text-red-800">
+          <span className="text-base font-light font-title text-red-800">
             Découvrir nos services
           </span>
           <BiSolidChevronRight className="text-xl text-red-800" />

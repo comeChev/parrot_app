@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { Dispatch, SetStateAction } from "react";
+
 import { IconType } from "react-icons";
+import Link from "next/link";
 
 type DashboardNavLinkProps = {
   url: string;
@@ -26,8 +27,10 @@ export default function SiteNavLink({
     <Link
       onClick={handleMenu}
       href={url}
-      className={`w-full flex items-center text-xl space-x-3 px-3 py-3 ${
-        isCurrent ? "bg-red-50 text-red-800" : "bg-red-800 hover:bg-neutral-800"
+      className={`w-full flex items-center text-xl space-x-3 px-3 py-3  ${
+        isCurrent
+          ? "bg-gray-50 text-red-800 font-bold font-title "
+          : "bg-red-800 hover:bg-red-950 font-[400] font-title"
       } duration-150 transition-all ease-in-out`}
     >
       {Icon && <Icon />}

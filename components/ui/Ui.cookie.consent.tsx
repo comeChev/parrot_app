@@ -13,6 +13,8 @@ export default function UiCookieConsent() {
   return (
     !cookieConsentValue && (
       <CookieConsent
+        ariaAcceptLabel="J'accepte les cookies"
+        ariaDeclineLabel="Je refuse les cookies"
         disableStyles={true}
         enableDeclineButton={true}
         buttonClasses="bg-neutral-800 hover:bg-neutral-100 hover:text-neutral-800 text-white font-light border border-neutral-800 py-2 px-4 rounded mr-4 transition-all duration-400 ease-in-out"

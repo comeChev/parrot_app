@@ -27,7 +27,7 @@ export default async function ServicesPage(params: {
       {!params.searchParams.name ? (
         // {/* section 3 - services */}
         <section className="container mx-auto px-4 mb-[100px]" id="services">
-          <h3 className="text-3xl font-bold mb-10">
+          <h3 className="text-3xl font-bold mb-10 font-title">
             Les services que nous vous proposons
           </h3>
           <div className="flex flex-col md:flex-row md:space-x-5">
@@ -52,7 +52,7 @@ export default async function ServicesPage(params: {
         services.length === 0 && (
           <div className="container mx-auto px-4 mb-[100px] flex flex-col">
             {/* <Image /> */}
-            <h2 className="text-4xl font-bold px-4">
+            <h2 className="text-4xl font-bold px-4 font-title">
               Nous ne proposons aucun service de ce type à l'heure actuelle
             </h2>
             <div className="mx-4 w-1/2 h-[4px] bg-red-800 mt-5 mb-28"></div>
@@ -71,10 +71,10 @@ export default async function ServicesPage(params: {
 
       {services.length > 0 && (
         <div className="container mx-auto px-4 mb-[100px]">
-          <h2 className="text-center text-4xl font-bold px-4 mb-10">
+          <h2 className="text-center text-4xl font-bold px-4 mb-10 font-title">
             {services[0].category.category_name}
           </h2>
-          <h3 className="text-3xl font-bold mb-10">
+          <h3 className="text-2xl font-light leading-relaxed mb-10 font-subtitle text-gray-700">
             {services[0].category.category_description}
           </h3>
           <div>

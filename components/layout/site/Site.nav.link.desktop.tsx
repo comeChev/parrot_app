@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { Dispatch, SetStateAction } from "react";
+
 import { IconType } from "react-icons";
+import Link from "next/link";
 
 type DashboardNavLinkProps = {
   url: string;
@@ -24,13 +25,18 @@ export default function SiteNavLinkDesktop({
     <Link
       onClick={handleMenu}
       href={url}
-      className={`border-b-2 lg:border-b-4 border-0 border-transparent flex items-center text-xl space-x-3 px-3 pt-2 pb-1 ${
+      className={`group flex items-start flex-col text-xl pt-2 pb-1 mx-1 ${
         isCurrent
           ? " text-white border-white"
           : "bg-red-800 hover:border-neutral-100"
       } duration-300 transition-all ease-in-out`}
     >
-      <span className="text-sm lg:text-base xl:text-xl">{text}</span>
+      <span className="text-sm lg:text-base font-title">{text}</span>
+      <div
+        className={`bg-white h-[2px] lg:h-1 -skew-x-[24deg] mt-1 ${
+          isCurrent ? "w-full" : "w-0 group-hover:w-full"
+        } transition-all duration-500`}
+      />
     </Link>
   );
 }

@@ -1,11 +1,11 @@
-import React from "react";
-import outils from "@/assets/home/outils.jpg";
-import SeparatorImage from "./Ui.separator.image";
-import { FaHandsHelping } from "react-icons/fa";
-import { LiaCertificateSolid } from "react-icons/lia";
-import { GiReceiveMoney } from "react-icons/gi";
 import { BsPinMapFill } from "react-icons/bs";
+import { FaHandsHelping } from "react-icons/fa";
+import { GiReceiveMoney } from "react-icons/gi";
 import HomeReasonsItem from "../site/home/Home.reasons.item";
+import { LiaCertificateSolid } from "react-icons/lia";
+import React from "react";
+import SeparatorImage from "./Ui.separator.image";
+import outils from "@/assets/home/outils.jpg";
 
 const reasonItems = [
   {
@@ -38,10 +38,11 @@ export default function UiReasons() {
 
       {/* section 4 - reasons */}
       <section className="container mx-auto px-4 mb-[100px]">
-        <h3 className="text-3xl font-bold mb-10">
+        <h2 className="text-3xl md:text-4xl md:text-center font-bold mb-5 font-title">
           Pourquoi choisir notre garage
-        </h3>
-        <div className="flex flex-wrap md:space-x-5">
+        </h2>
+        <div className="h-[3px] bg-red-700 w-2/3 md:w-1/3 lg:w-1/4 mx-auto" />
+        <div className="flex flex-wrap md:space-x-5 mt-12">
           {reasonItems.map((r, index) => (
             <HomeReasonsItem
               key={index}

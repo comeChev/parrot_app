@@ -17,11 +17,11 @@ export default function UiImageMain({ image }: UiImageMainProps) {
         priority
       />
       {/* Title with name of the enterprise */}
-      <div className="absolute bottom-32 w-3/4 left-1/2 transform -translate-x-1/2 items-center flex flex-col py-3 rounded-md bg-opacity-70 bg-red-800">
-        <h1 className="bottom-4 text-white text-2xl md:text-4xl font-extrabold text-center">
+      <div className="absolute bottom-32 w-3/4 left-1/2 transform -translate-x-1/2 items-center flex flex-col py-3 px-4 rounded-md bg-opacity-70 bg-red-800 -skew-x-[10deg]">
+        <h1 className="bottom-4 text-white text-xl md:text-4xl font-extrabold font-title text-center">
           GARAGE V. PARROT
         </h1>
-        <h2 className="text-md md:text-xl text-neutral-200 text-center">
+        <h2 className="text-sm md:text-xl text-neutral-200 text-center font-subtitle">
           Toulouse, Zone artisanale du moulin
         </h2>
       </div>

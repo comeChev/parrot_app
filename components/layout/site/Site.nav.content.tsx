@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction } from "react";
-import { Session } from "next-auth";
-import Link from "next/link";
-import { Hour } from "@prisma/client";
-
 import { BsFillCarFrontFill, BsGearFill } from "react-icons/bs";
+import { Dispatch, SetStateAction } from "react";
 
-import SiteNavLink from "./Site.nav.link";
+import { AiOutlineClose } from "react-icons/ai";
+import { Hour } from "@prisma/client";
+import Link from "next/link";
+import { Session } from "next-auth";
 import SiteNavContentHours from "./Site.nav.content.hours";
+import SiteNavLink from "./Site.nav.link";
 import SiteNavLogoutButton from "./Site.nav.logout.button";
 
 const navItems = [
@@ -32,8 +32,16 @@ export default function SiteNavContent({
   pathname,
 }: SiteNavContentProps) {
   return (
-    <div className="flex flex-col w-full justify-between select-none">
-      <div className="flex flex-col items-stretch min-h-[90vh] pb-24">
+    <div className="flex flex-col w-[100vw] justify-between select-none relative overflow-y-scroll">
+      <button
+        aria-label="fermer le menu"
+        type="button"
+        className="text-4xl cursor-pointer z-[60] top-[1.33rem] right-[1rem] absolute"
+        onClick={() => setIsOpen(false)}
+      >
+        <AiOutlineClose />
+      </button>
+      <div className="flex flex-col items-stretch min-h-[90vh] pb-24 py-10">
         <div className="flex-1 flex flex-col">
           {/* session name & link to profile page */}
           {session && (
@@ -89,7 +97,7 @@ export default function SiteNavContent({
         ) : (
           <Link
             href="/login"
-            className="px-4 font-light text-red-200 flex hover:underline underline-offset-2"
+            className="px-4 font-light font-title flex hover:underline underline-offset-2"
           >
             <BsGearFill className="text-2xl mr-2" />
             <span>Espace administrateur</span>
