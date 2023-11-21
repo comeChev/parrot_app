@@ -8,7 +8,7 @@ export interface MessageCreate {
   message_content: string;
   message_status: "PENDING" | "REPLIED" | "ARCHIVED";
   message_response: string | null;
-  message_response_type: string | null;
+  message_response_type: "MAIL" | "PHONE" | null;
   message_response_date: Date | null;
 }
 
@@ -22,7 +22,7 @@ export interface MessageUpdate {
   message_content: string;
   message_status: "PENDING" | "REPLIED" | "ARCHIVED";
   message_response: string;
-  message_response_type: "MAIL" | "PHONE" | "";
+  message_response_type: "MAIL" | "PHONE" | null;
   message_response_date: Date;
 }
 
@@ -110,8 +110,15 @@ export async function createMessage(message: MessageCreate) {
   }
 }
 
-export async function updateMessage(id: number, message: Partial<Message>) {
+export async function updateMessage(id: number, message: MessageUpdate) {
   try {
+    const messageUp = {
+      ...message,
+      message_content: encodeURI(message.message_content),
+      message_contact_first_name: encodeURI(message.message_contact_first_name),
+      message_contact_last_name: encodeURI(message.message_contact_last_name),
+      message_response: encodeURI(message.message_response),
+    };
     const messageUpdate = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages?id=${id}`,
       {
@@ -119,7 +126,7 @@ export async function updateMessage(id: number, message: Partial<Message>) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(message),
+        body: JSON.stringify(messageUp),
       }
     );
     const messageUpdateJson = await messageUpdate.json();

@@ -1,12 +1,15 @@
-import UsersList from "@/components/dashboard/users/Users.list";
 import { DescriptionPin, StatusPin } from "@/components/ui/Ui.status.pin";
+
+import UsersList from "@/components/dashboard/users/Users.list";
 import { authOptions } from "@/utils/nextAuth/nextAuth.options";
-import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth";
+import { getUsers } from "@/lib/sql/users";
+import { prisma } from "@/utils/prisma";
 import { redirect } from "next/navigation";
 
 export default async function AdminUserPage() {
-  const users = await prisma.user.findMany({});
+  // const users = await prisma.user.findMany({});
+  const users = await getUsers();
   const session = await getServerSession(authOptions);
 
   if (!session || session.user.role !== "ADMIN") {

@@ -1,6 +1,5 @@
 "use client";
-import Table from "@/components/ui/table/Table";
-import TableBody from "@/components/ui/table/Table.body";
+
 import {
   BodyItemProps,
   BodyItems,
@@ -8,14 +7,18 @@ import {
 import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
-import { User } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
+
+import Table from "@/components/ui/table/Table";
+import TableBody from "@/components/ui/table/Table.body";
+import UiPagination from "@/components/ui/Ui.pagination";
+import { User } from "@prisma/client";
+import UserAddOrCreate from "./User.add";
+import { UserWithoutPassword } from "@/lib/sql/users";
+import UsersListAction from "./Users.list.action";
 import UsersListProfile from "./Users.list.profile";
 import UsersListStatus from "./Users.list.status";
-import UsersListAction from "./Users.list.action";
-import UserAddOrCreate from "./User.add";
 import { defaultUser } from "./User.form";
-import UiPagination from "@/components/ui/Ui.pagination";
 
 const tableHeaders: TableHeaderProps[] = [
   {
@@ -45,16 +48,18 @@ const tableHeaders: TableHeaderProps[] = [
 ];
 
 type UserListProps = {
-  usersDB: User[];
+  usersDB: UserWithoutPassword[];
 };
 
 export default function UsersList({ usersDB }: UserListProps) {
-  const [users, setUsers] = useState<User[]>(usersDB);
-  const [curentUser, setCurentUser] = useState<User>(defaultUser);
+  const [users, setUsers] = useState<UserWithoutPassword[]>(usersDB);
+  const [curentUser, setCurentUser] =
+    useState<UserWithoutPassword>(defaultUser);
   const [isNew, setIsNew] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const listUsers = useRef<HTMLDivElement>(null);
-  const [usersToShow, setUsersToShow] = useState<User[]>(usersDB);
+  const [usersToShow, setUsersToShow] =
+    useState<UserWithoutPassword[]>(usersDB);
   const list = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);

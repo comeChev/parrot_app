@@ -1,15 +1,20 @@
-import { User } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
+import { User } from "@prisma/client";
+import { UserWithoutPassword } from "@/lib/sql/users";
 
-export default function UsersListProfile({ user }: { user: User }) {
-  function getFullName(user: User) {
+export default function UsersListProfile({
+  user,
+}: {
+  user: UserWithoutPassword;
+}) {
+  function getFullName(user: UserWithoutPassword) {
     if (user.user_last_name) {
       return `${user.user_last_name.toUpperCase()} ${user.user_first_name}`;
     }
     return user.user_first_name;
   }
-  function getInitials(user: User) {
+  function getInitials(user: UserWithoutPassword) {
     if (user.user_last_name) {
       return `${user.user_last_name[0]}${user.user_first_name[0]}`;
     }

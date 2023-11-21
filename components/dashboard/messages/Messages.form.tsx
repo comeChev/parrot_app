@@ -1,19 +1,18 @@
 "use client";
 
-import { useState } from "react";
-
-import Form from "@/components/ui/form/Form";
-import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-
-import { Message } from "@prisma/client";
-import FormSelect from "@/components/ui/form/Form.select";
+import { BsMailbox2, BsPhoneFill } from "react-icons/bs";
 import { MessageUpdate, updateMessage } from "@/lib/messages";
 import { SendMailBody, sendMail } from "@/utils/sendgrid";
 import { getFullName, getFullStringDate } from "@/utils/globals";
+
+import Form from "@/components/ui/form/Form";
+import FormFooter from "@/components/ui/form/Form.footer";
+import FormSelect from "@/components/ui/form/Form.select";
 import FormTextarea from "@/components/ui/form/Form.textarea";
+import { Message } from "@prisma/client";
 import UiButtonAction from "@/components/ui/Ui.button.action";
-import { BsMailbox2, BsPhoneFill } from "react-icons/bs";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import { useState } from "react";
 
 export const defaultMessage: Message = {
   message_id: 0,
@@ -50,7 +49,18 @@ export default function MessagesForm({
   setIsOpenForm,
 }: MessagesFormProps) {
   const oldMessage = currentMessage;
-  const [message, setMessage] = useState(currentMessage as MessageUpdate);
+  const [message, setMessage] = useState<MessageUpdate>({
+    ...currentMessage,
+    message_contact_phone: currentMessage.message_contact_phone
+      ? currentMessage.message_contact_phone
+      : "",
+    message_status:
+      currentMessage.message_status as MessageUpdate["message_status"],
+    message_response: "",
+    message_response_type:
+      currentMessage.message_response_type as MessageUpdate["message_response_type"],
+    message_response_date: new Date(),
+  });
   const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
@@ -59,7 +69,7 @@ export default function MessagesForm({
     let errorsTemp = defaultErrors;
 
     if (
-      message.message_response_type === "" ||
+      message.message_response_type === null ||
       !message.message_response_type
     ) {
       errorsTemp = {
@@ -147,7 +157,7 @@ export default function MessagesForm({
     // update message in db
     const messageToUpdate = {
       ...message,
-      message_status: "REPLIED",
+      message_status: "REPLIED" as MessageUpdate["message_status"],
       message_response_date: new Date(),
     };
     const response = await updateMessage(message.message_id, messageToUpdate);

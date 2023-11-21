@@ -1,18 +1,20 @@
 "use client";
 
-import TableBodyItemAction from "@/components/ui/table/Table.body.item.action";
 import React, { useState } from "react";
 import {
   UserListActionEdit,
   UserListActionStatus,
 } from "./Users.list.action.buttons";
+
+import TableBodyItemAction from "@/components/ui/table/Table.body.item.action";
 import { User } from "@prisma/client";
+import { UserWithoutPassword } from "@/lib/sql/users";
 
 type UsersListActionProps = {
-  user: User;
-  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  user: UserWithoutPassword;
+  setUsers: React.Dispatch<React.SetStateAction<UserWithoutPassword[]>>;
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrent: React.Dispatch<React.SetStateAction<User>>;
+  setCurrent: React.Dispatch<React.SetStateAction<UserWithoutPassword>>;
   list: React.RefObject<HTMLDivElement>;
 };
 

@@ -1,10 +1,12 @@
+import { NextRequest, NextResponse } from "next/server";
 import {
   verifyAdmin,
   verifyAuthorization,
 } from "@/utils/nextAuth/nextAuth.protections";
-import { prisma } from "@/utils/prisma";
+
 import { User } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { UserWithoutPassword } from "@/lib/sql/users";
+import { prisma } from "@/utils/prisma";
 
 export async function GET(request: NextRequest, response: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
@@ -114,11 +116,10 @@ export async function GET(request: NextRequest, response: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
-  //const isAdmin = await verifyAdmin();
+  const isAdmin = await verifyAdmin();
   try {
     // user must be logged and admin
-    // if (isAdmin) {
-    if (isAuthorized) {
+    if (isAdmin) {
       const body = await request.json();
       const user = await prisma.user.create({
         data: body,
@@ -138,14 +139,14 @@ export async function POST(request: NextRequest) {
       return new NextResponse(
         JSON.stringify({
           message: "Cet email ne peut pas être utilisé",
-          data: error,
+          error,
         }),
         { status: 409 }
       );
     }
     return new NextResponse(
       JSON.stringify({
-        message: error.message,
+        error: error.message,
         data: error,
       }),
       { status: error.status || 401 }
@@ -162,10 +163,12 @@ export async function PATCH(request: NextRequest) {
         throw new Error("Aucun id fourni");
       }
       const id = Number(request.nextUrl.searchParams.get("id"));
-      const body = await request.json();
+      const body: UserWithoutPassword = await request.json();
       const user = await prisma.user.update({
         where: { user_id: id },
-        data: body,
+        data: {
+          ...body,
+        },
       });
       return new NextResponse(
         JSON.stringify({
@@ -211,7 +214,7 @@ export async function DELETE(request: NextRequest) {
     return new NextResponse(
       JSON.stringify({
         status: "failed",
-        message: error.message,
+        error: error.message,
         data: error,
       }),
       { status: error.status || 401 }

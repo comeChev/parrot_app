@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
 import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
-import cookies from "@/assets/cookies.png";
+
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import cookies from "@/assets/cookies.png";
 
 export default function UiCookieConsent() {
   const cookieConsentValue = getCookieConsentValue();
@@ -20,8 +21,8 @@ export default function UiCookieConsent() {
         buttonWrapperClasses="flex items-center w-full justify-end px-4"
         overlayClasses="fixed top-0 inset-0 bg-neutral-800 bg-opacity-50 z-50 w-full h-full flex flex-col justify-end"
         overlay={true}
-        buttonText="J'accepte"
-        declineButtonText="Je refuse"
+        buttonText="J'accepte les cookies"
+        declineButtonText="Je refuse les cookies"
         debug={true}
       >
         <div className="text-start p-4">

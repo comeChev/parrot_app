@@ -1,10 +1,12 @@
-import { updateUser } from "@/lib/users";
-import { User } from "@prisma/client";
 import { BsEyeFill, BsFillEyeSlashFill, BsPenFill } from "react-icons/bs";
 
+import { User } from "@prisma/client";
+import { UserWithoutPassword } from "@/lib/sql/users";
+import { updateUser } from "@/lib/users";
+
 type UserListActionEditProps = {
-  user: User;
-  setCurrent: React.Dispatch<React.SetStateAction<User>>;
+  user: UserWithoutPassword;
+  setCurrent: React.Dispatch<React.SetStateAction<UserWithoutPassword>>;
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   list: React.RefObject<HTMLDivElement>;
@@ -39,8 +41,8 @@ export function UserListActionEdit({
 }
 
 type UserListActionStatusProps = {
-  user: User;
-  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  user: UserWithoutPassword;
+  setUsers: React.Dispatch<React.SetStateAction<UserWithoutPassword[]>>;
 
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
