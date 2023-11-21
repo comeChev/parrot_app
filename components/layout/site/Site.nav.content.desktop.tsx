@@ -1,8 +1,8 @@
 import { BsFillCarFrontFill } from "react-icons/bs";
 import Image from "next/image";
-import logo from "@/assets/logo-parrot.png";
-import SiteNavLinkDesktop from "./Site.nav.link.desktop";
 import Link from "next/link";
+import SiteNavLinkDesktop from "./Site.nav.link.desktop";
+import logo from "@/assets/logo-parrot.png";
 
 const navItems = [
   { url: "/", text: "Accueil" },
@@ -19,9 +19,15 @@ export default function SiteNavContentDesktop({
 }) {
   return (
     <div className="flex w-full h-20 items-center">
-      <div className=" hidden lg:w-[280px] bg-white h-full lg:flex items-center pl-10">
-        <Link href="/">
-          <Image src={logo} alt="logo Parrot" className="h-20 w-auto" />
+      <div className=" hidden lg:w-[190px] bg-white h-full lg:flex items-center pl-10">
+        <Link href="/" className="relative">
+          <Image
+            src={logo}
+            alt="logo Parrot"
+            height={81}
+            width={190.5}
+            className="h-[60px] w-auto object-contain"
+          />
         </Link>
       </div>
       {/* nav links */}

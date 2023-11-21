@@ -1,6 +1,3 @@
-import Image from "next/image";
-
-import { PublicCar } from "@/lib/cars";
 import {
   getConsumption,
   getFiscalPower,
@@ -8,16 +5,18 @@ import {
   getPrice,
   getUpperCaseFirstLetter,
 } from "@/utils/globals";
-import { BsFillTelephoneFill } from "react-icons/bs";
-import { MdMail } from "react-icons/md";
 
-import noImage from "@/assets/no-image-available.jpg";
-import UiTextPublished from "@/components/ui/Ui.text.published";
-import UiButtonAction from "@/components/ui/Ui.button.action";
+import { BsFillTelephoneFill } from "react-icons/bs";
 import CarViewAssets from "./Car.view.assets";
-import CarViewStrengths from "./Car.view.strengths";
-import CarViewProperty from "./Car.view.property";
 import CarViewGallery from "./Car.view.gallery";
+import CarViewProperty from "./Car.view.property";
+import CarViewStrengths from "./Car.view.strengths";
+import Image from "next/image";
+import { MdMail } from "react-icons/md";
+import { PublicCar } from "@/lib/cars";
+import UiButtonAction from "@/components/ui/Ui.button.action";
+import UiTextPublished from "@/components/ui/Ui.text.published";
+import noImage from "@/assets/no-image-available.jpg";
 
 type CarViewProps = {
   car: PublicCar;
@@ -27,19 +26,18 @@ export default function CarView({ car }: CarViewProps) {
   return (
     <div className="w-full min-h-screen">
       {/* image & main assets */}
-      <div className="flex flex-col md:flex-row w-full">
-        <div className="min-h-[300px] md:flex-1 relative">
+      <div className="flex flex-col lg:flex-row w-full">
+        <div className="flex-1 relative">
           <Image
             src={
               car.car_pictures[0]
                 ? car.car_pictures[0].car_picture_image
                 : noImage
             }
-            height={300}
-            width={500}
-            style={{ width: "auto", minHeight: "300px" }}
+            height={404}
+            width={640}
             alt={`Image de la voiture ${car.car_name}`}
-            className="object-cover w-full h-full"
+            className="object-cover w-full"
           />
         </div>
         <div className="flex-1 mt-5 md:mt-0 md:px-4">

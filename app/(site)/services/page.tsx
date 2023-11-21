@@ -1,14 +1,15 @@
-import UiImageMain from "@/components/ui/Ui.image.main";
 import {
   ServiceWithPicturesAndCategory,
   getServicesByCategory,
 } from "@/lib/services";
-import repairPic from "@/assets/services/repair/repairMain.jpg";
-import mechanicPic from "@/assets/services/mechanic/mechanicMain.jpg";
-import ServicesListItem from "@/components/site/services/Services.list.item";
-import { carItem, servicesItems } from "@/app/(site)/page";
+
 import HomeServicesItem from "@/components/site/home/Home.services.item";
+import ServicesListItem from "@/components/site/services/Services.list.item";
+import UiImageMain from "@/components/ui/Ui.image.main";
+import { carItem } from "@/data/data.home";
+import mechanicPic from "@/assets/services/mechanic/mechanicMain.jpg";
 import { prisma } from "@/utils/prisma";
+import repairPic from "@/assets/services/repair/repairMain.jpg";
 
 export default async function ServicesPage(params: {
   searchParams: { name: string };
@@ -63,16 +64,6 @@ export default async function ServicesPage(params: {
               <h3 className="text-3xl font-bold mb-10">
                 Les services que nous pouvons vous proposer
               </h3>
-              <div className="flex flex-col md:flex-row md:space-x-5">
-                {servicesItems.map((s) => (
-                  <HomeServicesItem
-                    url={`/services?name=${s.url}`}
-                    imageSrc={s.imageSrc}
-                    text={s.text}
-                    title={s.title}
-                  />
-                ))}
-              </div>
             </section>
           </div>
         )

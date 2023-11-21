@@ -1,98 +1,27 @@
+import { BsCarFrontFill, BsPersonWorkspace, BsStars } from "react-icons/bs";
+import { assetsItems, carItem } from "@/data/data.home";
+
+import { BiChevronsDown } from "react-icons/bi";
+import { GrServices } from "react-icons/gr";
+import HomeAssetsItem from "@/components/site/home/Home.assets.item";
+import HomeReviewsItem from "@/components/site/home/Home.reviews.item";
+import HomeServicesItem from "@/components/site/home/Home.services.item";
+import Image from "next/image";
+import Link from "next/link";
+import { Review } from "@prisma/client";
+import SeparatorImage from "@/components/ui/Ui.separator.image";
+import UiImageMain from "@/components/ui/Ui.image.main";
+import UiReasons from "@/components/ui/Ui.reasons";
+import UiTextMain from "@/components/ui/Ui.text.main";
+import carrosserie from "@/assets/home/carrosserie.jpg";
+import electric from "@/assets/home/electric.jpg";
+import { getFreshReviews } from "@/lib/reviews";
 import mainImage from "@/assets/home/main.jpg";
 import mechanic1 from "@/assets/home/mechanic1.jpg";
 import mechanic2 from "@/assets/home/mechanic2.jpg";
-import carrosserie from "@/assets/home/carrosserie.jpg";
-import vente from "@/assets/home/vente.webp";
-import revision from "@/assets/home/revision.jpg";
-import electric from "@/assets/home/electric.jpg";
-
-import HomeAssetsItem from "@/components/site/home/Home.assets.item";
-import HomeServicesItem from "@/components/site/home/Home.services.item";
-import Image from "next/image";
-import { BiChevronsDown } from "react-icons/bi";
-import { BsStars, BsCarFrontFill, BsPersonWorkspace } from "react-icons/bs";
-import { GrServices } from "react-icons/gr";
-import HomeReviewsItem from "@/components/site/home/Home.reviews.item";
-import SeparatorImage from "@/components/ui/Ui.separator.image";
-import Link from "next/link";
-import UiReasons from "@/components/ui/Ui.reasons";
-import { getFreshReviews } from "@/lib/reviews";
-import { Review } from "@prisma/client";
-import UiTextMain from "@/components/ui/Ui.text.main";
 import { prisma } from "@/utils/prisma";
-import UiImageMain from "@/components/ui/Ui.image.main";
-
-const assetsItems = [
-  {
-    Icon: BsStars,
-    title: "Des experts à votre service",
-    text: "Des mécaniciens expérimentés à votre service pour répondre à vos demandes que vous ayez déjà confié un véhicule ou que vous ne soyez pas encore client.",
-  },
-  {
-    Icon: BsCarFrontFill,
-    title: "Des véhicules d’occasions vérifiés, entretenus et certifiés",
-    text: "Tous les jours, nos techniciens assurent l’entretien et la révisions des véhicules qui nous sont confiés à la vente.",
-  },
-  {
-    Icon: BsPersonWorkspace,
-    title: "Un suivi personnalisé de votre dossier",
-    text: "De la prise en charge de véhicule au retour de celui-ci, nos experts vous tiennent informés de l’avancée des travaux et répondent à vos questions.",
-  },
-  {
-    Icon: GrServices,
-    title: "Des produits et des prestations de qualité",
-    text: "Nous prêtons une attention toute particulière à la provenance et la qualité de nos produits. Nos prestations sont donc dans la même lignée.",
-  },
-];
-
-export const carItem = {
-  imageSrc: vente,
-  text: "Véhicules en bon état et révisés cherchent propriétaires pour couler des jours heureux. Nous nous chargeons de vous mettre en relation.",
-  title: "Vente de véhicules d'occasion",
-  url: "/cars",
-};
-
-export const servicesItems = [
-  {
-    imageSrc: vente,
-    text: "Véhicules en bon état et révisés cherchent propriétaires pour couler des jours heureux. Nous nous chargeons de vous mettre en relation.",
-    title: "Vente de véhicules d'occasion",
-    url: "/cars",
-  },
-  {
-    imageSrc: revision,
-    text: "Votre voiture a besoin d’attention et nous nous tenons prêt à lui accorder le temps nécessaire.",
-    title: "Entretien et révision mécanique",
-    url: "/services?name=mechanic",
-  },
-  {
-    imageSrc: carrosserie,
-    text: "Nos experts sont prêts à refaire une beauté à votre véhicule ou encore à réparer les affres du temps.",
-    title: "Carrosserie et réparation",
-    url: "/services?name=repair",
-  },
-];
-
-const reviewItems = [
-  {
-    name: "Roger E.",
-    date: new Date(2021, 10, 3),
-    note: 3,
-    text: "Disponibles durant tout le long de l’entretien de mon véhicule, les mécaniciens ont su répondre à mes questions et me rassurer.",
-  },
-  {
-    name: "Roger E.",
-    date: new Date(2021, 10, 3),
-    note: 0,
-    text: "Disponibles durant tout le long de l’entretien de mon véhicule, les mécaniciens ont su répondre à mes questions et me rassurer.",
-  },
-  {
-    name: "Roger E.",
-    date: new Date(2021, 10, 3),
-    note: 4,
-    text: "Disponibles durant tout le long de l’entretien de mon véhicule, les mécaniciens ont su répondre à mes questions et me rassurer.",
-  },
-];
+import revision from "@/assets/home/revision.jpg";
+import vente from "@/assets/home/vente.webp";
 
 export default async function Home() {
   const reviews = await getFreshReviews();
@@ -123,13 +52,17 @@ export default async function Home() {
       {/* section 2 - presentation */}
       <div className="container mx-auto h-[500px] mb-[100px]">
         <div className="flex items-center h-full">
-          <Image
-            priority
-            placeholder="blur"
-            src={mechanic1}
-            alt="image de mécanicien"
-            className="hidden md:flex h-full object-cover  w-[150px] lg:w-[300px]"
-          />
+          <div className="h-full w-[150px] lg:w-[300px] relative">
+            <Image
+              priority
+              fill
+              placeholder="blur"
+              src={mechanic1}
+              sizes="(min-width: 1040px) 300px, 150px"
+              alt="image de mécanicien"
+              className="hidden md:flex w-full h-full object-cover "
+            />
+          </div>
           <div className="flex flex-col px-4 md:flex-1 space-y-5 text-lg font-light">
             <p>
               Le garage V. Parrot ouvre ses portes aux particuliers et aux
@@ -167,11 +100,17 @@ export default async function Home() {
               ou ponctuel.
             </p>
           </div>
-          <Image
-            src={mechanic2}
-            alt="image d'un autre mécanicien"
-            className="hidden md:flex h-full object-cover w-[150px] lg:w-[300px]"
-          />
+          <div className="h-full w-[150px] lg:w-[300px] relative">
+            <Image
+              priority
+              src={mechanic2}
+              placeholder="blur"
+              sizes="(min-width: 1040px) 300px, 150px"
+              fill
+              alt="image d'un autre mécanicien"
+              className="hidden md:flex object-cover h-full w-full "
+            />
+          </div>
         </div>
       </div>
 

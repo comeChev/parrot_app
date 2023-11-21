@@ -5,14 +5,16 @@ type UiImageMainProps = {
 };
 export default function UiImageMain({ image }: UiImageMainProps) {
   return (
-    <div className="relative w-full h-[500px] mb-10 md:mb-[100px]">
+    <div className="container relative w-full h-[500px] mb-10 md:mb-[100px] mx-auto">
       <Image
         src={image}
         alt="Image principale - garage V. Parrot"
-        fill={true}
-        className="w-full h-full object-cover brightness-[60%]"
+        fill
+        // sizes="(min-width: 640px) 640px, (min-width: 768px) 768px, (min-width: 1024px) 1024px, (min-width: 1280) 1280px, (min-width: 1536px) 1536px)"
+        sizes="(min-width: 1540px) 1536px, (min-width: 1280px) 1280px, (min-width: 1040px) 1024px, (min-width: 780px) 768px, (min-width: 680px) 640px, calc(94.44vw + 17px)"
+        className="object-cover brightness-[60%] w-auto h-full"
         placeholder="blur"
-        priority={true}
+        priority
       />
       {/* Title with name of the enterprise */}
       <div className="absolute bottom-32 w-3/4 left-1/2 transform -translate-x-1/2 items-center flex flex-col py-3 rounded-md bg-opacity-70 bg-red-800">

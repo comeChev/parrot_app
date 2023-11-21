@@ -1,8 +1,9 @@
 "use client";
 
 import { Car_picture, Picture, Service_picture } from "@prisma/client";
-import Image from "next/image";
 import { useRef, useState } from "react";
+
+import Image from "next/image";
 
 type UiModalPictureProps = {
   setIsOpen: (isOpen: boolean) => void;
@@ -62,11 +63,14 @@ export default function UiModalPicture({
         height={calculateImageHeight()}
         width={calculateImageWidth()}
         className="object-cover transition-opacity opacity-0 duration-[1s]"
-        onLoadingComplete={(image) => {
-          image.classList.remove("opacity-0");
+        style={{ width: "auto" }}
+        onLoad={(image) => {
+          image.currentTarget.classList.remove("opacity-0");
           textRef.current?.classList.remove("opacity-0");
-          setImageRatio(image.naturalWidth / image.naturalHeight);
-          setImageHeight(image.naturalHeight);
+          setImageRatio(
+            image.currentTarget.naturalWidth / image.currentTarget.naturalHeight
+          );
+          setImageHeight(image.currentTarget.naturalHeight);
         }}
       />
       <p

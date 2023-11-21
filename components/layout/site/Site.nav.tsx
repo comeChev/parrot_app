@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { Session } from "next-auth";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+
 import { Hour } from "@prisma/client";
-
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import logo from "@/assets/logo-parrot.png";
-
+import Image from "next/image";
+import Link from "next/link";
+import { Session } from "next-auth";
 import SiteNavContent from "./Site.nav.content";
 import SiteNavContentDesktop from "./Site.nav.content.desktop";
-import Link from "next/link";
+import logo from "@/assets/logo-parrot.png";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function SiteNav({
   session,
@@ -25,7 +24,7 @@ export default function SiteNav({
   const pathname = usePathname();
 
   return (
-    <header className="w-full text-neutral-100 text-title">
+    <header className="container mx-auto text-neutral-100 text-title">
       {/* mobile */}
       <div className="bg-red-800 w-full md:hidden">
         {isOpen ? (
@@ -39,13 +38,17 @@ export default function SiteNav({
           </div>
         ) : (
           <div className="w-full flex justify-between items-center h-[80px]">
-            <Link href="/" aria-label="Retour à l'accueil">
-              <Image
-                src={logo}
-                alt="logo garage V. Parrot"
-                className="w-[190px] object-cover h-[80px]"
-              />
-            </Link>
+            <div className="h-full bg-white items-center flex px-5">
+              <Link href="/" aria-label="Retour à l'accueil">
+                <Image
+                  src={logo}
+                  height={81}
+                  width={190.5}
+                  alt="logo garage V. Parrot"
+                  className="w-auto object-cover h-[50px]"
+                />
+              </Link>
+            </div>
             <AiOutlineMenu
               aria-label="ouvrir le menu"
               type="button"
