@@ -1,14 +1,15 @@
-import UiImageMain from "@/components/ui/Ui.image.main";
-import { PublicCar, getCar } from "@/lib/cars";
-import mainCarImage from "@/assets/cars/carsMain.jpg";
-import { FaHome } from "react-icons/fa";
 import BreadCrumb, { BreadCrumbItem } from "@/components/ui/Ui.breadcrumb";
-import CarView from "@/components/site/car/Car.view";
-import UiReasons from "@/components/ui/Ui.reasons";
-import CarForm from "@/components/site/car/Car.form";
-import UiTextMain from "@/components/ui/Ui.text.main";
-import UiButtonAction from "@/components/ui/Ui.button.action";
+import { PublicCar, getCar } from "@/lib/cars";
+
 import { BsFillTelephoneFill } from "react-icons/bs";
+import CarForm from "@/components/site/car/Car.form";
+import CarView from "@/components/site/car/Car.view";
+import { FaHome } from "react-icons/fa";
+import UiButtonAction from "@/components/ui/Ui.button.action";
+import UiImageMain from "@/components/ui/Ui.image.main";
+import UiReasons from "@/components/ui/Ui.reasons";
+import UiTextMain from "@/components/ui/Ui.text.main";
+import mainCarImage from "@/assets/cars/carsMain.jpg";
 
 export default async function CarPage(params: {
   searchParams: { id: string };
@@ -27,7 +28,7 @@ export default async function CarPage(params: {
   return (
     <div className="w-full">
       <UiImageMain image={mainCarImage} />
-      <div className="container mx-auto p-4 mb-[100px]">
+      <div className="container mx-auto p-4 mb-[100px] md:-mt-20">
         <BreadCrumb items={items} />
         <CarView car={car} />
         {/* Reasons */}

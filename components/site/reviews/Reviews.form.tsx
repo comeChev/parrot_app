@@ -1,13 +1,15 @@
 "use client";
 
+import { BsStar, BsStarFill } from "react-icons/bs";
+import { NewReview, createReview } from "@/lib/reviews";
+
 import Form from "@/components/ui/form/Form";
 import FormError from "@/components/ui/form/Form.error";
 import FormInput from "@/components/ui/form/Form.input";
+import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
-import { NewReview, createReview } from "@/lib/reviews";
 import { useState } from "react";
-import { BsStar, BsStarFill } from "react-icons/bs";
 
 const defaultReview: NewReview = {
   review_user_email: "",
@@ -26,6 +28,7 @@ type ErrorsProps = {
   lastName: string;
   comment: string;
   note: string;
+  captcha: string;
 };
 
 type ValidationProps = {
@@ -39,6 +42,7 @@ const defaultErrors: ErrorsProps = {
   lastName: "",
   comment: "",
   note: "",
+  captcha: "",
 };
 
 const defaultValidation: ValidationProps = {
@@ -56,6 +60,7 @@ export default function ReviewsForm() {
   const [review, setReview] = useState<NewReview>(defaultReview);
   const [errors, setErrors] = useState<ErrorsProps>(defaultErrors);
   const [loading, setLoading] = useState<boolean>(false);
+  const [captcha, setCaptcha] = useState<null | string>(null);
   const [validation, setValidation] =
     useState<ValidationProps>(defaultValidation);
 
@@ -114,11 +119,19 @@ export default function ReviewsForm() {
       };
     }
 
+    if (captcha === null) {
+      errorsTemp = {
+        ...errorsTemp,
+        captcha: "Veuillez cocher la case 'Je ne suis pas un robot'.",
+      };
+    }
+
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
       return false;
     }
+    setErrors(defaultErrors);
     return true;
   }
 
@@ -251,7 +264,7 @@ export default function ReviewsForm() {
         }
         handleFocus={() => setErrors({ ...errors, comment: "" })}
       />
-
+      <FormReacaptcha setCaptcha={setCaptcha} error={errors.captcha} />
       {/* submit button */}
       <FormSubmit
         handleClick={handleSubmit}

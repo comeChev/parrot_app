@@ -17,6 +17,20 @@ module.exports = {
         subtitle: ["Lora", "serif"],
         body: ["Assistant", "sans-serif"],
       },
+      keyframes: {
+        wiggle: {
+          "0%": { transform: "rotate(-120deg)" },
+          // "20%": { transform: "rotate(90deg)" },
+          // "40%": { transform: "rotate(-45deg)" },
+          // "60%": { transform: "rotate(45deg)" },
+          // "80%": { transform: "rotate(-8deg)" },
+
+          "90%": { transform: "rotate(180deg)" },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 1.5s linear infinite",
+      },
     },
   },
   plugins: [],

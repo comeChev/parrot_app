@@ -1,9 +1,10 @@
+import { NextRequest, NextResponse } from "next/server";
 import {
   verifyAuthorization,
   verifySession,
 } from "@/utils/nextAuth/nextAuth.protections";
+
 import { prisma } from "@/utils/prisma";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const hasSession = await verifySession();
@@ -80,7 +81,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    return new NextResponse(JSON.stringify({ data: error.message }), {
+    console.log(error);
+    return new NextResponse(JSON.stringify({ error: error.message }), {
       status: error.status || 500,
     });
   }

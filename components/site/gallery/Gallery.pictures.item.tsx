@@ -1,8 +1,8 @@
 "use client";
 
-import UiModalPicture from "@/components/ui/Ui.modal.picture";
-import { Picture } from "@prisma/client";
 import Image from "next/image";
+import { Picture } from "@prisma/client";
+import UiModalPicture from "@/components/ui/Ui.modal.picture";
 import { useState } from "react";
 
 export default function GalleryPicturesItem({ picture }: { picture: Picture }) {
@@ -16,7 +16,7 @@ export default function GalleryPicturesItem({ picture }: { picture: Picture }) {
         width={300}
         height={300}
         placeholder="blur"
-        blurDataURL={"/public/blur.png"}
+        blurDataURL={"/blur.png"}
         onClick={() => setIsOpen(true)}
         className="h-full w-full object-cover rounded-md"
       />

@@ -33,10 +33,10 @@ export default function HomeReviewsItem({
       <div className="text-center">
         {/* stars */}
         <div className="flex space-x-2 justify-center">
-          {arrayStars.map((s) => {
+          {arrayStars.map((s, i) => {
             if (review.review_note >= s)
-              return <BsStarFill className="text-4xl text-red-700" />;
-            return <BsStar className="text-4xl text-red-700" />;
+              return <BsStarFill key={i} className="text-4xl text-red-700" />;
+            return <BsStar key={i} className="text-4xl text-red-700" />;
           })}
         </div>
         {/* review */}

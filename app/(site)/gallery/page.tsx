@@ -1,10 +1,11 @@
-import UiImageMain from "@/components/ui/Ui.image.main";
-import galleryMainPic from "@/assets/gallery/mainGallery.jpg";
-import UiReasons from "@/components/ui/Ui.reasons";
-import { getPictures } from "@/lib/pictures";
-import { Picture } from "@prisma/client";
 import GalleryPictures from "@/components/site/gallery/Gallery.pictures";
+import { Picture } from "@prisma/client";
+import { Suspense } from "react";
+import UiImageMain from "@/components/ui/Ui.image.main";
+import UiReasons from "@/components/ui/Ui.reasons";
 import UiTextMain from "@/components/ui/Ui.text.main";
+import galleryMainPic from "@/assets/gallery/mainGallery.jpg";
+import { getPictures } from "@/lib/pictures";
 
 export default async function GalleryPage() {
   const pictures: Picture[] = await getPictures();
@@ -24,12 +25,13 @@ export default async function GalleryPage() {
       <UiImageMain image={galleryMainPic} />
 
       <UiTextMain text="Découvrez nos photos de véhicules, de notre garage et de nos équipes !" />
-
-      <div className="container mx-auto flex flex-col space-y-5 mb-[80px]">
-        {pagesPictures.map((pagePictures) => (
-          <GalleryPictures pictures={pagePictures} />
-        ))}
-      </div>
+      <Suspense>
+        <div className="container mx-auto flex flex-col space-y-5 mb-[80px]">
+          {pagesPictures.map((pagePictures, i) => (
+            <GalleryPictures pictures={pagePictures} key={i} />
+          ))}
+        </div>
+      </Suspense>
 
       {/* reasons */}
       <UiReasons />

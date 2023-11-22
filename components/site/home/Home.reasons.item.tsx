@@ -16,9 +16,9 @@ export default function HomeReasonsItem({
       <Icon className="text-red-800 text-6xl md:text-7xl lg:text-8xl" />
       <div className="w-full flex flex-col text-start mt-5 mb-12">
         <div className="w-1/2 mx-auto bg-neutral-600 h-[2px] mb-5" />
-        <h4 className="text-lg font-semibold font-subtitle mb-2 text-gray-800">
+        <h3 className="text-lg font-semibold font-subtitle mb-2 text-gray-800">
           {title}
-        </h4>
+        </h3>
         <p className="font-light text-base text-neutral-700 leading-relaxed">
           {text}
         </p>

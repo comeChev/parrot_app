@@ -1,11 +1,15 @@
 "use client";
 
+import { MessageCreate, createMessage } from "@/lib/messages";
+
 import Form from "@/components/ui/form/Form";
+import FormError from "@/components/ui/form/Form.error";
 import FormInput from "@/components/ui/form/Form.input";
 import FormPhone from "@/components/ui/form/Form.phone";
+import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
-import { MessageCreate, createMessage } from "@/lib/messages";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 
 const defaultMessage: MessageCreate = {
@@ -26,6 +30,7 @@ type ErrorsProps = {
   email: string;
   phone: string;
   content: string;
+  captcha: string;
 };
 
 const defaultErrors: ErrorsProps = {
@@ -34,6 +39,7 @@ const defaultErrors: ErrorsProps = {
   email: "",
   phone: "",
   content: "",
+  captcha: "",
 };
 
 export default function ContactForm() {
@@ -41,6 +47,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState(defaultErrors);
   const [loading, setLoading] = useState(false);
   const [validation, setValidation] = useState({ success: false, message: "" });
+  const [captcha, setCaptcha] = useState<null | string>(null);
 
   // handle errors
   function isValidForm() {
@@ -102,11 +109,19 @@ export default function ContactForm() {
       };
     }
 
+    if (captcha === null) {
+      errorsTemp = {
+        ...errorsTemp,
+        captcha: "Veuillez cocher la case 'Je ne suis pas un robot'.",
+      };
+    }
+
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
       return false;
     }
+    setErrors(defaultErrors);
     return true;
   }
 
@@ -197,7 +212,10 @@ export default function ContactForm() {
         label="Téléphone"
         placeholder="0612345678"
         handleChange={(e) =>
-          setMessage({ ...message, message_contact_phone: e.target.value })
+          setMessage({
+            ...message,
+            message_contact_phone: e.target.value.trim(),
+          })
         }
         handleFocus={(e) => setErrors({ ...errors, phone: "" })}
         value={message.message_contact_phone}
@@ -215,6 +233,8 @@ export default function ContactForm() {
         }
         handleFocus={(e) => setErrors({ ...errors, content: "" })}
       />
+
+      <FormReacaptcha setCaptcha={setCaptcha} error={errors.captcha} />
 
       {/* submit */}
       <FormSubmit

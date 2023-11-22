@@ -1,7 +1,8 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
 import { BsFilterCircle, BsFilterCircleFill } from "react-icons/bs";
+import { Dispatch, SetStateAction, useState } from "react";
+
 import CarsFilterFormSelect from "./Cars.filter.form.select";
 import CarsFilterFormSlider from "./Cars.filter.form.slider";
 import { PublicCar } from "@/lib/cars";

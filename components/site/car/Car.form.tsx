@@ -1,11 +1,13 @@
 "use client";
 
+import { CarMessage, PublicCar, createCarMessage } from "@/lib/cars";
+
 import Form from "@/components/ui/form/Form";
 import FormInput from "@/components/ui/form/Form.input";
 import FormPhone from "@/components/ui/form/Form.phone";
+import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
-import { CarMessage, PublicCar, createCarMessage } from "@/lib/cars";
 import { useState } from "react";
 
 const defaultMessage: CarMessage = {
@@ -27,6 +29,7 @@ type ErrorsProps = {
   email: string;
   phone: string;
   content: string;
+  captcha: string;
 };
 
 const defaultErrors: ErrorsProps = {
@@ -35,6 +38,7 @@ const defaultErrors: ErrorsProps = {
   email: "",
   phone: "",
   content: "",
+  captcha: "",
 };
 
 type CarFormProps = {
@@ -45,6 +49,7 @@ export default function CarForm({ car }: CarFormProps) {
   const [loading, setLoading] = useState(false);
   const [validation, setValidation] = useState({ success: false, message: "" });
   const [errors, setErrors] = useState(defaultErrors);
+  const [captcha, setCaptcha] = useState<null | string>(null);
   const [message, setMessage] = useState({
     ...defaultMessage,
     car_id: car.car_id,
@@ -134,11 +139,19 @@ export default function CarForm({ car }: CarFormProps) {
       };
     }
 
+    if (captcha === null) {
+      errorsTemp = {
+        ...errorsTemp,
+        captcha: "Veuillez cocher la case 'Je ne suis pas un robot'.",
+      };
+    }
+
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
       return false;
     }
+    setErrors(defaultErrors);
     return true;
   }
 
@@ -202,7 +215,7 @@ export default function CarForm({ car }: CarFormProps) {
           handleChange={(e) =>
             setMessage({
               ...message,
-              car_message_contact_email: e.target.value,
+              car_message_contact_email: e.target.value.trim(),
             })
           }
           handleFocus={(e) => setErrors({ ...errors, email: "" })}
@@ -234,6 +247,8 @@ export default function CarForm({ car }: CarFormProps) {
           }
           handleFocus={(e) => setErrors({ ...errors, content: "" })}
         />
+
+        <FormReacaptcha setCaptcha={setCaptcha} error={errors.captcha} />
 
         {/* submit */}
         <FormSubmit

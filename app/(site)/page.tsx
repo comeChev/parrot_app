@@ -6,6 +6,7 @@ import HomeServicesItem from "@/components/site/home/Home.services.item";
 import Image from "next/image";
 import Link from "next/link";
 import SeparatorImage from "@/components/ui/Ui.separator.image";
+import { Suspense } from "react";
 import UiImageMain from "@/components/ui/Ui.image.main";
 import UiReasons from "@/components/ui/Ui.reasons";
 import UiTextMain from "@/components/ui/Ui.text.main";
@@ -46,7 +47,6 @@ export default async function Home() {
         <div className="flex flex-col lg:flex-row h-full">
           <div className="absolute top-[300px] ml-10 h-[400px] mb-4 w-1/3 lg:relative lg:h-full lg:w-[300px] lg:ml-0 lg:top-0 shadow-xl hidden md:flex lg:mb-0">
             <Image
-              priority
               fill
               placeholder="blur"
               src={mechanic1}
@@ -113,20 +113,23 @@ export default async function Home() {
         </h2>
         <div className="h-[3px] bg-red-700 w-2/3 md:w-1/3 lg:w-1/4 mx-auto mb-12" />
         <div className="flex flex-col md:grid md:grid-cols-3 md:space-x-5">
-          {categories.map((c) => (
-            <HomeServicesItem
-              url={`/services?name=${c.category_name_url}`}
-              imageSrc={c.category_picture || ""}
-              text={c.category_description}
-              title={c.category_name}
-            />
-          ))}
           <HomeServicesItem
             url={carItem.url}
             imageSrc={carItem.imageSrc}
             text={carItem.text}
             title={carItem.title}
           />
+          <Suspense>
+            {categories.map((c) => (
+              <HomeServicesItem
+                key={c.category_id}
+                url={`/services?name=${c.category_name_url}`}
+                imageSrc={c.category_picture || ""}
+                text={c.category_description}
+                title={c.category_name}
+              />
+            ))}
+          </Suspense>
         </div>
       </div>
 
@@ -141,7 +144,9 @@ export default async function Home() {
         <h3 className="text-3xl font-bold mb-16 font-title">
           Ils nous ont fait confiance
         </h3>
-        <Carousel reviews={reviews} />
+        <Suspense>
+          <Carousel reviews={reviews} />
+        </Suspense>
         <div className="flex items-center justify-center w-full">
           <Link
             href="/reviews"

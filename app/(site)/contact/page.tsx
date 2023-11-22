@@ -1,15 +1,15 @@
-import UiImageMain from "@/components/ui/Ui.image.main";
-import React from "react";
-import mailPic from "@/assets/contact/mail.jpg";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import ContactForm from "@/components/site/contact/Contact.form";
+import React from "react";
+import UiButtonAction from "@/components/ui/Ui.button.action";
+import UiImageMain from "@/components/ui/Ui.image.main";
 import UiReasons from "@/components/ui/Ui.reasons";
 import UiTextMain from "@/components/ui/Ui.text.main";
-import UiButtonAction from "@/components/ui/Ui.button.action";
+import mailPic from "@/assets/contact/mail.jpg";
 
 export default function PageContact() {
   return (
-    <div>
+    <div className="container mx-auto">
       <UiImageMain image={mailPic} />
 
       <UiTextMain text="Nous sommes là pour vous aider" />

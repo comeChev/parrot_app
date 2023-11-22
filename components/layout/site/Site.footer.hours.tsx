@@ -34,7 +34,10 @@ const SiteFooterHours: React.FC<SiteFooterHoursProps> = ({ hours }) => {
         } md:max-h-[500px]`}
       >
         {hours.map((hour) => (
-          <div className="flex space-x-2 items-center border-b border-neutral-500 py-2 ">
+          <div
+            key={hour.hour_id}
+            className="flex space-x-2 items-center border-b border-neutral-500 py-2 "
+          >
             <div className="w-[100px]">{hour.hour_day}</div>
             {hour.hour_morning_status === false &&
             hour.hour_afternoon_status === false ? (

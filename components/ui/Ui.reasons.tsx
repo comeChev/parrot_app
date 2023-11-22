@@ -1,34 +1,8 @@
-import { BsPinMapFill } from "react-icons/bs";
-import { FaHandsHelping } from "react-icons/fa";
-import { GiReceiveMoney } from "react-icons/gi";
 import HomeReasonsItem from "../site/home/Home.reasons.item";
-import { LiaCertificateSolid } from "react-icons/lia";
 import React from "react";
 import SeparatorImage from "./Ui.separator.image";
 import outils from "@/assets/home/outils.jpg";
-
-const reasonItems = [
-  {
-    Icon: FaHandsHelping,
-    text: "Forts de plus de 15 années d'expérience dans le métier de garagiste, nous saurons répondre à vos besoins dans les meilleurs délais.",
-    title: "Expertise et réactivité",
-  },
-  {
-    Icon: LiaCertificateSolid,
-    text: "Nous disposons des qualifications et des compétences nécessaires pour vous assurer un service de qualité.",
-    title: "Certifications",
-  },
-  {
-    Icon: GiReceiveMoney,
-    text: "Nous vous proposons des tarifs attractifs et respectueux de la qualité de notre travail.",
-    title: "Tarifs attractifs",
-  },
-  {
-    Icon: BsPinMapFill,
-    text: "Notre emplacement idéal nous permet de vous offrir un service de proximité.",
-    title: "Emplacements et réseaux",
-  },
-];
+import { reasonItems } from "@/data/data.home";
 
 export default function UiReasons() {
   return (

@@ -1,5 +1,9 @@
+"use client";
+
 import { Car_picture } from "@prisma/client";
-import CarViewGalleryItem from "./Car.view.gallery.item";
+import Image from "next/image";
+import noImage from "@/assets/no-image-available.jpg";
+import { useState } from "react";
 
 type CarViewGalleryProps = {
   pictures: Car_picture[];
@@ -10,16 +14,50 @@ export default function CarViewGallery({
   pictures,
   carName,
 }: CarViewGalleryProps) {
+  const [activePicture, setActivePicture] = useState(pictures[0] || null);
+  const picturesDB = [...pictures];
+
   return (
     <div className="mt-16">
       <p className="text-xl">Galerie de photos</p>
       <p className="font-light text-neutral-500 text-sm">
         {carName.toUpperCase()}
       </p>
-      <div className="flex flex-wrap mt-4 min-h-[200px] w-full">
-        {pictures.map((picture) => (
-          <CarViewGalleryItem key={picture.car_picture_id} picture={picture} />
-        ))}
+      <div className="flex-1 relative md:w-1/2 md:h-[400px] mt-4">
+        <Image
+          src={activePicture ? activePicture.car_picture_image : noImage}
+          height={404}
+          width={640}
+          alt={`Image de la voiture ${activePicture?.car_picture_name}`}
+          className="object-cover w-full md:h-full rounded-md"
+        />
+      </div>
+      <div className="w-full md:w-1/2 overflow-hidden">
+        <div className="flex py-4 mt-8 w-full h-[150px] overflow-hidden overflow-x-auto gap-2">
+          {picturesDB.map((picture) => (
+            <div
+              key={picture.car_picture_id}
+              className={`h-[100px] w-[100px] p-1 cursor-pointer border-2 transition-colors duration-500 ${
+                activePicture &&
+                picture.car_picture_id === activePicture.car_picture_id
+                  ? "border-red-800"
+                  : "hover:border-red-800 opacity-50 hover:opacity-90"
+              }`}
+            >
+              <div className={`h-[90px] w-[90px] relative`}>
+                <Image
+                  src={picture.car_picture_image}
+                  key={picture.car_picture_id}
+                  alt={picture.car_picture_name}
+                  fill
+                  sizes="(min-width: 780px) 188px, (min-width: 680px) 292px, calc(47.22vw - 20px)"
+                  className="object-cover w-full h-full transition-all duration-[1s]"
+                  onClick={() => setActivePicture(picture)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
