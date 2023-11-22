@@ -9,7 +9,7 @@ import { FaHandsHelping } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
 import { GrServices } from "react-icons/gr";
 import { LiaCertificateSolid } from "react-icons/lia";
-import vente from "@/assets/home/vente.webp";
+import vente from "@/assets/home/vente.jpeg";
 
 export const reasonItems = [
   {

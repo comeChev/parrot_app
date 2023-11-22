@@ -50,7 +50,7 @@ export default function CarViewGallery({
                   key={picture.car_picture_id}
                   alt={picture.car_picture_name}
                   fill
-                  sizes="(min-width: 780px) 188px, (min-width: 680px) 292px, calc(47.22vw - 20px)"
+                  sizes="90px"
                   className="object-cover w-full h-full transition-all duration-[1s]"
                   onClick={() => setActivePicture(picture)}
                 />

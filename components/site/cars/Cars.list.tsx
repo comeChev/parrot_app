@@ -1,10 +1,11 @@
 "use client";
 
-import { PublicCar } from "@/lib/cars";
 import { useRef, useState } from "react";
-import CarsListItem from "./Cars.list.item";
-import UiPagination from "@/components/ui/Ui.pagination";
+
 import CarsFilterForm from "./Cars.filter.form";
+import CarsListItem from "./Cars.list.item";
+import { PublicCar } from "@/lib/cars";
+import UiPagination from "@/components/ui/Ui.pagination";
 
 export default function CarsList({ carsDB }: { carsDB: PublicCar[] }) {
   const [itemsPerPage, setItemsPerPage] = useState(4);
@@ -23,7 +24,7 @@ export default function CarsList({ carsDB }: { carsDB: PublicCar[] }) {
 
   return (
     <div className="container mx-auto mb-[100px]">
-      <div className="flex flex-col md:flex-row md:justify-between">
+      <div className="flex flex-col md:flex-row ">
         <CarsFilterForm
           cars={cars}
           handleResetCars={handleResetCars}
@@ -33,13 +34,9 @@ export default function CarsList({ carsDB }: { carsDB: PublicCar[] }) {
         />
 
         {/* cars list & pagination */}
-        <div className="">
+        <div className="w-full">
           {/* Cars list */}
-          <div
-            className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-            id="carsList"
-            ref={listCars}
-          >
+          <div className="flex flex-col" id="carsList" ref={listCars}>
             {cars &&
               cars.length > 0 &&
               cars

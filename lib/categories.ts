@@ -9,14 +9,16 @@ export async function getCategories() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      cache: "no-cache",
+      next: {
+        revalidate: 60 * 60,
+      },
     }
   );
   const categoriesJson = await categories.json();
   if (categoriesJson.error) {
     return [];
   }
-  return categoriesJson.data;
+  return categoriesJson.data as Category[];
 }
 
 export async function getCategory(id: number) {

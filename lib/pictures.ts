@@ -9,7 +9,7 @@ export async function getPictures() {
         "Content-Type": "application/json",
         authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      cache: "no-cache",
+      next: { revalidate: 60 * 60 },
     }
   );
   const picturesJson = await pictures.json();

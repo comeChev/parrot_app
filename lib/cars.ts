@@ -1,6 +1,7 @@
-import { deleteFile } from "@/utils/supabase.upload";
 import { Car, Car_message, Car_picture, Strength } from "@prisma/client";
+
 import { decode } from "punycode";
+import { deleteFile } from "@/utils/supabase.upload";
 
 export interface FullCar extends Car {
   car_status: "ONLINE" | "OFFLINE" | "ARCHIVED";
@@ -21,7 +22,8 @@ export async function getCars() {
       "Content-Type": "application/json",
       authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
     },
-    cache: "no-cache",
+    // revalidate every hour
+    next: { revalidate: 60 * 60 },
   });
   const responseJson = await response.json();
   if (responseJson.error) {

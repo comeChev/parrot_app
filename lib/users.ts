@@ -10,7 +10,8 @@ export async function getUsers() {
         "Content-Type": "application/json",
         authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      cache: "no-cache",
+      // revalidate every 24 hours
+      next: { revalidate: 60 * 60 * 24 },
     }
   );
   const responseJson = await response.json();

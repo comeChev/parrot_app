@@ -1,9 +1,10 @@
+import { NextRequest, NextResponse } from "next/server";
 import {
   verifyAuthorization,
   verifySession,
 } from "@/utils/nextAuth/nextAuth.protections";
+
 import { prisma } from "@/utils/prisma";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
@@ -54,6 +55,27 @@ export async function GET(request: NextRequest) {
 
     // for site visitors
     if (isAuthorized) {
+      //get fresh reviews
+      if (request.nextUrl.searchParams.get("fresh")) {
+        const take = Number(request.nextUrl.searchParams.get("fresh"));
+        const reviews = await prisma.review.findMany({
+          where: { review_status: "ONLINE" },
+          orderBy: { review_id: "desc" },
+          take,
+        });
+        if (!reviews) {
+          throw new Error("Aucune review trouvée");
+        }
+        return new NextResponse(
+          JSON.stringify({
+            message:
+              "Liste des 3 reviews les plus récentes récupérée avec succès",
+            data: reviews,
+          }),
+          { status: 200 }
+        );
+      }
+
       //get all reviews if online
       const reviews = await prisma.review.findMany({
         where: { review_status: "ONLINE" },

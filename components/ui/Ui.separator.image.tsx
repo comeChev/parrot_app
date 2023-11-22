@@ -13,7 +13,6 @@ export default function SeparatorImage({ image }: SeparatorImageProps) {
         placeholder="blur"
         alt="image d'outils garage V. Parrot"
         className="w-full h-full object-cover md:rounded-md"
-        loading="lazy"
       />
     </div>
   );

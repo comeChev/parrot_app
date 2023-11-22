@@ -1,5 +1,6 @@
-import { deleteFile } from "@/utils/supabase.upload";
 import { Category, Service, Service_picture } from "@prisma/client";
+
+import { deleteFile } from "@/utils/supabase.upload";
 
 export interface ServiceWithPictures extends Service {
   service_images: Partial<Service_picture>[];
@@ -147,7 +148,7 @@ export async function getServicesByCategory(name: string) {
         "Content-Type": "application/json",
         authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
-      cache: "no-cache",
+      next: { revalidate: 60 * 60 },
     }
   );
   const servicesJson = await services.json();

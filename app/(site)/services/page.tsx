@@ -3,10 +3,12 @@ import {
   getServicesByCategory,
 } from "@/lib/services";
 
+import HomeServiceOldCar from "@/components/site/home/Home.service.oldCar";
 import HomeServicesItem from "@/components/site/home/Home.services.item";
 import ServicesListItem from "@/components/site/services/Services.list.item";
 import UiImageMain from "@/components/ui/Ui.image.main";
 import { carItem } from "@/data/data.home";
+import { getCategories } from "@/lib/categories";
 import mechanicPic from "@/assets/services/mechanic/mechanicMain.jpg";
 import { prisma } from "@/utils/prisma";
 import repairPic from "@/assets/services/repair/repairMain.jpg";
@@ -16,7 +18,7 @@ export default async function ServicesPage(params: {
 }) {
   const services: ServiceWithPicturesAndCategory[] =
     await getServicesByCategory(params.searchParams.name);
-  const categories = await prisma.category.findMany();
+  const categories = await getCategories();
 
   return (
     <div className="min-h-screen">
@@ -33,14 +35,14 @@ export default async function ServicesPage(params: {
           <div className="flex flex-col md:flex-row md:space-x-5">
             {categories.map((c) => (
               <HomeServicesItem
+                url={`/services?name=${c.category_name_url}`}
                 key={c.category_id}
-                url={c.category_name_url}
                 imageSrc={c.category_picture}
                 text={c.category_description}
                 title={c.category_name}
               />
             ))}
-            <HomeServicesItem
+            <HomeServiceOldCar
               url={carItem.url}
               imageSrc={carItem.imageSrc}
               text={carItem.text}

@@ -10,8 +10,6 @@ export default function UiImageMain({ image }: UiImageMainProps) {
         src={image}
         alt="Image principale - garage V. Parrot"
         fill
-        // sizes="(min-width: 640px) 640px, (min-width: 768px) 768px, (min-width: 1024px) 1024px, (min-width: 1280) 1280px, (min-width: 1536px) 1536px)"
-        sizes="(min-width: 1540px) 1536px, (min-width: 1280px) 1280px, (min-width: 1040px) 1024px, (min-width: 780px) 768px, (min-width: 680px) 640px, calc(94.44vw + 17px)"
         placeholder="blur"
         className="object-cover brightness-[60%] w-auto h-full"
         priority

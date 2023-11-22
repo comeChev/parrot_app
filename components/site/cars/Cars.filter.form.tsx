@@ -203,84 +203,87 @@ export default function CarsFilterForm({
       </div>
 
       {/* filters */}
-      {isOpen && (
-        <div className="min-h-[500px] bg-neutral-700 mt-5 mb-12 rounded-lg py-10">
-          {/* filter by fuel */}
-          <CarsFilterFormSelect
-            label="Type de carburant"
-            subLabel="Choisir le type de carburant"
-            defaultOptionLabel="-- Tous les types de carburant --"
-            options={[
-              { label: "Essence", value: "essence" },
-              { label: "Diesel", value: "diesel" },
-              { label: "Électrique", value: "electric" },
-              { label: "Hybride", value: "hybrid" },
-            ]}
-            name="fuel"
-            onChange={(e) => {
-              setFilters({ ...filters, fuel: e.currentTarget.value });
-              handleFilterCars(e.currentTarget.value, "f");
+
+      <div
+        className={`${
+          isOpen ? "max-h-[800px] py-10 " : "max-h-0"
+        } bg-neutral-700 mt-2 mb-12 rounded-lg transition-[max-height] duration-300 ease-in-out overflow-hidden`}
+      >
+        {/* filter by fuel */}
+        <CarsFilterFormSelect
+          label="Type de carburant"
+          subLabel="Choisir le type de carburant"
+          defaultOptionLabel="-- Tous les types de carburant --"
+          options={[
+            { label: "Essence", value: "essence" },
+            { label: "Diesel", value: "diesel" },
+            { label: "Électrique", value: "electric" },
+            { label: "Hybride", value: "hybrid" },
+          ]}
+          name="fuel"
+          onChange={(e) => {
+            setFilters({ ...filters, fuel: e.currentTarget.value });
+            handleFilterCars(e.currentTarget.value, "f");
+          }}
+          value={filters.fuel}
+        />
+
+        {/* filter by kilometers */}
+        <CarsFilterFormSlider
+          name="kilometers"
+          label="Kilométrage"
+          values={filters.kilometers}
+          setValue={setKilometers}
+          handleResetCars={handleResetCars}
+          typeData="kilometers"
+          step={1000}
+        />
+
+        {/* filter by year */}
+        <CarsFilterFormSlider
+          name="constructYear"
+          label="Année de construction"
+          values={filters.year}
+          setValue={setYear}
+          handleResetCars={handleResetCars}
+          typeData="year"
+          step={1}
+        />
+
+        {/* filter by price */}
+        <CarsFilterFormSlider
+          name="carPrices"
+          label="Prix"
+          values={filters.price}
+          setValue={setPrice}
+          handleResetCars={handleResetCars}
+          typeData="currency"
+          step={100}
+        />
+        <div className="flex flex-col px-4">
+          <button
+            className="mb-3 px-4 py-2 rounded-lg bg-red-800 text-neutral-100 font-semibold hover:bg-red-900 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:hover:bg-red-800"
+            disabled={
+              filteredCars.length === 0 || filteredCars.length === cars.length
+            }
+            onClick={() => {
+              setCars(filteredCars);
+              setPage(1);
+              router.push("/cars#carsList", { scroll: true });
             }}
-            value={filters.fuel}
-          />
-
-          {/* filter by kilometers */}
-          <CarsFilterFormSlider
-            name="kilometers"
-            label="Kilométrage"
-            values={filters.kilometers}
-            setValue={setKilometers}
-            handleResetCars={handleResetCars}
-            typeData="kilometers"
-            step={1000}
-          />
-
-          {/* filter by year */}
-          <CarsFilterFormSlider
-            name="constructYear"
-            label="Année de construction"
-            values={filters.year}
-            setValue={setYear}
-            handleResetCars={handleResetCars}
-            typeData="year"
-            step={1}
-          />
-
-          {/* filter by price */}
-          <CarsFilterFormSlider
-            name="carPrices"
-            label="Prix"
-            values={filters.price}
-            setValue={setPrice}
-            handleResetCars={handleResetCars}
-            typeData="currency"
-            step={100}
-          />
-          <div className="flex flex-col px-4">
+          >
+            {getTextResults()}
+          </button>
+          {carsDB.length !== filteredCars.length && (
             <button
-              className="mb-3 px-4 py-2 rounded-lg bg-red-800 text-neutral-100 font-semibold hover:bg-red-900 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:hover:bg-red-800"
-              disabled={
-                filteredCars.length === 0 || filteredCars.length === cars.length
-              }
-              onClick={() => {
-                setCars(filteredCars);
-                setPage(1);
-                router.push("/cars#carsList", { scroll: true });
-              }}
+              onClick={handleReset}
+              className={`mb-3 px-4 py-2 rounded-lg bg-red-800 text-neutral-100 font-semibold hover:bg-red-900 transition-all duration-300 ease-in-out`}
             >
-              {getTextResults()}
+              Réinitialiser
             </button>
-            {carsDB.length !== filteredCars.length && (
-              <button
-                onClick={handleReset}
-                className={`mb-3 px-4 py-2 rounded-lg bg-red-800 text-neutral-100 font-semibold hover:bg-red-900 transition-all duration-300 ease-in-out`}
-              >
-                Réinitialiser
-              </button>
-            )}
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
