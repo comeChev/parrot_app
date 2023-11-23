@@ -1,5 +1,7 @@
+import { TStatusPin } from "../dashboard/ui/explanations";
+
 type statusPinProps = {
-  status: "ONLINE" | "ARCHIVED" | "OFFLINE" | "READ";
+  status: TStatusPin;
 };
 
 export const StatusPin = ({ status }: statusPinProps) => {

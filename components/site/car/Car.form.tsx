@@ -8,6 +8,7 @@ import FormPhone from "@/components/ui/form/Form.phone";
 import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 const defaultMessage: CarMessage = {
@@ -47,7 +48,6 @@ type CarFormProps = {
 
 export default function CarForm({ car }: CarFormProps) {
   const [loading, setLoading] = useState(false);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [errors, setErrors] = useState(defaultErrors);
   const [captcha, setCaptcha] = useState<null | string>(null);
   const [message, setMessage] = useState({
@@ -61,23 +61,16 @@ export default function CarForm({ car }: CarFormProps) {
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
     const response = await createCarMessage(car.car_id, message);
     setTimeout(() => {
       if (response) {
         setLoading(false);
-        setValidation({
-          success: true,
-          message: "Votre message a bien été envoyé !",
-        });
+        toast.success("Votre message a bien été envoyé !");
         setMessage(defaultMessage);
         return;
       }
       setLoading(false);
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue, veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue, veuillez réessayer plus tard");
     }, 2000);
   }
   function isValidForm() {
@@ -164,8 +157,6 @@ export default function CarForm({ car }: CarFormProps) {
 
       <Form
         loading={loading}
-        validation={validation}
-        setValidation={setValidation}
         explanations={[
           "Veuillez remplir le formulaire ci-dessous pour nous contacter. Nous vous répondrons dans les plus brefs délais.",
         ]}

@@ -1,6 +1,5 @@
 "use client";
-import Table from "@/components/ui/table/Table";
-import TableBody from "@/components/ui/table/Table.body";
+
 import {
   BodyItemProps,
   BodyItems,
@@ -8,15 +7,18 @@ import {
 import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
-import { Picture } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
+
 import Image from "next/image";
-import { getFullStringDate } from "@/utils/globals";
-import PicturesListAction from "./Pictures.list.action";
+import { Picture } from "@prisma/client";
 import PicturesAddOrCreate from "./Pictures.add";
-import { defaultPicture } from "./Pictures.form";
+import PicturesListAction from "./Pictures.list.action";
 import PicturesListStatus from "./Pictures.list.status";
+import Table from "@/components/ui/table/Table";
+import TableBody from "@/components/ui/table/Table.body";
 import UiPagination from "@/components/ui/Ui.pagination";
+import { defaultPicture } from "./Pictures.form";
+import { getFullStringDate } from "@/utils/globals";
 
 const tableHeaders: TableHeaderProps[] = [
   {
@@ -74,15 +76,12 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
         // image
         {
           value: (
-            <div className="w-[150px] md:w-[250px] h-full">
+            <div className="w-[100px] md:w-[150px] h-[100px] md:h-[150px] relative">
               <Image
                 src={p.picture_image}
-                height={34}
-                width={150}
-                className="h-full w-full rounded-md"
-                placeholder="blur"
-                blurDataURL="/public/blur.png"
                 alt={p.picture_name}
+                fill
+                className="h-full w-full rounded-lg"
               />
             </div>
           ),

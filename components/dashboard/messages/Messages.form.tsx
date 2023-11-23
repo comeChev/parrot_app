@@ -12,6 +12,7 @@ import FormTextarea from "@/components/ui/form/Form.textarea";
 import { Message } from "@prisma/client";
 import UiButtonAction from "@/components/ui/Ui.button.action";
 import carCreation from "@/assets/dashboard/carCreation.jpg";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 export const defaultMessage: Message = {
@@ -61,7 +62,6 @@ export default function MessagesForm({
       currentMessage.message_response_type as MessageUpdate["message_response_type"],
     message_response_date: new Date(),
   });
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -98,11 +98,9 @@ export default function MessagesForm({
 
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error(
+        "Veuillez corriger les erreurs avant de soumettre le formulaire."
+      );
       setErrors(errorsTemp);
       return false;
     }
@@ -113,7 +111,6 @@ export default function MessagesForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     //cannot create a new message from admin dashboard
     if (isNew) return;
@@ -141,10 +138,7 @@ export default function MessagesForm({
     };
     const res = await sendMail(sendOptions);
     if (!res) {
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue lors de l'envoi du mail");
       setMessages((prev) =>
         prev.map((m) =>
           m.message_id === oldMessage.message_id ? oldMessage : m
@@ -163,10 +157,7 @@ export default function MessagesForm({
     const response = await updateMessage(message.message_id, messageToUpdate);
     // if error, rollback
     if (!response) {
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
       setMessages((prev) =>
         prev.map((m) =>
           m.message_id === oldMessage.message_id ? oldMessage : m
@@ -178,10 +169,9 @@ export default function MessagesForm({
 
     setTimeout(() => {
       setMessage(defaultMessage as MessageUpdate);
-      setValidation({
-        success: true,
-        message: `Le message a bien été envoyé à ${message.message_contact_first_name} ${message.message_contact_last_name}.`,
-      });
+      toast.success(
+        `Le message a bien été envoyé à ${message.message_contact_first_name} ${message.message_contact_last_name}`
+      );
       setIsOpenForm(false);
       setLoading(false);
       return;
@@ -208,12 +198,7 @@ export default function MessagesForm({
   return (
     message && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-        >
+        <Form loading={loading} imgSrc={carCreation}>
           {/* user */}
           <div className="px-3 font-medium">
             <p>

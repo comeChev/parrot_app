@@ -9,6 +9,7 @@ import FormInput from "@/components/ui/form/Form.input";
 import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 const defaultReview: NewReview = {
@@ -31,11 +32,6 @@ type ErrorsProps = {
   captcha: string;
 };
 
-type ValidationProps = {
-  success: boolean;
-  message: string;
-};
-
 const defaultErrors: ErrorsProps = {
   email: "",
   firstName: "",
@@ -43,11 +39,6 @@ const defaultErrors: ErrorsProps = {
   comment: "",
   note: "",
   captcha: "",
-};
-
-const defaultValidation: ValidationProps = {
-  success: false,
-  message: "",
 };
 
 const explanations = [
@@ -61,8 +52,6 @@ export default function ReviewsForm() {
   const [errors, setErrors] = useState<ErrorsProps>(defaultErrors);
   const [loading, setLoading] = useState<boolean>(false);
   const [captcha, setCaptcha] = useState<null | string>(null);
-  const [validation, setValidation] =
-    useState<ValidationProps>(defaultValidation);
 
   // handle errors
   function isValidForm() {
@@ -138,25 +127,18 @@ export default function ReviewsForm() {
   //handle submit
   async function handleSubmit() {
     if (isValidForm()) {
-      setValidation({ success: false, message: "" });
       setLoading(true);
       const response = await createReview(review);
 
       setTimeout(() => {
         if (response !== null) {
           setLoading(false);
-          setValidation({
-            success: true,
-            message: "Votre avis a bien été enregistré. Merci !",
-          });
+          toast.success("Votre avis a bien été enregistré. Merci !");
           setReview(defaultReview);
           return;
         }
         setLoading(false);
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer");
         return;
       }, 2000);
     }
@@ -164,12 +146,7 @@ export default function ReviewsForm() {
 
   return (
     // Form
-    <Form
-      explanations={explanations}
-      loading={loading}
-      validation={validation}
-      setValidation={setValidation}
-    >
+    <Form explanations={explanations} loading={loading}>
       {/* name & lastName */}
       <div className="flex flex-col md:flex-row md:space-x-5">
         <FormInput

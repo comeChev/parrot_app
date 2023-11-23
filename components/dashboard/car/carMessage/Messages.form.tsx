@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
-
-import Form from "@/components/ui/form/Form";
-import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-
-import { Car_message } from "@prisma/client";
-import FormSelect from "@/components/ui/form/Form.select";
+import { BsMailbox2, BsPhoneFill } from "react-icons/bs";
 import { SendMailBody, sendMail } from "@/utils/sendgrid";
 import { getFullName, getFullStringDate } from "@/utils/globals";
+
+import { Car_message } from "@prisma/client";
+import Form from "@/components/ui/form/Form";
+import FormFooter from "@/components/ui/form/Form.footer";
+import FormSelect from "@/components/ui/form/Form.select";
 import FormTextarea from "@/components/ui/form/Form.textarea";
-import UiButtonAction from "@/components/ui/Ui.button.action";
-import { BsMailbox2, BsPhoneFill } from "react-icons/bs";
 import { FullCar } from "@/lib/cars";
+import UiButtonAction from "@/components/ui/Ui.button.action";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export const defaultMessage: Car_message = {
   car_message_id: 0,
@@ -54,7 +54,6 @@ export default function MessagesForm({
 }: MessagesFormProps) {
   const oldMessage = currentMessage;
   const [message, setMessage] = useState(currentMessage);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -91,11 +90,9 @@ export default function MessagesForm({
 
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error(
+        "Veuillez corriger les erreurs avant de soumettre le formulaire."
+      );
       setErrors(errorsTemp);
       return false;
     }
@@ -106,7 +103,6 @@ export default function MessagesForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     //cannot create a new message from admin dashboard
     if (isNew) return;
@@ -134,10 +130,8 @@ export default function MessagesForm({
     };
     const res = await sendMail(sendOptions);
     if (!res) {
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard.");
+
       setMessages((prev) =>
         prev.map((m) =>
           m.car_message_id === oldMessage.car_message_id ? oldMessage : m
@@ -157,10 +151,10 @@ export default function MessagesForm({
     }));
 
     setTimeout(() => {
-      setValidation({
-        success: true,
-        message: `Le message a bien été envoyé à ${message.car_message_contact_first_name} ${message.car_message_contact_last_name}.`,
-      });
+      toast.success(
+        `Le message a bien été envoyé à ${message.car_message_contact_first_name} ${message.car_message_contact_last_name}`
+      );
+
       setMessage(defaultMessage);
       setIsOpenForm(false);
       setLoading(false);
@@ -188,13 +182,7 @@ export default function MessagesForm({
   return (
     message && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-          mainContainerCSS=""
-        >
+        <Form loading={loading} imgSrc={carCreation} mainContainerCSS="">
           {/* user */}
           <div className="px-3 font-medium">
             <p>

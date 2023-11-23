@@ -46,8 +46,13 @@ export default function SiteNavContent({
           {/* session name & link to profile page */}
           {session && (
             <div>
-              <div className="flex items-center px-4 mt-10">
-                <h2 className="flex-1 text-md">{`Bienvenue, ${session.user.name}`}</h2>
+              <div className="flex items-center justify-between px-4 mt-10">
+                <div className="flex flex-col">
+                  <h2 className="flex-1 text-md">{`Bienvenue, ${session.user.name}`}</h2>
+                  <Link href={"/dashboard"} className="">
+                    Administration du site
+                  </Link>
+                </div>
                 {session.user.picture ? (
                   <Link href="/dashboard/me">
                     <img
@@ -67,9 +72,6 @@ export default function SiteNavContent({
                   </Link>
                 )}
               </div>
-              <Link href={"/dashboard"} className="px-4">
-                Administration du site
-              </Link>
             </div>
           )}
 

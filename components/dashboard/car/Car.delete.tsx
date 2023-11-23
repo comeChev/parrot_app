@@ -1,7 +1,8 @@
 "use client";
 
-import FormDelete from "@/components/ui/form/Form.delete";
 import { FullCar, deleteCar } from "@/lib/cars";
+
+import FormDelete from "@/components/ui/form/Form.delete";
 import { deleteFile } from "@/utils/supabase.upload";
 import { useRouter } from "next/navigation";
 
@@ -23,11 +24,8 @@ export default function CarDelete({ car }: { car: FullCar }) {
   }
 
   return (
-    <div className="flex">
-      <FormDelete
-        textConfirm="Vous aller supprimer l'annonce !"
-        handleDelete={handleDelete}
-      />
+    <div>
+      <FormDelete textConfirm="Confirmer" handleDelete={handleDelete} />
     </div>
   );
 }

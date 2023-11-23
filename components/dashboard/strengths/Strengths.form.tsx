@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { createStrength, updateStrength } from "@/lib/strengths";
 
 import Form from "@/components/ui/form/Form";
-import FormInput from "@/components/ui/form/Form.input";
 import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-
+import FormInput from "@/components/ui/form/Form.input";
 import { Strength } from "@prisma/client";
-import { createStrength, updateStrength } from "@/lib/strengths";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export const defaultStrength: Strength = {
   strength_id: 0,
@@ -34,7 +34,6 @@ export default function StrengthForm({
 }: StrengthsFormProps) {
   const oldStrength = currentStrength;
   const [strength, setStrength] = useState(currentStrength);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -57,11 +56,7 @@ export default function StrengthForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs dans le formulaire avant de l'envoyer.",
-      });
+      toast.error("Veuillez corriger les erreurs dans le formulaire");
       return false;
     }
     return true;
@@ -71,7 +66,6 @@ export default function StrengthForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     if (isNew === false) {
       //optimistic update
@@ -87,10 +81,7 @@ export default function StrengthForm({
       );
       // if error, rollback
       if (!response) {
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
         setStrengths((prev) =>
           prev.map((c) =>
             c.strength_id === oldStrength.strength_id ? oldStrength : c
@@ -102,10 +93,7 @@ export default function StrengthForm({
       setTimeout(() => {
         setLoading(false);
         setStrength(defaultStrength);
-        setValidation({
-          success: true,
-          message: `Le point fort a bien été mis à jour.`,
-        });
+        toast.success(`Le point fort a bien été mis à jour.`);
         setIsOpenForm(false);
         return;
       }, 2000);
@@ -121,20 +109,14 @@ export default function StrengthForm({
         setTimeout(() => {
           setStrengths((prev) => [...prev, response]);
           setStrength(defaultStrength);
-          setValidation({
-            success: true,
-            message: `Le point fort a bien été créée.`,
-          });
+          toast.success(`Le point fort a bien été créé.`);
           setIsOpenForm(false);
           setLoading(false);
           return;
         }, 2000);
         // if error, rollback
         if (!response) {
-          setValidation({
-            success: false,
-            message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-          });
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
           setStrengths((prev) =>
             prev.map((c) =>
               c.strength_id === oldStrength.strength_id ? oldStrength : c
@@ -166,12 +148,7 @@ export default function StrengthForm({
   return (
     strength && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-        >
+        <Form loading={loading} imgSrc={carCreation}>
           {/* name */}
           <FormInput
             label="Nom du point fort"

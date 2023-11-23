@@ -50,7 +50,7 @@ export default function SiteNav({
         </div>
 
         <div
-          className={`h-screen overflow-y-scroll fixed top-0 -left-[calc(100vw+10rem)] transition-transform duration-200 bg-red-800 z-50 
+          className={`h-screen overflow-y-scroll fixed top-0 -left-[calc(100vw+10rem)] transition-transform duration-500 bg-red-800 z-50 
           ${isOpen && "translate-x-[calc(100vw+10rem)]"}`}
         >
           <SiteNavContent

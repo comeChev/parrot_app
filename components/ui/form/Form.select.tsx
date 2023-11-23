@@ -1,6 +1,6 @@
-import React from "react";
-import FormError from "./Form.error";
 import { BsCaretDownFill } from "react-icons/bs";
+import FormError from "./Form.error";
+import React from "react";
 
 type FormSelectProps = {
   label: string;
@@ -30,7 +30,7 @@ export default function FormSelect({
   placeholder,
 }: FormSelectProps) {
   return (
-    <div className="mb-3 flex-col flex-1">
+    <div className="mb-8 flex-col flex-1 relative">
       <p className="mb-3 px-4 font-semibold">
         {label} {required && <span className="text-red-800">*</span>}
       </p>
@@ -43,7 +43,7 @@ export default function FormSelect({
           required={required}
           name={name}
           placeholder={placeholder || label}
-          className={`w-full bg-slate-200 py-2 px-4 rounded-md border-2 border-slate-300 mb-1 appearance-none cursor-pointer ${
+          className={`w-full bg-gray-200 py-2 px-4 rounded-md border-2 border-gray-300 mb-1 appearance-none cursor-pointer  ${
             error && error.length > 0 && "border-red-500"
           }`}
         >
@@ -53,7 +53,7 @@ export default function FormSelect({
             </option>
           ))}
         </select>
-        <BsCaretDownFill className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+        <BsCaretDownFill className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
       </div>
       {error && <FormError error={error} />}
     </div>

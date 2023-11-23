@@ -1,6 +1,5 @@
-import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import type { NextAuthOptions } from "next-auth";
 import { compare } from "bcryptjs";
 import { prisma } from "../prisma";
 
@@ -34,6 +33,15 @@ export const authOptions: NextAuthOptions = {
           }
 
           const user = await prisma.user.findUnique({
+            select: {
+              user_email: true,
+              user_password: true,
+              user_first_name: true,
+              user_last_name: true,
+              user_role: true,
+              user_status: true,
+              user_image: true,
+            },
             where: {
               user_email: credentials.email,
             },
@@ -53,8 +61,8 @@ export const authOptions: NextAuthOptions = {
             //token.sub refer to the user id
             email: user.user_email,
             name: user.user_first_name,
-            picture: user.user_image || null,
             lastName: user.user_last_name,
+            picture: user.user_image || null,
             role: user.user_role,
           };
         } catch (err: any) {

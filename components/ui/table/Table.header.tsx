@@ -9,7 +9,7 @@ export default function TableHeader({
   headersList: TableHeaderProps[];
 }) {
   return (
-    <thead className="bg-slate-200 mb-3">
+    <thead className="bg-gray-200">
       <tr className="text-left text-neutral-700">
         {headersList.map((header, index) => (
           <th

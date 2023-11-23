@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import NextAuthProvider from "@/providers/Nextauth.provider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Garage V. Parrot",
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`flex flex-col min-h-screen w-full`}>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <NextAuthProvider>
+          <Toaster position="top-right" />
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );

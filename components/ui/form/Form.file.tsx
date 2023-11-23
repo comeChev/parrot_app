@@ -1,10 +1,11 @@
 "use client";
 
-import { createImageURL, uploadFile } from "@/utils/supabase.upload";
-import Image from "next/image";
-import { useRef, useState } from "react";
 import { BsXCircleFill, BsXLg } from "react-icons/bs";
-import { UiAlertError, UiAlertSuccess } from "../Ui.alert.windows";
+import { createImageURL, uploadFile } from "@/utils/supabase.upload";
+import { useRef, useState } from "react";
+
+import Image from "next/image";
+import toast from "react-hot-toast";
 
 export type ImageCreate = {
   picture_name: string;
@@ -36,8 +37,6 @@ export default function FormFile({
   );
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -60,7 +59,7 @@ export default function FormFile({
   async function handleUpload() {
     if (!file) return;
     if (!fileName.name) {
-      setError("Veuillez renseigner un nom pour l'image.");
+      toast.error("Veuillez renseigner un nom pour l'image.");
       return;
     }
     setIsLoading(true);
@@ -76,7 +75,7 @@ export default function FormFile({
     //upload on supabase
     const { data, success } = await uploadFile(myNewFile, `${onlinePath}`);
     if (!success) {
-      setError(data as string);
+      toast.error(data as string);
       setIsLoading(false);
       return;
     }
@@ -91,11 +90,11 @@ export default function FormFile({
     const res = await handleAddImage(newPicture);
     if (res) {
       handleResetFile();
-      setSuccess("Image ajoutée avec succès.");
+      toast.success("Image ajoutée avec succès");
       setIsLoading(false);
       return;
     }
-    setError("L'image n'a pas été enregistrée, merci de réessayer.");
+    toast.error("L'image n'a pas été enregistrée, merci de réessayer");
     setIsLoading(false);
     return;
   }
@@ -178,13 +177,6 @@ export default function FormFile({
             className="absolute top-2 right-2 text-3xl text-neutral-100 cursor-pointer hover:text-neutral-200 transition-colors duration-300 ease-in-out"
           />
         </div>
-      )}
-      {/* error */}
-      {error !== "" && (
-        <UiAlertError message={error} handleClose={() => setError("")} />
-      )}
-      {success !== "" && (
-        <UiAlertSuccess message={success} handleClose={() => setSuccess("")} />
       )}
     </div>
   );

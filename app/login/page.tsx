@@ -1,9 +1,10 @@
-import LoginForm from "@/components/login/Login.form";
 import Image from "next/image";
 import Link from "next/link";
+import LoginForm from "@/components/login/Login.form";
+import TextMain from "@/components/dashboard/ui/text.main";
 import logo from "@/assets/logo-parrot.png";
-import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
 import { redirect } from "next/navigation";
+import { verifySession } from "@/utils/nextAuth/nextAuth.protections";
 
 export default async function LoginPage() {
   const hasSession = await verifySession();
@@ -11,7 +12,7 @@ export default async function LoginPage() {
   hasSession && redirect("/dashboard");
 
   return (
-    <div className="container mx-auto my-auto text-center flex flex-col min-h-screen justify-between py-10 mb-24">
+    <div className="container mx-auto my-auto text-center flex flex-col h-screen justify-between py-10">
       <Image
         priority
         src={logo}
@@ -19,15 +20,15 @@ export default async function LoginPage() {
         className="w-3/4 max-w-[700px] mx-auto mb-10 mt-6 select-none"
       />
       <div className="mb-10 select-none">
-        <h1 className="text-4xl font-extrabold font-title">Connexion</h1>
-        <h2 className="text-xl font-text">Connectez-vous à votre compte</h2>
+        <TextMain text="Connexion" />
+        <h2 className="text-xl">Connectez-vous à votre compte</h2>
       </div>
 
       <LoginForm />
 
       <Link
         href="/"
-        className="text-neutral-600 bg-neutral-100 text-2xl font-medium w-3/4 rounded-md py-4 mx-auto mt-10 border border-neutral-400 hover:border-slate-600"
+        className="text-gray-800 font-medium w-3/4 rounded-md mx-auto mb-12 transition-all duration-500 underline  underline-offset-4"
       >
         Retourner au site
       </Link>

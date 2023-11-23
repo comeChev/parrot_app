@@ -1,5 +1,9 @@
 import { DescriptionPin, StatusPin } from "@/components/ui/Ui.status.pin";
+import Explanations, {
+  TExplanation,
+} from "@/components/dashboard/ui/explanations";
 
+import TextMain from "@/components/dashboard/ui/text.main";
 import UsersList from "@/components/dashboard/users/Users.list";
 import { authOptions } from "@/utils/nextAuth/nextAuth.options";
 import { getServerSession } from "next-auth";
@@ -16,24 +20,18 @@ export default async function AdminUserPage() {
     redirect("/dashboard");
   }
 
+  const explanations: TExplanation[] = [
+    { status: "ONLINE", label: "Actif et visible sur le site." },
+    { status: "OFFLINE", label: "Inactif et ne peut pas se connecter." },
+  ];
   return (
     <div className="px-4 mt-10 min-h-screen container">
       {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
-      <h2 className="text-3xl font-bold">Liste des utilisateurs</h2>
+      <TextMain text="Gestion des utilisateurs" />
 
       {/* explanations status */}
-      <div className="flex items-center mt-5">
-        <div className="flex flex-col">
-          <div className="flex mb-1 items-center">
-            <StatusPin status="ONLINE" />
-            <DescriptionPin label="Utilisateur actif. Visible sur la page de l'équipe." />
-          </div>
-          <div className="flex mb-1 items-center">
-            <StatusPin status="OFFLINE" />
-            <DescriptionPin label="Utilisateur inactif. Non visible sur la page de l'équipe." />
-          </div>
-        </div>
-      </div>
+      <Explanations items={explanations} />
+
       {/* users list */}
       <UsersList usersDB={users} />
       {/* cars list */}

@@ -18,7 +18,7 @@ export default function CarFormStrengthsTableItems({
         type === "add" ? "bg-indigo-700" : "bg-neutral-700"
       }`}
     >
-      <p>{s.strength_name}</p>
+      <p className="text-xs md:text-sm">{s.strength_name}</p>
     </button>
   );
 }

@@ -1,11 +1,11 @@
-import Image from "next/image";
-import underConstruction from "@/assets/underConstruction.jpeg";
-import UiButtonAction from "./Ui.button.action";
 import { BsArrowLeft } from "react-icons/bs";
+import Image from "next/image";
+import UiButtonAction from "./Ui.button.action";
+import underConstruction from "@/assets/underConstruction.jpeg";
 
 export default function UiUnderConstruction() {
   return (
-    <div className="flex flex-col items-center lg:flex-row-reverse mx-auto">
+    <div className="flex flex-col items-center lg:flex-row-reverse mx-auto w-full">
       <Image
         src={underConstruction}
         alt="404"
@@ -14,7 +14,7 @@ export default function UiUnderConstruction() {
         className="md:object-right h-auto lg:w-1/2"
       />
       <div className="flex flex-col items-center md:items-end space-y-5 text-neutral-800 lg:w-1/2">
-        <h1 className="font-extrabold text-6xl text-center md:text-start w-4/5">
+        <h1 className="font-extrabold text-4xl md:text-6xl text-center md:text-start w-4/5">
           Page en construction
         </h1>
         <h2 className="font-bold text-2xl text-center md:text-start w-4/5">

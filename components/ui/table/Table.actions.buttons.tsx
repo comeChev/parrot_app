@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   BsEyeFill,
   BsEyeSlashFill,
@@ -6,6 +5,8 @@ import {
   BsInfoCircle,
   BsPenFill,
 } from "react-icons/bs";
+
+import Link from "next/link";
 
 export function TableActionsButtonsEdit({ href }: { href: string }) {
   return (
@@ -91,6 +92,22 @@ export function TableActionsButtonsConfirm({
     >
       <BsInfoCircle className="" />
       <span className="text-sm">Confirmer</span>
+    </button>
+  );
+}
+
+export function TableActionsButtonsDelete({
+  onClick,
+}: {
+  onClick: () => void;
+}) {
+  return (
+    <button
+      className="text-md text-red-500 hover:text-red-700 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+      onClick={onClick}
+    >
+      <span className="text-sm">Supprimer</span>
+      <BsInfoCircle className="" />
     </button>
   );
 }

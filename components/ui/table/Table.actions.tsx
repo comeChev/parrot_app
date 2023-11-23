@@ -1,15 +1,18 @@
 "use client";
 
-import { FullCar, updateCar } from "@/lib/cars";
-import { Dispatch, SetStateAction, useState } from "react";
 import { BsThreeDotsVertical, BsXLg } from "react-icons/bs";
+import { Dispatch, SetStateAction, useState } from "react";
+import { FullCar, deleteCar, updateCar } from "@/lib/cars";
 import {
   TableActionsButtonsArchive,
   TableActionsButtonsConfirm,
+  TableActionsButtonsDelete,
   TableActionsButtonsEdit,
   TableActionsButtonsHide,
   TableActionsButtonsShow,
 } from "./Table.actions.buttons";
+
+import { useSession } from "next-auth/react";
 
 type TableActionsProps = {
   car: FullCar;
@@ -17,9 +20,12 @@ type TableActionsProps = {
 };
 
 export default function TableActions({ car, setCars }: TableActionsProps) {
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "ADMIN";
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isPendingConfirm, setIsPendingConfirm] = useState(false);
+  const [isPendingDelete, setIsPendingDelete] = useState(false);
 
   async function handleHideCar() {
     setIsLoading(true);
@@ -99,6 +105,25 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
     setIsOpenMenuAction(false);
   }
 
+  async function handleDeleteCar() {
+    setIsLoading(true);
+
+    //optimistic update
+    setCars((prev) => prev.filter((c) => c.car_id !== car.car_id));
+
+    //update db
+    const res = await deleteCar(car.car_id);
+
+    //rollback if error
+    if (!res) {
+      setCars((prev) => [...prev, car]);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(false);
+    setIsOpenMenuAction(false);
+  }
+
   function handleConfirm() {
     setIsPendingConfirm(true);
     setTimeout(() => {
@@ -134,6 +159,7 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
               />
             )
           )}
+
           {car?.car_status.toUpperCase() !== "ARCHIVED" &&
             (isPendingConfirm ? (
               <TableActionsButtonsConfirm
@@ -147,6 +173,17 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
               />
             ))}
           <TableActionsButtonsEdit href={`/dashboard/car?id=${car.car_id}`} />
+
+          {isAdmin && !isPendingDelete ? (
+            <TableActionsButtonsDelete
+              onClick={() => setIsPendingDelete(true)}
+            />
+          ) : (
+            <TableActionsButtonsConfirm
+              onClick={handleDeleteCar}
+              disabled={isLoading}
+            />
+          )}
         </div>
       )}
     </div>

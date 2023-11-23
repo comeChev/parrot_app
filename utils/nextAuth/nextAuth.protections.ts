@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { NextRequest } from "next/server";
 import { authOptions } from "./nextAuth.options";
+import { getServerSession } from "next-auth";
 
 /**
  * @param request NextRequest

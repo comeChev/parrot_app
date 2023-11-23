@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { Picture } from "@prisma/client";
+import FormFile, { ImageCreate } from "@/components/ui/form/Form.file";
 import { createPicture, updatePicture } from "@/lib/pictures";
 
 import Form from "@/components/ui/form/Form";
+import FormError from "@/components/ui/form/Form.error";
+import FormFooter from "@/components/ui/form/Form.footer";
 import FormInput from "@/components/ui/form/Form.input";
 import FormSelect from "@/components/ui/form/Form.select";
-import FormFile, { ImageCreate } from "@/components/ui/form/Form.file";
-import { deleteFile } from "@/utils/supabase.upload";
 import Image from "next/image";
-import FormFooter from "@/components/ui/form/Form.footer";
+import { Picture } from "@prisma/client";
+import { deleteFile } from "@/utils/supabase.upload";
 import pictureCreate from "@/assets/dashboard/imageCreation.jpg";
-import FormError from "@/components/ui/form/Form.error";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export const defaultPicture: Picture = {
   picture_id: 0,
@@ -45,7 +46,6 @@ export default function PicturesForm({
 }: PicturesFormProps) {
   const oldPicture = currentPicture;
   const [picture, setPicture] = useState<Picture>(currentPicture);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -86,11 +86,9 @@ export default function PicturesForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error(
+        "Veuillez corriger les erreurs avant de soumettre le formulaire."
+      );
       return false;
     }
     return true;
@@ -100,7 +98,6 @@ export default function PicturesForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     if (isNew === false) {
       //optimistic update
@@ -113,10 +110,7 @@ export default function PicturesForm({
       const response = await updatePicture(picture.picture_id, pictureToUpdate);
       // if error, rollback
       if (!response) {
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
         setPictures((prev) =>
           prev.map((p) =>
             p.picture_id === oldPicture.picture_id ? oldPicture : p
@@ -128,10 +122,7 @@ export default function PicturesForm({
       setTimeout(() => {
         setLoading(false);
         setPicture(defaultPicture);
-        setValidation({
-          success: true,
-          message: `L'image a bien été mise à jour.`,
-        });
+        toast.success("L'image a bien été mise à jour");
         setIsOpenForm(false);
         return;
       }, 2000);
@@ -146,20 +137,14 @@ export default function PicturesForm({
         setTimeout(() => {
           setPictures((prev) => [...prev, response]);
           setPicture(defaultPicture);
-          setValidation({
-            success: true,
-            message: `L'image a bien été créée.`,
-          });
+          toast.success("L'image a bien été créée");
           setIsOpenForm(false);
           setLoading(false);
           return;
         }, 2000);
         // if error, rollback
         if (!response) {
-          setValidation({
-            success: false,
-            message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-          });
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
           setPictures((prev) =>
             prev.map((p) =>
               p.picture_id === oldPicture.picture_id ? oldPicture : p
@@ -198,12 +183,7 @@ export default function PicturesForm({
   return (
     picture && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={pictureCreate}
-        >
+        <Form loading={loading} imgSrc={pictureCreate}>
           {/* name & status */}
           <div className="flex flex-col md:flex-row md:items-center">
             {/* name */}

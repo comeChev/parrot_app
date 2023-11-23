@@ -1,24 +1,25 @@
 "use client";
 
-import Form from "@/components/ui/form/Form";
-import { useEffect, useState } from "react";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-import { FullCar, createCar, createCarPicture, updateCar } from "@/lib/cars";
-import FormInput from "@/components/ui/form/Form.input";
-import { ImageCreate } from "@/components/ui/form/Form.file";
 import { Car_picture, Strength } from "@prisma/client";
-import { getStrengths } from "@/lib/strengths";
-import CarFormStrengths from "./Car.form.strengths";
+import { FullCar, createCar, createCarPicture, updateCar } from "@/lib/cars";
+import { useEffect, useState } from "react";
+
 import CarFormAssets from "./Car.form.assets";
-import CarFormPower from "./Car.form.power";
 import CarFormConsumption from "./Car.form.consumption";
 import CarFormGallery from "./Car.form.gallery";
 import CarFormMain from "./Car.form.main";
-import CarFormFooter from "./Car.form.footer";
-import { useRouter } from "next/navigation";
-import FormSelect from "@/components/ui/form/Form.select";
 import CarFormMessages from "./Car.form.messages";
+import CarFormPower from "./Car.form.power";
+import CarFormStrengths from "./Car.form.strengths";
+import Form from "@/components/ui/form/Form";
 import FormFooter from "@/components/ui/form/Form.footer";
+import FormInput from "@/components/ui/form/Form.input";
+import FormSelect from "@/components/ui/form/Form.select";
+import { ImageCreate } from "@/components/ui/form/Form.file";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import { getStrengths } from "@/lib/strengths";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type CarFormProps = {
   carDB?: FullCar;
@@ -85,7 +86,6 @@ const defaultCar: FullCar = {
 
 export default function CarForm({ carDB }: CarFormProps) {
   const [car, setCar] = useState<FullCar>(carDB ? carDB : defaultCar);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [errors, setErrors] = useState(defaultErrors);
   const [loading, setLoading] = useState(false);
   const [strengths, setStrengths] = useState<Strength[]>([]);
@@ -196,11 +196,9 @@ export default function CarForm({ carDB }: CarFormProps) {
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error(
+        "Veuillez corriger les erreurs avant de soumettre le formulaire."
+      );
       return false;
     }
     return true;
@@ -210,62 +208,49 @@ export default function CarForm({ carDB }: CarFormProps) {
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
+    // if car already exists, update it
     if (carDB) {
       const carToUpdate = { ...car, car_published_date: new Date() };
       const response = await updateCar(carDB.car_id, carToUpdate);
       if (response) {
         setLoading(false);
-        setValidation({
-          success: true,
-          message: "Votre véhicule a bien été mis à jour.",
-        });
+        toast.success("Votre véhicule a bien été mis à jour.");
         router.push(`/dashboard/cars`);
         // TODO --> maybe implement a redirect to the cars page
         return;
       }
       return;
     }
-    const newCar = { ...car };
-    delete (newCar as any).car_id;
-    delete (newCar as any).car_published_date;
+
+    // if car doesn't exist, create it
+    const { car_id, car_published_date, ...newCar } = car;
     newCar.car_pictures.map((picture) => delete (picture as any).car_id);
 
     const response = await createCar(newCar);
-    setTimeout(() => {
-      if (response) {
-        if (car.car_pictures.length > 0) {
-          car.car_pictures.forEach(async (picture) => {
-            const res = await createCarPicture(response.car_id, picture);
-            if (!res) {
-              setLoading(false);
-              setValidation({
-                success: false,
-                message:
-                  "Une erreur est survenue. Veuillez réessayer plus tard.",
-              });
-              return;
-            }
-          });
-        }
-
-        setLoading(false);
-        setValidation({
-          success: true,
-          message: "Votre véhicule a bien été créé.",
-        });
-        setCar(defaultCar);
-        router.push(`/dashboard/cars?id=${response.car_id}`);
-        // TODO --> maybe implement a redirect to the cars page
-        return;
-      }
+    if (!response) {
       setLoading(false);
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
+      return;
+    }
+    // if car created, create pictures
+    if (car.car_pictures.length > 0) {
+      car.car_pictures.forEach(async (picture) => {
+        const res = await createCarPicture(response.car_id, picture);
+        if (!res) {
+          setLoading(false);
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
+          return;
+        }
       });
-    }, 2000);
+    }
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("Le véhicule a bien été créé.");
+      setCar(defaultCar);
+      router.push(`/dashboard/cars?id=${response.car_id}`);
+      return;
+    }, 1000);
   }
 
   async function handleAddImage(image: ImageCreate) {
@@ -302,62 +287,55 @@ export default function CarForm({ carDB }: CarFormProps) {
 
   return (
     <div className="select-non relative select-none">
-      <Form
-        imgSrc={carCreation}
-        validation={validation}
-        loading={loading}
-        setValidation={setValidation}
-      >
+      <Form imgSrc={carCreation} loading={loading}>
         {/* car name & status*/}
-        <div className="md:mr-10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
-            <FormInput
-              label="Titre de l'annonce"
-              placeholder="Ex: Peugeot 308 SW"
-              name="carName"
-              value={car.car_name}
-              error={errors.carName}
-              type="text"
-              handleChange={(e) =>
-                setCar({
-                  ...car,
-                  car_name: e.target.value.toUpperCase(),
-                })
-              }
-              handleFocus={(e) => setErrors({ ...errors, carName: "" })}
-            />
-            <div className="flex items-center w-full sm:w-48">
-              <FormSelect
-                name="carStatus"
-                label="État"
-                value={car.car_status}
-                handleChange={(e) =>
-                  setCar({
-                    ...car,
-                    car_status: e.currentTarget.value as
-                      | "ONLINE"
-                      | "OFFLINE"
-                      | "ARCHIVED",
-                  })
-                }
-                handleFocus={() => {}}
-                options={[
-                  { value: "ONLINE", label: "En ligne" },
-                  { value: "OFFLINE", label: "Hors ligne" },
-                  { value: "ARCHIVED", label: "Archivé" },
-                ]}
-              />
-              <div
-                className={`h-5 w-5 rounded-full mt-4 ml-2 ${
-                  car.car_status === "ONLINE"
-                    ? "bg-green-500"
-                    : car.car_status === "OFFLINE"
-                    ? "bg-red-500"
-                    : "bg-amber-500"
-                }`}
-              />
-            </div>
-          </div>
+
+        <FormInput
+          label="Titre de l'annonce"
+          placeholder="Ex: Peugeot 308 SW"
+          name="carName"
+          value={car.car_name}
+          error={errors.carName}
+          type="text"
+          handleChange={(e) =>
+            setCar({
+              ...car,
+              car_name: e.target.value.toUpperCase(),
+            })
+          }
+          handleFocus={(e) => setErrors({ ...errors, carName: "" })}
+        />
+
+        <div className="flex items-center w-full sm:w-48">
+          <FormSelect
+            name="carStatus"
+            label="État"
+            value={car.car_status}
+            handleChange={(e) =>
+              setCar({
+                ...car,
+                car_status: e.currentTarget.value as
+                  | "ONLINE"
+                  | "OFFLINE"
+                  | "ARCHIVED",
+              })
+            }
+            handleFocus={() => {}}
+            options={[
+              { value: "ONLINE", label: "En ligne" },
+              { value: "OFFLINE", label: "Hors ligne" },
+              { value: "ARCHIVED", label: "Archivé" },
+            ]}
+          />
+          <div
+            className={`h-5 w-5 rounded-full ml-2 ${
+              car.car_status === "ONLINE"
+                ? "bg-green-500"
+                : car.car_status === "OFFLINE"
+                ? "bg-red-500"
+                : "bg-amber-500"
+            }`}
+          />
         </div>
 
         {/* main Infos & gallery */}
@@ -379,14 +357,13 @@ export default function CarForm({ carDB }: CarFormProps) {
         </div>
 
         {/* strengths */}
-        <div className="md:mr-10">
-          <CarFormStrengths
-            setCar={setCar}
-            car={car}
-            strengths={strengths}
-            setStrengths={setStrengths}
-          />
-        </div>
+
+        <CarFormStrengths
+          setCar={setCar}
+          car={car}
+          strengths={strengths}
+          setStrengths={setStrengths}
+        />
 
         <div className="flex flex-col md:flex-row flex-wrap">
           {/* car assets */}

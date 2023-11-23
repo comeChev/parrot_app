@@ -1,7 +1,9 @@
 import { Car, Car_message, Car_picture, Strength } from "@prisma/client";
 
-import { decode } from "punycode";
+import { authOptions } from "@/utils/nextAuth/nextAuth.options";
 import { deleteFile } from "@/utils/supabase.upload";
+import { getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
 
 export interface FullCar extends Car {
   car_status: "ONLINE" | "OFFLINE" | "ARCHIVED";
@@ -38,10 +40,11 @@ export async function getAdminCars() {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-cache",
+    // next: { revalidate: 60 * 60, tags: ["getCars"] },
   });
   const responseJson = await response.json();
   if (responseJson.error) {
+    console.log(responseJson.error);
     return [];
   }
   return responseJson.data;

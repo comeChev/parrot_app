@@ -20,16 +20,15 @@ module.exports = {
       keyframes: {
         wiggle: {
           "0%": { transform: "rotate(-120deg)" },
-          // "20%": { transform: "rotate(90deg)" },
-          // "40%": { transform: "rotate(-45deg)" },
-          // "60%": { transform: "rotate(45deg)" },
-          // "80%": { transform: "rotate(-8deg)" },
-
           "90%": { transform: "rotate(180deg)" },
+        },
+        wait: {
+          to: { rotate: "360deg" },
         },
       },
       animation: {
         wiggle: "wiggle 1.5s linear infinite",
+        wait: "wait 1.7s linear infinite",
       },
     },
   },

@@ -1,4 +1,3 @@
-import React, { Dispatch, SetStateAction } from "react";
 import {
   BsCalendarDate,
   BsEnvelopeAtFill,
@@ -11,11 +10,14 @@ import {
   BsPatchPlusFill,
   BsTagsFill,
 } from "react-icons/bs";
+import React, { Dispatch, SetStateAction } from "react";
+
+import { AiOutlineClose } from "react-icons/ai";
 import DashboardNavLink from "./Dashboard.nav.link";
-import { Session } from "next-auth";
-import Link from "next/link";
 import DashboardNavLogoutButton from "./Dashboard.nav.logout.button";
 import Image from "next/image";
+import Link from "next/link";
+import { Session } from "next-auth";
 
 const navItems = [
   {
@@ -88,17 +90,25 @@ export default function DashboardNavContent({
   isAdmin,
 }: DashboardNavMobileProps) {
   return (
-    <div className="flex flex-col w-full justify-between ">
-      <div className="flex flex-col min-h-[85vh] sm:h-[99vh] fixed w-full md:w-60">
+    <div className="flex flex-col w-[100vw] justify-between select-none  relative">
+      <button
+        aria-label="fermer le menu"
+        type="button"
+        className="text-4xl cursor-pointer z-[60] top-[1.33rem] right-[1rem] absolute md:hidden"
+        onClick={() => setIsOpen(false)}
+      >
+        <AiOutlineClose />
+      </button>
+      <div className="flex flex-col items-stretch min-h-[90vh] pb-24 py-10">
         {/* session name & link to profile page */}
         {session && (
-          <div className="flex items-center md:flex-col md:items-start mt-2 md:mt-10 ml-5">
+          <div className="flex items-center md:flex-col md:items-start mt-2 md:mt-10 px-5">
             <div className="w-full">
               <div className="flex items-center w-full">
                 {/* user pictures */}
                 <div className="mr-3">
                   {session.user.picture ? (
-                    <Link href="/dashboard/me">
+                    <Link href="/dashboard/me" onClick={() => setIsOpen(false)}>
                       <Image
                         className="h-10 w-10 rounded-full object-cover"
                         src={session.user.picture}
@@ -137,7 +147,7 @@ export default function DashboardNavContent({
         )}
 
         {/* nav links */}
-        <div className="mt-5 lg:mt-10 flex-1 overflow-y-scroll">
+        <div className="mt-5 lg:mt-10 flex-1 md:overflow-auto">
           {navItems.map((item, index) =>
             item.access === "ALL" ? (
               <DashboardNavLink

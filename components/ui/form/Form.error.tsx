@@ -1,5 +1,7 @@
 export default function FormError({ error }: { error: string }) {
   return (
-    <span className="text-sm text-red-700 font-light italic">{error}</span>
+    <span className="absolute -bottom-4 left-2 text-sm text-red-700 font-light italic">
+      {error}
+    </span>
   );
 }

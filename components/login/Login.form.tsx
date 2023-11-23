@@ -1,12 +1,13 @@
 "use client";
 
-import { verifyEmail } from "@/utils/regex";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { AiOutlineInfoCircle } from "react-icons/ai";
-import { BsFillPersonFill, BsFillKeyFill } from "react-icons/bs";
+import { ChangeEvent, FormEvent, RefObject, useRef, useState } from "react";
+
+import { BsFillPersonFill } from "react-icons/bs";
+import FormInput from "../ui/form/Form.input";
 import { signIn } from "next-auth/react";
-import { UiAlertError } from "../ui/Ui.alert.windows";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { verifyEmail } from "@/utils/regex";
 
 type FormProps = {
   email: string;
@@ -18,12 +19,8 @@ export default function LoginForm() {
     email: "",
     password: "",
   });
-  const [infos, setInfos] = useState<{ email: boolean; password: boolean }>({
-    email: false,
-    password: false,
-  });
+
   const [errors, setErrors] = useState({ email: "", password: "" });
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -51,14 +48,12 @@ export default function LoginForm() {
 
     if (result && (!result.ok || result.error)) {
       setIsLoading(false);
-      setValidation({
-        success: false,
-        message: "Erreur lors de la connexion, veuillez réessayer.",
-      });
+      toast.error("Erreur lors de la connexion, veuillez réessayer.");
     } else {
       setTimeout(() => {
         router.push("/dashboard");
         setIsLoading(false);
+        toast.success("Vous êtes connecté !");
       }, 1000);
     }
   }
@@ -69,121 +64,53 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
     >
       {/* email input */}
-      <div className="mb-10">
-        <div className="flex items-center mb-2">
-          <label
-            htmlFor="email"
-            className="flex-1 text-start text-2xl font-semibold "
-          >
-            Votre identifiant
-          </label>
-          <AiOutlineInfoCircle
-            className="text-gray-800 text-2xl cursor-pointer"
-            onClick={() =>
-              setInfos({
-                ...infos,
-                email: !infos.email,
-              })
-            }
-          />
-        </div>
-        <div
-          className={`flex items-center space-x-2 border-2 rounded-md ${
-            errors.email !== ""
-              ? "border-red-500 bg-red-200"
-              : "border-slate-300 bg-slate-200"
-          }`}
-        >
-          <BsFillPersonFill className="text-4xl ml-2" />
-          <input
-            required
-            onChange={handleChange}
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            className="w-full bg-slate-200 text-xl outline-none placeholder-neutral-500 py-2 px-2"
-          />
-        </div>
-        {errors.email !== "" && (
-          <p className="text-red-600 text-start w-full">{errors.email}</p>
-        )}
-        {infos.email && (
-          <p
-            className={`${
-              infos.email ? "flex" : "hidden"
-            } text-start w-full text-blue-700`}
-          >
-            {"Votre mail doit contenir un '.' et un '@'"}
-          </p>
-        )}
-      </div>
-      {/* password input */}
-      <div className="mb-10">
-        <div className="flex items-center mb-2">
-          <label
-            htmlFor="password"
-            className="flex-1 text-start text-2xl font-semibold "
-          >
-            Votre mot de passe
-          </label>
-          <AiOutlineInfoCircle
-            className="text-gray-800 text-2xl cursor-pointer"
-            onClick={() => setInfos({ ...infos, password: !infos.password })}
-          />
-        </div>
-        <div
-          className={`flex items-center space-x-2 border-2 rounded-md ${
-            errors.password !== ""
-              ? "border-red-500 bg-red-100"
-              : "border-slate-300 bg-slate-200"
-          }`}
-        >
-          <BsFillKeyFill className="text-4xl ml-2" />
-          <input
-            required
-            value={form.password}
-            onChange={handleChange}
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Mot de passe"
-            className={`w-full bg-slate-200 text-xl outline-none placeholder-neutral-500 py-2 px-2  `}
-          />
-        </div>
-
-        <p
-          className={`${
-            infos.password ? "flex" : "hidden"
-          } text-start w-full text-blue-700`}
-        >
-          {"Votre mot de passe doit contenir au moins 8 caractères"}
-        </p>
+      <div className="text-start">
+        <FormInput
+          labelClasses="text-2xl"
+          handleFocus={() => {}}
+          label="Votre identifiant"
+          type="email"
+          required
+          name="email"
+          error={errors.email}
+          value={form.email}
+          handleChange={handleChange}
+          autocomplete="email"
+          placeholder="Email"
+          disabled={isLoading}
+          info="Votre mail doit contenir un '.' et un '@'"
+        />
+        <FormInput
+          labelClasses="text-2xl"
+          handleFocus={() => {}}
+          label="Votre mot de passe"
+          type="password"
+          isPassword
+          required
+          name="password"
+          error={errors.password}
+          value={form.password}
+          handleChange={handleChange}
+          autocomplete="current-password"
+          placeholder="Mot de passe"
+          disabled={isLoading}
+          info="Votre mot de passe doit contenir au moins 8 caractères"
+        />
       </div>
 
       {/* submit button */}
       <button
-        className="text-white bg-red-700 text-2xl font-semibold w-full rounded-md py-4 hover:bg-red-800 disabled:bg-gray-200"
-        disabled={form.email === "" || form.password === ""}
+        className="text-white bg-red-700 text-2xl font-semibold w-full rounded-md py-4 hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed mt-10"
+        disabled={form.email === "" || form.password === "" || isLoading}
       >
         Se connecter
       </button>
-      {/* <Link href={"/"} className="underline text-neutral-500 italic">
-        Mot de passe oublié ? Cliquez ici.
-      </Link> */}
 
-      {/* error message */}
-      {!validation.success && validation.message !== "" && (
-        <UiAlertError
-          message={validation.message}
-          handleClose={() => setValidation({ success: false, message: "" })}
-        />
-      )}
       {/* waiting screen */}
       {isLoading && (
         <div className="absolute top-0 left-0 w-full h-full bg-neutral bg-opacity-70 flex items-center justify-center">
-          <div className="w-1/3 h-1/3 bg-white rounded-md flex items-center justify-center">
-            <BsFillPersonFill className="text-6xl text-neutral-700 animate-spin" />
+          <div className="w-full h-full bg-white/75 rounded-md flex items-center justify-center">
+            <BsFillPersonFill className="text-6xl text-neutral-700 animate-wait" />
           </div>
         </div>
       )}

@@ -1,13 +1,16 @@
-import { create } from "domain";
+import { NextRequest, NextResponse } from "next/server";
 import {
   verifyAuthorization,
   verifySession,
 } from "@/utils/nextAuth/nextAuth.protections";
-import { prisma } from "@/utils/prisma";
-import { NextRequest, NextResponse } from "next/server";
+
 import { FullCar } from "@/lib/cars";
+import { getServerSession } from "next-auth";
+import { prisma } from "@/utils/prisma";
 
 export async function GET(request: NextRequest) {
+  const session = await getServerSession();
+  console.log(session);
   const isVerified = await verifyAuthorization(request);
   const hasSession = await verifySession();
   try {
@@ -17,43 +20,48 @@ export async function GET(request: NextRequest) {
       });
 
     // get car & cars for dashboard
-    if (hasSession) {
-      // get car by id
-      if (request.nextUrl.searchParams.get("id")) {
-        const id = Number(request.nextUrl.searchParams.get("id"));
-        const car = await prisma.car.findUnique({
-          where: { car_id: id },
+    if (request.nextUrl.searchParams.get("admin")) {
+      if (request.nextUrl.searchParams.get("admin") === "true") {
+        // get car by id
+        if (request.nextUrl.searchParams.get("id")) {
+          const id = Number(request.nextUrl.searchParams.get("id"));
+          const car = await prisma.car.findUnique({
+            where: { car_id: id },
+            include: {
+              car_messages: true,
+              car_pictures: true,
+              car_strengths: true,
+            },
+          });
+          if (!car) throw new Error("Impossible de récupérer la voiture");
+          return new NextResponse(
+            JSON.stringify({
+              message: "Voiture récupérée",
+              data: car,
+            }),
+            { status: 200 }
+          );
+        }
+        // get all cars
+        const cars = await prisma.car.findMany({
           include: {
             car_messages: true,
             car_pictures: true,
             car_strengths: true,
           },
+          orderBy: {
+            car_published_date: "desc",
+          },
         });
-        if (!car) throw new Error("Impossible de récupérer la voiture");
+        if (!cars) throw new Error("Aucune voiture trouvée");
         return new NextResponse(
           JSON.stringify({
-            message: "Voiture récupérée",
-            data: car,
+            message: "Voitures récupérées",
+            data: cars,
           }),
           { status: 200 }
         );
       }
-      // get all cars
-      const cars = await prisma.car.findMany({
-        include: {
-          car_messages: true,
-          car_pictures: true,
-          car_strengths: true,
-        },
-      });
-      if (!cars) throw new Error("Aucune voiture trouvée");
-      return new NextResponse(
-        JSON.stringify({
-          message: "Voitures récupérées",
-          data: cars,
-        }),
-        { status: 200 }
-      );
     }
 
     // get car for public (without messages) && only online cars

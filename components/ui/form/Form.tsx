@@ -10,13 +10,6 @@ type FormProps = {
   children: React.ReactNode;
   mainContainerCSS?: string;
   loading: boolean;
-  validation: {
-    success: boolean;
-    message: string;
-  };
-  setValidation: Dispatch<
-    SetStateAction<{ success: boolean; message: string }>
-  >;
   imgSrc?: StaticImageData;
 };
 
@@ -25,8 +18,6 @@ export default function Form({
   children,
   loading,
   mainContainerCSS = "container mx-auto",
-  validation,
-  setValidation,
   imgSrc = mailSendingPic,
 }: FormProps) {
   return (
@@ -49,20 +40,6 @@ export default function Form({
           <UiLoadingWindow
             text="Envoi en cours. Merci de patienter."
             imgSrc={imgSrc}
-          />
-        )}
-
-        {/* success or error message */}
-        {validation.success && (
-          <UiAlertSuccess
-            handleClose={() => setValidation({ success: false, message: "" })}
-            message={validation.message}
-          />
-        )}
-        {!validation.success && validation.message !== "" && (
-          <UiAlertError
-            handleClose={() => setValidation({ success: false, message: "" })}
-            message={validation.message}
           />
         )}
       </div>

@@ -1,15 +1,15 @@
 "use client";
 
+import { createHour, updateHour } from "@/lib/hours";
 import { useEffect, useState } from "react";
 
 import Form from "@/components/ui/form/Form";
-import FormInput from "@/components/ui/form/Form.input";
 import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-
-import { Hour } from "@prisma/client";
-import { createHour, updateHour } from "@/lib/hours";
+import FormInput from "@/components/ui/form/Form.input";
 import FormSelect from "@/components/ui/form/Form.select";
+import { Hour } from "@prisma/client";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import toast from "react-hot-toast";
 
 export const defaultHour: Hour = {
   hour_id: 0,
@@ -47,7 +47,6 @@ export default function HourForm({
 }: HoursFormProps) {
   const oldHour = currentHour;
   const [hour, setHour] = useState(currentHour);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
   const [availableDays, setAvailableDays] = useState<
@@ -123,7 +122,6 @@ export default function HourForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     if (isNew === false) {
       //optimistic update
@@ -136,10 +134,7 @@ export default function HourForm({
       const response = await updateHour(hourToUpdate);
       // if error, rollback
       if (!response) {
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
         setHours((prev) =>
           prev.map((h) => (h.hour_id === oldHour.hour_id ? oldHour : h))
         );
@@ -148,10 +143,7 @@ export default function HourForm({
       }
       setTimeout(() => {
         setHour(defaultHour);
-        setValidation({
-          success: true,
-          message: `L'horaire a bien été mis à jour.`,
-        });
+        toast.success("L'horaire a bien été mis à jour");
         setIsOpenForm(false);
         setLoading(false);
       }, 2000);
@@ -167,20 +159,14 @@ export default function HourForm({
         setHours((prev) => [...prev, response]);
         setTimeout(() => {
           setHour(defaultHour);
-          setValidation({
-            success: true,
-            message: `L'horaire a bien été créée.`,
-          });
+          toast.success("L'horaire a bien été créé");
           setIsOpenForm(false);
           setLoading(false);
           return;
         }, 2000);
         // if error, rollback
         if (!response) {
-          setValidation({
-            success: false,
-            message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-          });
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
           setHours((prev) =>
             prev.map((h) => (h.hour_id === hour.hour_id ? oldHour : h))
           );
@@ -235,12 +221,7 @@ export default function HourForm({
   return (
     hour && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-        >
+        <Form loading={loading} imgSrc={carCreation}>
           {/* jour */}
           {availableDays.length > 0 ? (
             <FormSelect

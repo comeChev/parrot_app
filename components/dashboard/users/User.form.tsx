@@ -14,6 +14,7 @@ import { User } from "@prisma/client";
 import { UserWithoutPassword } from "@/lib/sql/users";
 import { deleteFile } from "@/utils/supabase.upload";
 import { getInputDate } from "@/utils/globals";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import userCreate from "@/assets/users/userCreate.jpg";
@@ -57,7 +58,6 @@ export default function UserForm({
   const oldUser = curentUser;
   const [user, setUser] = useState<User>({ ...curentUser, user_password: "" });
   const [userPasswordVerify, setUserPasswordVerify] = useState("");
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
   const router = useRouter();
@@ -129,11 +129,7 @@ export default function UserForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error("Veuillez corriger les erreurs dans le formulaire");
       return false;
     }
     return true;
@@ -143,7 +139,6 @@ export default function UserForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     if (!isNew && curentUser.user_email !== "") {
       //optimistic update
@@ -157,11 +152,7 @@ export default function UserForm({
         const response = await updateUser(user.user_id, userToUpdate);
         // if error, rollback
         if (!response) {
-          setValidation({
-            success: false,
-            message:
-              "Une erreur est survenue dans la mise à jour. Veuillez réessayer plus tard.",
-          });
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
           setUsers((prev) =>
             prev.map((u) => (u.user_id === oldUser.user_id ? oldUser : u))
           );
@@ -170,10 +161,7 @@ export default function UserForm({
 
         setTimeout(() => {
           setLoading(false);
-          setValidation({
-            success: true,
-            message: `L'utilisateur a bien été mis à jour.`,
-          });
+          toast.success("L'utilisateur a bien été mis à jour");
           setUser({ ...defaultUser, user_password: "" });
         }, 6000);
         router.refresh();
@@ -191,21 +179,15 @@ export default function UserForm({
     setTimeout(() => {
       if (response) {
         setLoading(false);
-        setValidation({
-          success: true,
-          message: `L'utilisateur a bien été créé.`,
-        });
+        toast.success(`L'utilisateur a bien été créé`);
         setUser({ ...defaultUser, user_password: "" });
         setIsOpenForm(false);
         router.refresh();
         return;
       }
       setLoading(false);
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-      });
-    }, 6000);
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
+    }, 2000);
   }
 
   async function handleAddImage(image: ImageCreate) {
@@ -245,12 +227,7 @@ export default function UserForm({
       </button>
       {user && (
         <div className="mb-20">
-          <Form
-            validation={validation}
-            setValidation={setValidation}
-            loading={loading}
-            imgSrc={userCreate}
-          >
+          <Form loading={loading} imgSrc={userCreate}>
             {/* name & firstName */}
             <div className="flex flex-col md:flex-row md:space-x-2">
               <FormInput
@@ -302,6 +279,7 @@ export default function UserForm({
             {isNew && (
               <div className="flex flex-col md:flex-row md:space-x-2">
                 <FormInput
+                  isPassword
                   autocomplete="new-password"
                   label="Mot de passe"
                   type="password"
@@ -316,6 +294,7 @@ export default function UserForm({
                   value={user.user_password ? user.user_password : ""}
                 />
                 <FormInput
+                  isPassword
                   autocomplete="current-password"
                   label="Mot de passe (vérification)"
                   type="password"

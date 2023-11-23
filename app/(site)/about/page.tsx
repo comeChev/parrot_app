@@ -3,14 +3,13 @@ import AboutMembersItem from "@/components/site/about/About.members.item";
 import UiImageMain from "@/components/ui/Ui.image.main";
 import UiReasons from "@/components/ui/Ui.reasons";
 import UiTextMain from "@/components/ui/Ui.text.main";
-import { User } from "@prisma/client";
 import about from "@/assets/about/about.jpg";
-import { getUsers } from "@/lib/users";
+import { getUsersPublic } from "@/lib/users";
 import { historicItems } from "@/data/data.about";
 
 export default async function AboutPage() {
   //loading team members
-  const users: User[] = await getUsers();
+  const users = await getUsersPublic();
 
   return (
     <div className="min-h-screen">
@@ -48,6 +47,7 @@ export default async function AboutPage() {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3">
           {users &&
+            users.length > 0 &&
             users.map((user, index) => (
               <AboutMembersItem user={user} key={index} />
             ))}

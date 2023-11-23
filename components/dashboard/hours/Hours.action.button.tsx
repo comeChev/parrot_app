@@ -1,8 +1,9 @@
 "use client";
 
-import { updateHour } from "@/lib/hours";
+import { FaDoorClosed, FaDoorOpen } from "react-icons/fa";
+
 import { Hour } from "@prisma/client";
-import { BsDoorClosed, BsDoorOpenFill } from "react-icons/bs";
+import { updateHour } from "@/lib/hours";
 
 type HoursActionButtonProps = {
   setHours: React.Dispatch<React.SetStateAction<Hour[]>>;
@@ -51,11 +52,11 @@ export default function HoursActionButton({
 
   return isOpen ? (
     <button className="text-red-600 text-xl" onClick={handleClose}>
-      <BsDoorClosed />
+      <FaDoorClosed />
     </button>
   ) : (
     <button className="text-indigo-600 text-xl" onClick={handleClose}>
-      <BsDoorOpenFill />
+      <FaDoorOpen />
     </button>
   );
 }

@@ -8,7 +8,18 @@ import { User } from "@prisma/client";
 import { UserWithoutPassword } from "@/lib/sql/users";
 import { prisma } from "@/utils/prisma";
 
-export async function GET(request: NextRequest, response: NextRequest) {
+export type PublicUser = {
+  user_id: number;
+  user_first_name: string;
+  user_last_name: string;
+  user_arrival: Date | null;
+  user_gender: string | null;
+  user_job: string | null;
+  user_image: string | null;
+  user_status: string;
+};
+
+export async function GET(request: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
   const isAdmin = await verifyAdmin();
   try {
@@ -56,6 +67,36 @@ export async function GET(request: NextRequest, response: NextRequest) {
             { status: 200 }
           );
         }
+      }
+
+      //get users by public
+      if (request.nextUrl.searchParams.get("public")) {
+        if (request.nextUrl.searchParams.get("public") !== "1")
+          throw new Error("Impossible de récupérer les utilisateurs publics");
+        console.log("ici on est public");
+        const users = await prisma.user.findMany({
+          where: { user_status: "ACTIVE" },
+          select: {
+            user_id: true,
+            user_first_name: true,
+            user_last_name: true,
+            user_arrival: true,
+            user_gender: true,
+            user_job: true,
+            user_image: true,
+            user_status: true,
+          },
+        });
+        if (!users) throw new Error("Aucun utilisateur trouvé");
+        return new NextResponse(
+          JSON.stringify({
+            message: "Liste des utilisateurs récupérée avec succès",
+            data: users,
+          }),
+          {
+            status: 200,
+          }
+        );
       }
 
       //get users

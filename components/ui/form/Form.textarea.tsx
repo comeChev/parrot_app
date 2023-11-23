@@ -34,7 +34,7 @@ export default function FormTextarea({
   cssClasses = "resize-none",
 }: FormTextareaProps) {
   return (
-    <div className="mb-[50px] flex-col">
+    <div className="mb-[50px] flex-col relative">
       <p className="mb-3 px-4 font-semibold">
         {label} {required && <span className="text-red-500">*</span>}
       </p>

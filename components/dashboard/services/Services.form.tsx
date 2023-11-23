@@ -1,26 +1,27 @@
 "use client";
 
-import { useState } from "react";
-
-import Form from "@/components/ui/form/Form";
-import FormInput from "@/components/ui/form/Form.input";
-import FormSelect from "@/components/ui/form/Form.select";
+import { Category, Service_picture } from "@prisma/client";
 import FormFile, { ImageCreate } from "@/components/ui/form/Form.file";
-import Image from "next/image";
-import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-import noImage from "@/assets/no-image-available.jpg";
-import blur from "@/assets/blur.png";
 import {
   ServiceWithPicturesAndCategory,
   createService,
   deleteServicePicture,
   updateService,
 } from "@/lib/services";
-import FormTextarea from "@/components/ui/form/Form.textarea";
-import { Category, Service_picture } from "@prisma/client";
-import UiConfirmDeleteButton from "@/components/ui/Ui.confirm.delete.button";
+
+import Form from "@/components/ui/form/Form";
 import FormError from "@/components/ui/form/Form.error";
+import FormFooter from "@/components/ui/form/Form.footer";
+import FormInput from "@/components/ui/form/Form.input";
+import FormSelect from "@/components/ui/form/Form.select";
+import FormTextarea from "@/components/ui/form/Form.textarea";
+import Image from "next/image";
+import UiConfirmDeleteButton from "@/components/ui/Ui.confirm.delete.button";
+import blur from "@/assets/blur.png";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import noImage from "@/assets/no-image-available.jpg";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export const defaultService: ServiceWithPicturesAndCategory = {
   service_id: 0,
@@ -70,7 +71,6 @@ export default function ServicesForm({
 }: ServicesFormProps) {
   const oldService = currentService;
   const [service, setService] = useState(currentService);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -155,11 +155,9 @@ export default function ServicesForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error(
+        "Veuillez corriger les erreurs avant de soumettre le formulaire"
+      );
       return false;
     }
     return true;
@@ -169,7 +167,6 @@ export default function ServicesForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     if (isNew === false) {
       //optimistic update
@@ -182,10 +179,7 @@ export default function ServicesForm({
       const response = await updateService(service.service_id, serviceToUpdate);
       // if error, rollback
       if (!response) {
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
         setServices((prev) =>
           prev.map((s) =>
             s.service_id === oldService.service_id ? oldService : s
@@ -197,10 +191,7 @@ export default function ServicesForm({
       setTimeout(() => {
         setLoading(false);
         setService(defaultService);
-        setValidation({
-          success: true,
-          message: `Le service a bien été mis à jour.`,
-        });
+        toast.success("Le service a bien été mis à jour.");
         setIsOpenForm(false);
         return;
       }, 2000);
@@ -215,20 +206,14 @@ export default function ServicesForm({
         setTimeout(() => {
           setServices((prev) => [...prev, response]);
           setService(defaultService);
-          setValidation({
-            success: true,
-            message: `Le service a bien été créée.`,
-          });
+          toast.success("Le service a bien été créé.");
           setIsOpenForm(false);
           setLoading(false);
           return;
         }, 2000);
         // if error, rollback
         if (!response) {
-          setValidation({
-            success: false,
-            message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-          });
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
           setServices((prev) =>
             prev.map((s) =>
               s.service_id === oldService.service_id ? oldService : s
@@ -302,12 +287,7 @@ export default function ServicesForm({
   return (
     service && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-        >
+        <Form loading={loading} imgSrc={carCreation}>
           {/* title */}
           <FormInput
             label="Titre"

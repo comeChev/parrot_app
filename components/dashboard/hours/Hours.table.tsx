@@ -1,20 +1,21 @@
 "use client";
 
-import Table from "@/components/ui/table/Table";
-import TableBody from "@/components/ui/table/Table.body";
 import {
   BodyItemProps,
   BodyItems,
 } from "@/components/ui/table/Table.body.item";
+import HourForm, { defaultHour } from "./Hours.form";
 import TableHeader, {
   TableHeaderProps,
 } from "@/components/ui/table/Table.header";
-import { Hour } from "@prisma/client";
 import { useRef, useState } from "react";
-import HourForm, { defaultHour } from "./Hours.form";
-import UiButtonAction from "@/components/ui/Ui.button.action";
-import HoursListAction from "./Hours.list.action";
+
+import { Hour } from "@prisma/client";
 import HoursActionButton from "./Hours.action.button";
+import HoursListAction from "./Hours.list.action";
+import Table from "@/components/ui/table/Table";
+import TableBody from "@/components/ui/table/Table.body";
+import UiButtonAction from "@/components/ui/Ui.button.action";
 
 export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
   const [hours, setHours] = useState<Hour[]>(hoursDB);
@@ -52,7 +53,10 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
             <HoursActionButton setHours={setHours} isMorning={true} hour={h} />
             <div className="mt-2 md:ml-2 md:mt-0">
               {!h.hour_morning_status ? (
-                <span>{"Fermé"}</span>
+                <div className="flex flex-col md:flex-row">
+                  <span className="">{"Fermé"}</span>
+                  <span className="text-transparent">{"Fermé"}</span>
+                </div>
               ) : (
                 <div className="flex flex-col md:flex-row">
                   <span className="hidden md:flex">{"de"}</span>
@@ -73,7 +77,10 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
             <HoursActionButton setHours={setHours} isMorning={false} hour={h} />
             <div className="mt-2 md:ml-2 md:mt-0">
               {!h.hour_afternoon_status ? (
-                <span>{"Fermé"}</span>
+                <div className="flex flex-col md:flex-row">
+                  <span className="">{"Fermé"}</span>
+                  <span className="text-transparent">{"Fermé"}</span>
+                </div>
               ) : (
                 <div className="flex flex-col md:flex-row">
                   <span className="hidden md:flex">{"de"}</span>
@@ -117,7 +124,7 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
   }
 
   return (
-    <div>
+    <div className="">
       <div className="flex mb-20">
         <Table reference={tableRef}>
           <TableHeader headersList={headersList} />

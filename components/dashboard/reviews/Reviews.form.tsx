@@ -1,13 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
-import Form from "@/components/ui/form/Form";
-import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-
-import { Review } from "@prisma/client";
-import FormTextarea from "@/components/ui/form/Form.textarea";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import {
   NewReview,
@@ -15,11 +7,19 @@ import {
   deleteReview,
   updateReview,
 } from "@/lib/reviews";
-import FormInput from "@/components/ui/form/Form.input";
+
+import Form from "@/components/ui/form/Form";
 import FormError from "@/components/ui/form/Form.error";
+import FormFooter from "@/components/ui/form/Form.footer";
+import FormInput from "@/components/ui/form/Form.input";
+import FormTextarea from "@/components/ui/form/Form.textarea";
+import { Review } from "@prisma/client";
 import UiButtonAction from "@/components/ui/Ui.button.action";
-import { useSession } from "next-auth/react";
 import UiConfirmDeleteButton from "@/components/ui/Ui.confirm.delete.button";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export const defaultReview: Review = {
   review_id: 0,
@@ -61,7 +61,6 @@ export default function ReviewsForm({
   const isAdmin = session?.user.role === "ADMIN";
   const oldReview = currentReview;
   const [review, setReview] = useState(currentReview);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -122,11 +121,9 @@ export default function ReviewsForm({
 
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
-      setValidation({
-        success: false,
-        message:
-          "Veuillez corriger les erreurs avant de soumettre le formulaire.",
-      });
+      toast.error(
+        "Veuillez corriger les erreurs avant de soumettre le formulaire"
+      );
       setErrors(errorsTemp);
       return false;
     }
@@ -137,7 +134,6 @@ export default function ReviewsForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     //update review in db
     if (!isNew) {
@@ -150,10 +146,7 @@ export default function ReviewsForm({
       const response = await updateReview(review.review_id, review);
       // if error, rollback
       if (!response) {
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
         setReviews((prev) =>
           prev.map((m) => (m.review_id === review.review_id ? oldReview : m))
         );
@@ -162,10 +155,7 @@ export default function ReviewsForm({
       }
       setTimeout(() => {
         setReview(defaultReview);
-        setValidation({
-          success: true,
-          message: `Le commentaire a bien été mis à jour`,
-        });
+        toast.success("Le commentaire a bien été mis à jour");
         setIsOpenForm(false);
         setLoading(false);
         return;
@@ -178,10 +168,7 @@ export default function ReviewsForm({
     delete (reviewToUpdate as any).review_id;
     const response = await createReview(reviewToUpdate as NewReview);
     if (!response) {
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
       setLoading(false);
       return;
     }
@@ -197,10 +184,7 @@ export default function ReviewsForm({
         },
       ]);
       setReview(defaultReview);
-      setValidation({
-        success: true,
-        message: `Le commentaire a bien été créé`,
-      });
+      toast.success("Le commentaire a bien été créé");
       setIsOpenForm(false);
       setLoading(false);
     }, 2000);
@@ -237,29 +221,18 @@ export default function ReviewsForm({
     if (!response) {
       setReviews((prev) => [...prev, review]);
       setLoading(false);
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
       return;
     }
     setIsOpenForm(false);
     setLoading(false);
-    setValidation({
-      success: true,
-      message: `Le commentaire a bien été supprimé`,
-    });
+    toast.success("Le commentaire a bien été supprimé");
   }
 
   return (
     review && (
       <div className="mb-20 select-none">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-        >
+        <Form loading={loading} imgSrc={carCreation}>
           {/* name & lastName */}
           <div className="flex flex-col md:flex-row md:space-x-5">
             <FormInput

@@ -10,6 +10,7 @@ import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
 import ReCAPTCHA from "react-google-recaptcha";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 const defaultMessage: MessageCreate = {
@@ -46,7 +47,6 @@ export default function ContactForm() {
   const [message, setMessage] = useState(defaultMessage);
   const [errors, setErrors] = useState(defaultErrors);
   const [loading, setLoading] = useState(false);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [captcha, setCaptcha] = useState<null | string>(null);
 
   // handle errors
@@ -129,23 +129,16 @@ export default function ContactForm() {
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
     const response = await createMessage(message);
     setTimeout(() => {
       if (response) {
         setLoading(false);
-        setValidation({
-          success: true,
-          message: "Votre message a bien été envoyé !",
-        });
+        toast.success("Votre message a bien été envoyé !");
         setMessage(defaultMessage);
         return;
       }
       setLoading(false);
-      setValidation({
-        success: false,
-        message: "Une erreur est survenue, veuillez réessayer plus tard.",
-      });
+      toast.error("Une erreur est survenue, veuillez réessayer plus tard");
     }, 2000);
   }
 
@@ -153,8 +146,6 @@ export default function ContactForm() {
     //Form
     <Form
       loading={loading}
-      validation={validation}
-      setValidation={setValidation}
       explanations={[
         "Vous avez des questions sur votre voiture, sur nos prestations ? Notre équipe est toujours prête à vous aider. Vous pouvez nous appeler ou même nous envoyer un message via le formulaire de contact ci-dessous.",
       ]}

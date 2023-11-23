@@ -11,7 +11,7 @@ const FormReacaptcha: React.FC<FormReacaptchaProps> = ({
   error,
 }) => {
   return (
-    <div className="mb-6">
+    <div className="mb-6 relative">
       <ReCAPTCHA
         sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY!}
         onChange={setCaptcha}

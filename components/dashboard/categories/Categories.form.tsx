@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
-
-import Form from "@/components/ui/form/Form";
-import FormInput from "@/components/ui/form/Form.input";
 import FormFile, { ImageCreate } from "@/components/ui/form/Form.file";
-import Image from "next/image";
-import FormFooter from "@/components/ui/form/Form.footer";
-import carCreation from "@/assets/dashboard/carCreation.jpg";
-import noImage from "@/assets/no-image-available.jpg";
-
-import FormTextarea from "@/components/ui/form/Form.textarea";
-import { Category } from "@prisma/client";
 import { createCategory, updateCategory } from "@/lib/categories";
-import { deleteFile } from "@/utils/supabase.upload";
+
+import { Category } from "@prisma/client";
+import Form from "@/components/ui/form/Form";
 import FormError from "@/components/ui/form/Form.error";
+import FormFooter from "@/components/ui/form/Form.footer";
+import FormInput from "@/components/ui/form/Form.input";
+import FormTextarea from "@/components/ui/form/Form.textarea";
+import Image from "next/image";
+import carCreation from "@/assets/dashboard/carCreation.jpg";
+import { deleteFile } from "@/utils/supabase.upload";
+import noImage from "@/assets/no-image-available.jpg";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export const defaultCategory: Category = {
   category_id: 0,
@@ -47,7 +47,6 @@ export default function CategoryForm({
 }: CategoriesFormProps) {
   const oldCategory = currentCategory;
   const [category, setCategory] = useState(currentCategory);
-  const [validation, setValidation] = useState({ success: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(defaultErrors);
 
@@ -105,10 +104,7 @@ export default function CategoryForm({
     //checking errors
     if (Object.values(errorsTemp).some((error) => error.length > 0)) {
       setErrors(errorsTemp);
-      setValidation({
-        success: false,
-        message: "Veuillez corriger les erreurs dans le formulaire.",
-      });
+      toast.error("Veuillez corriger les erreurs dans le formulaire");
       return false;
     }
     return true;
@@ -118,7 +114,6 @@ export default function CategoryForm({
     if (!isValidForm()) return;
 
     setLoading(true);
-    setValidation({ success: false, message: "" });
 
     if (isNew === false) {
       //optimistic update
@@ -131,10 +126,7 @@ export default function CategoryForm({
       const response = await updateCategory(categoryToUpdate);
       // if error, rollback
       if (!response) {
-        setValidation({
-          success: false,
-          message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-        });
+        toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
         setCategories((prev) =>
           prev.map((c) =>
             c.category_id === oldCategory.category_id ? oldCategory : c
@@ -146,10 +138,7 @@ export default function CategoryForm({
       setTimeout(() => {
         setLoading(false);
         setCategory(defaultCategory);
-        setValidation({
-          success: true,
-          message: `Le service a bien été mis à jour.`,
-        });
+        toast.success("Le service a bien été mis à jour");
         setIsOpenForm(false);
         return;
       }, 2000);
@@ -165,20 +154,15 @@ export default function CategoryForm({
         setTimeout(() => {
           setCategories((prev) => [...prev, response]);
           setCategory(defaultCategory);
-          setValidation({
-            success: true,
-            message: `Le service a bien été créée.`,
-          });
+          toast.success("Le service a bien été créé");
           setIsOpenForm(false);
           setLoading(false);
           return;
         }, 2000);
         // if error, rollback
         if (!response) {
-          setValidation({
-            success: false,
-            message: "Une erreur est survenue. Veuillez réessayer plus tard.",
-          });
+          toast.error("Une erreur est survenue. Veuillez réessayer plus tard");
+
           setCategories((prev) =>
             prev.map((c) =>
               c.category_id === oldCategory.category_id ? oldCategory : c
@@ -233,12 +217,7 @@ export default function CategoryForm({
   return (
     category && (
       <div className="mb-20">
-        <Form
-          validation={validation}
-          setValidation={setValidation}
-          loading={loading}
-          imgSrc={carCreation}
-        >
+        <Form loading={loading} imgSrc={carCreation}>
           {/* name */}
           <FormInput
             label="Nom de la catégorie"

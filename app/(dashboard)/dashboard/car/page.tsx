@@ -1,6 +1,7 @@
 import CarDelete from "@/components/dashboard/car/Car.delete";
 import CarForm from "@/components/dashboard/car/Car.form";
 import { FullCar } from "@/lib/cars";
+import TextMain from "@/components/dashboard/ui/text.main";
 import { prisma } from "@/utils/prisma";
 
 export default async function CarPage(params: {
@@ -21,8 +22,9 @@ export default async function CarPage(params: {
 
   return (
     <div className="px-4 mt-10 min-h-screen container">
-      <div className="flex flex-col md:flex-row space-y-3 md:space-y-3">
-        <h2 className="text-3xl px-4 font-bold flex-1">{mainText}</h2>
+      <div className="flex flex-col md:flex-row md:items-center gap-2">
+        <TextMain text={mainText} />
+
         {car && <CarDelete car={car as FullCar} />}
       </div>
 

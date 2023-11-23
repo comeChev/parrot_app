@@ -63,12 +63,11 @@ export function getOpeningHoursString(
 export function getFullName(firstName: string, lastName: string) {
   return `${getUpperCaseFirstLetter(firstName)} ${lastName.toUpperCase()}`;
 }
+interface HourWithDayId extends Hour {
+  day_id: number;
+}
 
 export function filterArrayWeedDays(array: Hour[]) {
-  interface HourWithDayId extends Hour {
-    day_id: number;
-  }
-
   if (!array || array.length === 0) return [];
   const arrayDays: HourWithDayId[] = array.map((day) => {
     switch (day.hour_day) {

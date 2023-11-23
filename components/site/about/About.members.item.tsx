@@ -1,11 +1,12 @@
-import { User } from "@prisma/client";
+import { PublicUser } from "@/app/api/users/route";
 import React from "react";
+import { User } from "@prisma/client";
 
 type AboutMembersItemProps = {
-  user: User;
+  user: PublicUser;
 };
 
-function getInitials(user: User) {
+function getInitials(user: User | PublicUser) {
   if (user.user_last_name === "") {
     return user.user_first_name[0].toUpperCase();
   }
@@ -13,14 +14,14 @@ function getInitials(user: User) {
   return initials.toUpperCase();
 }
 
-function getFullName(user: User) {
+function getFullName(user: User | PublicUser) {
   if (user.user_last_name === "") {
     return `${user.user_first_name}`;
   }
   return `${user.user_first_name} ${user.user_last_name.toUpperCase()}`;
 }
 
-const ProfilePicture = ({ user }: { user: User }) => {
+const ProfilePicture = ({ user }: { user: User | PublicUser }) => {
   return user.user_image !== null ? (
     <img
       src={user.user_image}
@@ -45,10 +46,14 @@ export default function AboutMembersItem({ user }: AboutMembersItemProps) {
     <div className="flex items-center mb-5">
       <ProfilePicture user={user} />
       <div className="ml-3">
-        <h6 className="text-lg font-semibold mb-1">{getFullName(user)}</h6>
+        <h6 className="text-base font-semibold font-title leading-4">
+          {getFullName(user)}
+        </h6>
 
         {user.user_job && (
-          <p className="text-md text-neutral-500">{user.user_job}</p>
+          <p className="text-sm font-semibold text-neutral-500">
+            {user.user_job}
+          </p>
         )}
         <p className="text-sm italic text-neutral-400">{`${
           user.user_gender === ("MALE" || "") ? "Arrivé en " : "Arrivée en "

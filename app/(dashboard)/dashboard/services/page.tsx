@@ -1,9 +1,14 @@
-import ServicesList from "@/components/dashboard/services/Services.list";
 import { DescriptionPin, StatusPin } from "@/components/ui/Ui.status.pin";
+import Explanations, {
+  TStatusPin,
+} from "@/components/dashboard/ui/explanations";
+
 import { ServiceWithPicturesAndCategory } from "@/lib/services";
+import ServicesList from "@/components/dashboard/services/Services.list";
+import TextMain from "@/components/dashboard/ui/text.main";
 import { authOptions } from "@/utils/nextAuth/nextAuth.options";
-import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth";
+import { prisma } from "@/utils/prisma";
 import { redirect } from "next/navigation";
 
 export default async function AdminServicesPage() {
@@ -20,23 +25,23 @@ export default async function AdminServicesPage() {
     redirect("/dashboard");
   }
 
+  const explanations = [
+    {
+      status: "ONLINE" as TStatusPin,
+      label: "En ligne et visible sur le site",
+    },
+    {
+      status: "ARCHIVED" as TStatusPin,
+      label: "Hors ligne, peut être remis en ligne.",
+    },
+  ];
+
   return (
     <div className="px-4 mt-10 min-h-screen container">
-      {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
-      <h2 className="text-3xl font-bold">Liste des prestations</h2>
+      <TextMain text="Gestion des prestations" />
+
       {/* explanations status */}
-      <div className="flex items-center mt-5">
-        <div className="flex flex-col">
-          <div className="flex mb-1 items-center">
-            <StatusPin status="ONLINE" />
-            <DescriptionPin label="Prestation actuellement en ligne et visible sur le site" />
-          </div>
-          <div className="flex mb-1 items-center">
-            <StatusPin status="ARCHIVED" />
-            <DescriptionPin label="Prestation actuellement hors ligne. Peut être remise en ligne." />
-          </div>
-        </div>
-      </div>
+      <Explanations items={explanations} />
 
       {/* users list */}
       <ServicesList servicesDB={services} categoriesDB={categories} />

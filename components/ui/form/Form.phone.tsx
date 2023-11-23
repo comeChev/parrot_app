@@ -1,5 +1,5 @@
-import React from "react";
 import FormError from "./Form.error";
+import React from "react";
 
 type FormInputProps = {
   label: string;
@@ -22,7 +22,7 @@ export default function FormPhone({
   placeholder,
 }: FormInputProps) {
   return (
-    <div className="mb-[50px] flex-col flex-1">
+    <div className="mb-[50px] flex-col flex-1 relative">
       <p className="mb-3 px-4 font-semibold">
         {label} {required && <span className="text-red-800">*</span>}
       </p>
