@@ -5,12 +5,7 @@ type FormSubmitProps = {
   handleClick: () => void;
 };
 
-export default function FormSubmit({
-  handleCheck,
-  text = "Envoyer",
-  description,
-  handleClick,
-}: FormSubmitProps) {
+export default function FormSubmit({ handleCheck, text = "Envoyer", description, handleClick }: FormSubmitProps) {
   return (
     <div className="mb-[30px] flex-col text-center">
       <button
@@ -20,9 +15,7 @@ export default function FormSubmit({
       >
         {text}
       </button>
-      {description && (
-        <p className="text-sm font-light text-slate-500 ">{description}</p>
-      )}
+      {description && <p className="text-sm font-light text-slate-500 ">{description}</p>}
     </div>
   );
 }

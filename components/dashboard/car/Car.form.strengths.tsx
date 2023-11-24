@@ -12,17 +12,10 @@ type CarFormStrengthsProps = {
   setStrengths: React.Dispatch<React.SetStateAction<Strength[]>>;
 };
 
-export default function CarFormStrengths({
-  car,
-  setCar,
-  setStrengths,
-  strengths,
-}: CarFormStrengthsProps) {
+export default function CarFormStrengths({ car, setCar, setStrengths, strengths }: CarFormStrengthsProps) {
   function handleStrength(type: "add" | "remove", s: Strength) {
     if (type === "add") {
-      setStrengths(
-        strengths.filter((strength) => strength.strength_id !== s.strength_id)
-      );
+      setStrengths(strengths.filter((strength) => strength.strength_id !== s.strength_id));
       setCar({
         ...car,
         car_strengths: [...car.car_strengths, s],
@@ -31,9 +24,7 @@ export default function CarFormStrengths({
       setStrengths([...strengths, s]);
       setCar({
         ...car,
-        car_strengths: car.car_strengths.filter(
-          (strength) => strength.strength_id !== s.strength_id
-        ),
+        car_strengths: car.car_strengths.filter((strength) => strength.strength_id !== s.strength_id),
       });
     }
   }
@@ -51,12 +42,7 @@ export default function CarFormStrengths({
           <BsArrowDownUp className="flex lg:hidden" />
           <BsArrowLeftRight className="hidden lg:flex" />
         </div>
-        <CarFormStrengthsTable
-          strengths={strengths}
-          text="Bibliothèque"
-          handleClick={handleStrength}
-          type="add"
-        />
+        <CarFormStrengthsTable strengths={strengths} text="Bibliothèque" handleClick={handleStrength} type="add" />
       </div>
     </FormBox>
   );

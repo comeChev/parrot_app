@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  verifyAuthorization,
-  verifySession,
-} from "@/utils/nextAuth/nextAuth.protections";
+import { verifyAuthorization, verifySession } from "@/utils/nextAuth/nextAuth.protections";
 
 import { prisma } from "@/utils/prisma";
 
@@ -11,10 +8,7 @@ export async function GET(request: NextRequest) {
 
   try {
     if (!hasSession) {
-      return new NextResponse(
-        JSON.stringify({ error: "Vous n'êtes pas connecté" }),
-        { status: 401 }
-      );
+      return new NextResponse(JSON.stringify({ error: "Vous n'êtes pas connecté" }), { status: 401 });
     }
     //get message by id
     if (request.nextUrl.searchParams.get("id")) {
@@ -23,10 +17,7 @@ export async function GET(request: NextRequest) {
         where: { message_id: id },
       });
       if (!message) {
-        return new NextResponse(
-          JSON.stringify({ error: "Message non trouvé" }),
-          { status: 400 }
-        );
+        return new NextResponse(JSON.stringify({ error: "Message non trouvé" }), { status: 400 });
       }
       return new NextResponse(
         JSON.stringify({
@@ -64,11 +55,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const isAuthorized = await verifyAuthorization(request);
   try {
-    if (!isAuthorized)
-      return new NextResponse(
-        JSON.stringify({ error: "Vous n'êtes pas autorisé" }),
-        { status: 401 }
-      );
+    if (!isAuthorized) return new NextResponse(JSON.stringify({ error: "Vous n'êtes pas autorisé" }), { status: 401 });
     const body = await request.json();
     const message = await prisma.message.create({
       data: body,
@@ -86,22 +73,16 @@ export async function POST(request: NextRequest) {
       status: error.status || 500,
     });
   }
+  //return new NextResponse(JSON.stringify({ error: "erreur simulée" }), { status: 501 });
 }
 
 export async function PATCH(request: NextRequest) {
   const hasSession = await verifySession();
 
   try {
-    if (!hasSession)
-      return new NextResponse(
-        JSON.stringify({ error: "Vous n'êtes pas connecté" }),
-        { status: 401 }
-      );
+    if (!hasSession) return new NextResponse(JSON.stringify({ error: "Vous n'êtes pas connecté" }), { status: 401 });
     if (!request.nextUrl.searchParams.get("id"))
-      return new NextResponse(
-        JSON.stringify({ error: "Aucun message trouvé" }),
-        { status: 400 }
-      );
+      return new NextResponse(JSON.stringify({ error: "Aucun message trouvé" }), { status: 400 });
     const id = Number(request.nextUrl.searchParams.get("id"));
     const body = await request.json();
     const message = await prisma.message.update({
@@ -132,11 +113,7 @@ export async function PATCH(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const hasSession = await verifySession();
   try {
-    if (!hasSession)
-      return new NextResponse(
-        JSON.stringify({ error: "Vous n'êtes pas connecté" }),
-        { status: 401 }
-      );
+    if (!hasSession) return new NextResponse(JSON.stringify({ error: "Vous n'êtes pas connecté" }), { status: 401 });
 
     if (!request.nextUrl.searchParams.get("id"))
       return new NextResponse(JSON.stringify({ error: "Message manquant" }), {

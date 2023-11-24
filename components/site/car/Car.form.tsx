@@ -1,151 +1,87 @@
 "use client";
 
-import { CarMessage, PublicCar, createCarMessage } from "@/lib/cars";
+import { ErrorsProps, defaultErrorsPublic, defaultMessageWithoutId } from "@/utils/form/car.message";
+import { PublicCar, createCarMessage } from "@/lib/cars";
+import { Validation, checkErrors } from "@/utils/form/validation";
 
 import Form from "@/components/ui/form/Form";
+import FormAfter from "@/components/ui/form/Form.after";
 import FormInput from "@/components/ui/form/Form.input";
 import FormPhone from "@/components/ui/form/Form.phone";
 import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const defaultMessage: CarMessage = {
-  car_message_contact_first_name: "",
-  car_message_contact_last_name: "",
-  car_message_contact_email: "",
-  car_message_contact_phone: "",
-  car_message_content: "",
-  car_message_status: "PENDING",
-  car_message_response: null,
-  car_message_response_type: null,
-  car_message_response_date: null,
-  car_id: 0,
-};
-
-type ErrorsProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  content: string;
-  captcha: string;
-};
-
-const defaultErrors: ErrorsProps = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  content: "",
-  captcha: "",
-};
 
 type CarFormProps = {
   car: PublicCar;
 };
 
 export default function CarForm({ car }: CarFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState(defaultErrors);
-  const [captcha, setCaptcha] = useState<null | string>(null);
-  const [message, setMessage] = useState({
-    ...defaultMessage,
+  const defaultCarMessage = {
+    ...defaultMessageWithoutId,
     car_id: car.car_id,
     car_message_content:
       "Bonjour, je suis intéressé par votre véhicule. Merci de bien vouloir me recontacter. Merci et bonne journée. Cordialement.",
+  };
+  const router = useRouter();
+  const [form, setForm] = useState({
+    values: defaultCarMessage,
+    errors: { ...defaultErrorsPublic },
   });
+  const [status, setStatus] = useState({
+    loading: false,
+    sent: false,
+    error: false,
+  });
+  const [captcha, setCaptcha] = useState<null | string>(null);
+
+  function isValidForm() {
+    let temp: ErrorsProps = defaultErrorsPublic;
+
+    temp.car_message_content = new Validation(form.values.car_message_content).min(10).max(500).validate();
+    temp.car_message_contact_phone = new Validation(form.values.car_message_contact_phone).phone().validate();
+    temp.car_message_contact_first_name = new Validation(form.values.car_message_contact_first_name)
+      .min(3)
+      .max(50)
+      .validate();
+    temp.car_message_contact_last_name = new Validation(form.values.car_message_contact_last_name)
+      .min(3)
+      .max(50)
+      .validate();
+    temp.car_message_contact_email = new Validation(form.values.car_message_contact_email).email().validate();
+    temp.captcha = new Validation(captcha).required().validate();
+
+    return checkErrors(temp, () => {
+      setForm({ ...form, errors: temp });
+    });
+  }
 
   async function handleSubmit() {
     if (!isValidForm()) return;
 
-    setLoading(true);
-    const response = await createCarMessage(car.car_id, message);
+    setStatus({ ...status, loading: true });
+    const response = await createCarMessage(car.car_id, form.values);
     setTimeout(() => {
       if (response) {
-        setLoading(false);
+        setStatus({ ...status, loading: false, sent: true });
         toast.success("Votre message a bien été envoyé !");
-        setMessage(defaultMessage);
+        setForm({ values: defaultCarMessage, errors: defaultErrorsPublic });
         return;
       }
-      setLoading(false);
+      setStatus({ ...status, loading: false, error: true });
       toast.error("Une erreur est survenue, veuillez réessayer plus tard");
     }, 2000);
   }
-  function isValidForm() {
-    let errorsTemp: ErrorsProps = defaultErrors;
 
-    // content validation
-    if (
-      message.car_message_content.trim().length < 10 ||
-      message.car_message_content.trim().length > 500
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        content:
-          "Votre message doit contenir au moins 10 caractères et au maximum 500.",
-      };
-    }
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setForm({ ...form, values: { ...form.values, [e.target.name]: e.target.value } });
+  }
 
-    // phone validation
-    if (message.car_message_contact_phone.match(/^[0][1-9][0-9]{8}/) === null) {
-      errorsTemp = {
-        ...errorsTemp,
-        phone:
-          "Votre numéro de téléphone doit commencer par 0 et contenir 10 chiffres (ex : 0198237645).",
-      };
-    }
-
-    // firstName validation
-    if (
-      message.car_message_contact_first_name.trim().length < 3 ||
-      message.car_message_contact_first_name.trim().length > 50
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        firstName:
-          "Votre prénom doit comporter un minimum de 3 lettres et un maximum de 50",
-      };
-    }
-
-    // lastName validation
-    if (
-      message.car_message_contact_last_name.trim().length < 3 ||
-      message.car_message_contact_last_name.trim().length > 50
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        lastName:
-          "Votre nom de famille doit comporter un minimum de 3 lettres et un maximum de 50",
-      };
-    }
-    // email validation
-    if (
-      !message.car_message_contact_email.match(
-        /^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/i
-      )
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        email: "Votre adresse email est invalide.",
-      };
-    }
-
-    if (captcha === null) {
-      errorsTemp = {
-        ...errorsTemp,
-        captcha: "Veuillez cocher la case 'Je ne suis pas un robot'.",
-      };
-    }
-
-    //checking errors
-    if (Object.values(errorsTemp).some((error) => error.length > 0)) {
-      setErrors(errorsTemp);
-      return false;
-    }
-    setErrors(defaultErrors);
-    return true;
+  function handleErrorsFocus(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setForm({ ...form, errors: { ...form.errors, [e.target.name]: "" } });
   }
 
   return (
@@ -155,100 +91,82 @@ export default function CarForm({ car }: CarFormProps) {
         <p className="font-bold">{car.car_name.toUpperCase()}</p>
       </div>
 
-      <Form
-        loading={loading}
-        explanations={[
-          "Veuillez remplir le formulaire ci-dessous pour nous contacter. Nous vous répondrons dans les plus brefs délais.",
-        ]}
-      >
-        {/* name & lastName */}
-        <div className="flex flex-col md:flex-row md:space-x-5">
+      <div className="relative">
+        <Form
+          loading={status.loading}
+          explanations={[
+            "Veuillez remplir le formulaire ci-dessous pour nous contacter. Nous vous répondrons dans les plus brefs délais.",
+          ]}
+        >
+          {/* name & lastName */}
+          <div className="flex flex-col md:flex-row md:space-x-5">
+            <FormInput
+              label="Prénom"
+              name="car_message_contact_first_name"
+              value={form.values.car_message_contact_first_name}
+              error={form.errors.car_message_contact_first_name}
+              type="text"
+              autocomplete="given-name"
+              handleChange={handleChange}
+              handleFocus={handleErrorsFocus}
+            />
+            <FormInput
+              label="Nom de famille"
+              name="car_message_contact_last_name"
+              value={form.values.car_message_contact_last_name}
+              error={form.errors.car_message_contact_last_name}
+              type="text"
+              autocomplete="family-name"
+              handleChange={handleChange}
+              handleFocus={handleErrorsFocus}
+            />
+          </div>
+
+          {/* email */}
           <FormInput
-            label="Prénom"
-            name="firstName"
-            value={message.car_message_contact_first_name}
-            error={errors.firstName}
-            type="text"
-            autocomplete="given-name"
-            handleChange={(e) =>
-              setMessage({
-                ...message,
-                car_message_contact_first_name: e.target.value,
-              })
-            }
-            handleFocus={(e) => setErrors({ ...errors, firstName: "" })}
+            label="E-mail"
+            name="car_message_contact_email"
+            value={form.values.car_message_contact_email}
+            error={form.errors.car_message_contact_email}
+            type="email"
+            autocomplete="email"
+            handleChange={handleChange}
+            handleFocus={handleErrorsFocus}
           />
-          <FormInput
-            label="Nom de famille"
-            name="lastName"
-            value={message.car_message_contact_last_name}
-            error={errors.lastName}
-            type="text"
-            autocomplete="family-name"
-            handleChange={(e) =>
-              setMessage({
-                ...message,
-                car_message_contact_last_name: e.target.value,
-              })
-            }
-            handleFocus={(e) => setErrors({ ...errors, lastName: "" })}
+
+          {/* phone */}
+          <FormPhone
+            label="Téléphone"
+            placeholder="0612345678"
+            name="car_message_contact_phone"
+            handleChange={handleChange}
+            handleFocus={handleErrorsFocus}
+            value={form.values.car_message_contact_phone ?? ""}
+            error={form.errors.car_message_contact_phone}
           />
-        </div>
 
-        {/* email */}
-        <FormInput
-          label="E-mail"
-          name="email"
-          value={message.car_message_contact_email}
-          error={errors.email}
-          type="email"
-          autocomplete="email"
-          handleChange={(e) =>
-            setMessage({
-              ...message,
-              car_message_contact_email: e.target.value.trim(),
-            })
-          }
-          handleFocus={(e) => setErrors({ ...errors, email: "" })}
-        />
+          {/* content */}
+          <FormTextarea
+            label="Message"
+            name="car_message_content"
+            value={form.values.car_message_content}
+            error={form.errors.car_message_content}
+            handleChange={handleChange}
+            handleFocus={handleErrorsFocus}
+          />
 
-        {/* phone */}
-        <FormPhone
-          label="Téléphone"
-          placeholder="0612345678"
-          handleChange={(e) =>
-            setMessage({
-              ...message,
-              car_message_contact_phone: e.target.value,
-            })
-          }
-          handleFocus={(e) => setErrors({ ...errors, phone: "" })}
-          value={message.car_message_contact_phone}
-          error={errors.phone}
-        />
+          <FormReacaptcha setCaptcha={setCaptcha} error={form.errors.captcha} />
 
-        {/* content */}
-        <FormTextarea
-          label="Message"
-          name="message"
-          value={message.car_message_content}
-          error={errors.content}
-          handleChange={(e) =>
-            setMessage({ ...message, car_message_content: e.target.value })
-          }
-          handleFocus={(e) => setErrors({ ...errors, content: "" })}
-        />
-
-        <FormReacaptcha setCaptcha={setCaptcha} error={errors.captcha} />
-
-        {/* submit */}
-        <FormSubmit
-          handleClick={handleSubmit}
-          text="Envoyer"
-          description="La référence du véhicule est directement intégrée à ce message. Il ne vous est pas nécessaire de l’indiquer."
-          handleCheck={loading}
-        />
-      </Form>
+          {/* submit */}
+          <FormSubmit
+            handleClick={handleSubmit}
+            text="Envoyer"
+            description="La référence du véhicule est directement intégrée à ce message. Il ne vous est pas nécessaire de l’indiquer."
+            handleCheck={status.loading}
+          />
+        </Form>
+        <FormAfter status={status} setStatus={setStatus} />
+      </div>
     </div>
   );
 }

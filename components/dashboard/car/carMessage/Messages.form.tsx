@@ -2,6 +2,8 @@
 
 import { BsMailbox2, BsPhoneFill } from "react-icons/bs";
 import { SendMailBody, sendMail } from "@/utils/sendgrid";
+import { Validation, checkErrors } from "@/utils/form/validation";
+import { defaultErrors, defaultMessage } from "@/utils/form/car.message";
 import { getFullName, getFullStringDate } from "@/utils/globals";
 
 import { Car_message } from "@prisma/client";
@@ -14,26 +16,6 @@ import UiButtonAction from "@/components/ui/Ui.button.action";
 import carCreation from "@/assets/dashboard/carCreation.jpg";
 import toast from "react-hot-toast";
 import { useState } from "react";
-
-export const defaultMessage: Car_message = {
-  car_message_id: 0,
-  car_message_contact_first_name: "",
-  car_message_contact_last_name: "",
-  car_message_contact_email: "",
-  car_message_contact_phone: "",
-  car_message_content: "",
-  car_message_published_date: new Date(),
-  car_message_status: "PENDING",
-  car_message_response: null,
-  car_message_response_type: null,
-  car_message_response_date: null,
-  car_id: 0,
-};
-
-export const defaultErrors = {
-  message_response: "",
-  message_response_type: "",
-};
 
 type MessagesFormProps = {
   messages: Car_message[];
@@ -59,61 +41,27 @@ export default function MessagesForm({
 
   function isValidForm() {
     let errorsTemp = defaultErrors;
+    const carResponseT = new Validation(message.car_message_response_type).enum(["MAIL", "PHONE"]);
+    const carResponseM = new Validation(message.car_message_response)
+      .conditional(message.car_message_response_type === "MAIL")
+      .min(10)
+      .max(500);
 
-    if (
-      message.car_message_response_type === "" ||
-      !message.car_message_response_type
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        message_response_type: "Veuillez choisir un type de réponse.",
-      };
-    }
+    errorsTemp = { message_response_type: carResponseT.validate(), message_response: carResponseM.validate() };
 
-    if (message.car_message_response_type === "MAIL") {
-      if (!message.car_message_response) {
-        errorsTemp = {
-          ...errorsTemp,
-          message_response: "Veuillez entrer une réponse.",
-        };
-      } else if (
-        message.car_message_response.trim().length < 10 ||
-        message.car_message_response.trim().length > 500
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          message_response:
-            "Votre message doit contenir au moins 10 caractères et au maximum 500.",
-        };
-      }
-    }
-
-    //checking errors
-    if (Object.values(errorsTemp).some((error) => error.length > 0)) {
-      toast.error(
-        "Veuillez corriger les erreurs avant de soumettre le formulaire."
-      );
-      setErrors(errorsTemp);
-      return false;
-    }
-    return true;
+    return checkErrors(errorsTemp, () => setErrors(errorsTemp));
   }
 
   async function handleSubmit() {
     if (!isValidForm()) return;
-
-    setLoading(true);
-
     //cannot create a new message from admin dashboard
     if (isNew) return;
 
+    setLoading(true);
+
     //optimistic update
     setMessages((prev) =>
-      prev.map((m) =>
-        m.car_message_id === message.car_message_id
-          ? { ...message, car_message_status: "REPLIED" }
-          : m
-      )
+      prev.map((m) => (m.car_message_id === message.car_message_id ? { ...message, car_message_status: "REPLIED" } : m))
     );
 
     //send mail via sendgrid
@@ -123,20 +71,13 @@ export default function MessagesForm({
       response: message.car_message_response as string,
       sendDate: getFullStringDate(message.car_message_published_date),
       email: message.car_message_contact_email,
-      contactName: getFullName(
-        message.car_message_contact_first_name,
-        message.car_message_contact_last_name
-      ),
+      contactName: getFullName(message.car_message_contact_first_name, message.car_message_contact_last_name),
     };
     const res = await sendMail(sendOptions);
     if (!res) {
       toast.error("Une erreur est survenue. Veuillez réessayer plus tard.");
 
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.car_message_id === oldMessage.car_message_id ? oldMessage : m
-        )
-      );
+      setMessages((prev) => prev.map((m) => (m.car_message_id === oldMessage.car_message_id ? oldMessage : m)));
       setLoading(false);
       return;
     }
@@ -144,9 +85,7 @@ export default function MessagesForm({
     setCar((prev) => ({
       ...prev,
       car_messages: prev.car_messages.map((m) =>
-        m.car_message_id === message.car_message_id
-          ? { ...message, car_message_status: "REPLIED" }
-          : m
+        m.car_message_id === message.car_message_id ? { ...message, car_message_status: "REPLIED" } : m
       ),
     }));
 
@@ -165,17 +104,11 @@ export default function MessagesForm({
     return;
   }
 
-  function handleChange(
-    e: React.ChangeEvent<
-      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
-    >
-  ) {
+  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {
     setMessage({ ...message, [e.currentTarget.name]: e.currentTarget.value });
   }
 
-  function handleResetError(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleResetError(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setErrors({ ...errors, [e.currentTarget.name]: "" });
   }
 
@@ -191,9 +124,7 @@ export default function MessagesForm({
                 message.car_message_contact_last_name
               )}`}
             </p>
-            <p>{`Envoyé ${getFullStringDate(
-              new Date(message.car_message_published_date)
-            )}`}</p>
+            <p>{`Envoyé ${getFullStringDate(new Date(message.car_message_published_date))}`}</p>
           </div>
 
           {/* content */}
@@ -239,15 +170,9 @@ export default function MessagesForm({
             <div className="">
               <FormSelect
                 label="Type de réponse"
-                value={
-                  message.car_message_response_type
-                    ? message.car_message_response_type
-                    : ""
-                }
+                value={message.car_message_response_type ? message.car_message_response_type : ""}
                 handleChange={handleChange}
-                handleFocus={() =>
-                  setErrors({ ...errors, message_response_type: "" })
-                }
+                handleFocus={() => setErrors({ ...errors, message_response_type: "" })}
                 error={errors.message_response_type}
                 name="car_message_response_type"
                 options={[
@@ -259,27 +184,18 @@ export default function MessagesForm({
             </div>
           </div>
           {/* response */}
-          {message.car_message_response_type &&
-            message.car_message_response_type === "MAIL" && (
-              <FormTextarea
-                label="Réponse"
-                name="car_message_response"
-                handleChange={handleChange}
-                handleFocus={handleResetError}
-                value={
-                  message.car_message_response
-                    ? message.car_message_response
-                    : ""
-                }
-                error={errors.message_response}
-              />
-            )}
+          {message.car_message_response_type && message.car_message_response_type === "MAIL" && (
+            <FormTextarea
+              label="Réponse"
+              name="car_message_response"
+              handleChange={handleChange}
+              handleFocus={handleResetError}
+              value={message.car_message_response ? message.car_message_response : ""}
+              error={errors.message_response}
+            />
+          )}
 
-          <FormFooter
-            handleSubmit={handleSubmit}
-            isNew={isNew}
-            loading={loading}
-          />
+          <FormFooter handleSubmit={handleSubmit} isNew={isNew} loading={loading} />
         </Form>
       </div>
     )

@@ -1,8 +1,8 @@
+import { ErrorsProps } from "@/utils/form/car";
 import FormBox from "@/components/ui/form/Form.box";
-import { FullCar } from "@/lib/cars";
-import { ErrorsProps } from "./Car.form";
 import FormInput from "@/components/ui/form/Form.input";
 import FormSelect from "@/components/ui/form/Form.select";
+import { FullCar } from "@/lib/cars";
 
 type CarFormConsumptionProps = {
   setCar: React.Dispatch<React.SetStateAction<FullCar>>;
@@ -10,12 +10,7 @@ type CarFormConsumptionProps = {
   errors: ErrorsProps;
   setErrors: React.Dispatch<React.SetStateAction<ErrorsProps>>;
 };
-export default function CarFormConsumption({
-  car,
-  setCar,
-  errors,
-  setErrors,
-}: CarFormConsumptionProps) {
+export default function CarFormConsumption({ car, setCar, errors, setErrors }: CarFormConsumptionProps) {
   return (
     <FormBox title="Consommation">
       {/* car euro norme */}
@@ -31,12 +26,11 @@ export default function CarFormConsumption({
           { value: "EURO6", label: "EURO6" },
         ]}
         label="Norme européenne"
-        value={car.car_eu_rule === null ? "" : car.car_eu_rule}
+        value={car.car_eu_rule ?? ""}
         handleChange={(e) =>
           setCar({
             ...car,
-            car_eu_rule:
-              e.currentTarget.value === "" ? null : e.currentTarget.value,
+            car_eu_rule: e.currentTarget.value ?? "",
           })
         }
         handleFocus={() => {}}
@@ -60,8 +54,7 @@ export default function CarFormConsumption({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_critair:
-              e.currentTarget.value === "" ? null : e.currentTarget.value,
+            car_critair: e.currentTarget.value === "" ? null : e.currentTarget.value,
           })
         }
         handleFocus={() => {}}
@@ -78,8 +71,7 @@ export default function CarFormConsumption({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_consumption:
-              e.target.value === null ? null : Number(e.target.value),
+            car_consumption: e.target.value === null ? null : Number(e.target.value),
           })
         }
         name="carConsumption"
@@ -96,8 +88,7 @@ export default function CarFormConsumption({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_carbon_release:
-              e.target.value === null ? null : Number(e.target.value),
+            car_carbon_release: e.target.value === null ? null : Number(e.target.value),
           })
         }
         name="carCarbonRelease"
@@ -113,22 +104,11 @@ export default function CarFormConsumption({
           { value: "false", label: "Non exigible" },
         ]}
         label="Prime à la conversion"
-        value={
-          car.car_conversion_bonus === null
-            ? ""
-            : car.car_conversion_bonus === true
-            ? "true"
-            : "false"
-        }
+        value={car.car_conversion_bonus === null ? "" : car.car_conversion_bonus === true ? "true" : "false"}
         handleChange={(e) =>
           setCar({
             ...car,
-            car_conversion_bonus:
-              e.currentTarget.value === ""
-                ? null
-                : e.currentTarget.value === "true"
-                ? true
-                : false,
+            car_conversion_bonus: e.currentTarget.value === "" ? null : e.currentTarget.value === "true" ? true : false,
           })
         }
         handleFocus={() => {}}

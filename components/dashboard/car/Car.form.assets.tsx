@@ -1,9 +1,10 @@
+import { Dispatch, SetStateAction } from "react";
+
+import { ErrorsProps } from "@/utils/form/car";
 import FormBox from "@/components/ui/form/Form.box";
 import FormInput from "@/components/ui/form/Form.input";
-import { FullCar } from "@/lib/cars";
-import { Dispatch, SetStateAction } from "react";
-import { ErrorsProps } from "./Car.form";
 import FormSelect from "@/components/ui/form/Form.select";
+import { FullCar } from "@/lib/cars";
 
 type CarFormAssetsProps = {
   setCar: Dispatch<SetStateAction<FullCar>>;
@@ -12,12 +13,7 @@ type CarFormAssetsProps = {
   setErrors: Dispatch<SetStateAction<ErrorsProps>>;
 };
 
-export default function CarFormAssets({
-  setCar,
-  car,
-  errors,
-  setErrors,
-}: CarFormAssetsProps) {
+export default function CarFormAssets({ setCar, car, errors, setErrors }: CarFormAssetsProps) {
   return (
     <FormBox title="Caractéristiques du véhicule">
       {/* car country */}
@@ -46,18 +42,11 @@ export default function CarFormAssets({
           { value: "false", label: "Non requis" },
         ]}
         label="Contrôle technique"
-        value={
-          car.car_technical_control === null
-            ? ""
-            : car.car_technical_control === true
-            ? "true"
-            : "false"
-        }
+        value={car.car_technical_control === null ? "" : car.car_technical_control === true ? "true" : "false"}
         handleChange={(e) =>
           setCar({
             ...car,
-            car_technical_control:
-              e.currentTarget.value === "true" ? true : false,
+            car_technical_control: e.currentTarget.value === "true" ? true : false,
           })
         }
         handleFocus={() => {}}
@@ -72,13 +61,7 @@ export default function CarFormAssets({
           { value: "false", label: "Non" },
         ]}
         label="Première main"
-        value={
-          car.car_first_hand === null
-            ? ""
-            : car.car_first_hand === true
-            ? "true"
-            : "false"
-        }
+        value={car.car_first_hand === null ? "" : car.car_first_hand === true ? "true" : "false"}
         handleChange={(e) =>
           setCar({
             ...car,
@@ -137,10 +120,7 @@ export default function CarFormAssets({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_doors:
-              e.currentTarget.value !== ""
-                ? Number(e.currentTarget.value)
-                : null,
+            car_doors: e.currentTarget.value !== "" ? Number(e.currentTarget.value) : null,
           })
         }
         handleFocus={() => {}}
@@ -165,10 +145,7 @@ export default function CarFormAssets({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_seats:
-              e.currentTarget.value !== ""
-                ? Number(e.currentTarget.value)
-                : null,
+            car_seats: e.currentTarget.value !== "" ? Number(e.currentTarget.value) : null,
           })
         }
         handleFocus={() => {}}

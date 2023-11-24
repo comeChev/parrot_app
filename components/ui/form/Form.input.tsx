@@ -79,16 +79,13 @@ const FormInput: React.FC<FormInputProps> = ({
   }
 
   return (
-    <div className="mb-8 flex-col flex-1 relative">
+    <div className="mb-8 flex-col flex-1 relative pb-1">
       <div className="flex items-center mb-3 pl-4 justify-between">
         <p className={` font-semibold ${labelClasses}`}>
           {label} {required && <span className="text-red-800">*</span>}
         </p>
         {info && (
-          <AiOutlineInfoCircle
-            className="text-gray-800 text-2xl cursor-pointer"
-            onClick={() => toggleInfos(refInfo)}
-          />
+          <AiOutlineInfoCircle className="text-gray-800 text-2xl cursor-pointer" onClick={() => toggleInfos(refInfo)} />
         )}
       </div>
       <div className="relative">
@@ -131,10 +128,7 @@ const FormInput: React.FC<FormInputProps> = ({
         )}
       </div>
       {info && (
-        <p
-          ref={refInfo}
-          className={`px-4 text-start w-full text-transparent text-sm`}
-        >
+        <p ref={refInfo} className={`px-4 text-start w-full text-transparent text-sm`}>
           {"Votre mail doit contenir un '.' et un '@'"}
         </p>
       )}

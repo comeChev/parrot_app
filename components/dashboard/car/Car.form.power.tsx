@@ -1,6 +1,6 @@
+import { ErrorsProps } from "@/utils/form/car";
 import FormBox from "@/components/ui/form/Form.box";
 import FormInput from "@/components/ui/form/Form.input";
-import { ErrorsProps } from "./Car.form";
 import { FullCar } from "@/lib/cars";
 
 type CarFormPowerProps = {
@@ -10,12 +10,7 @@ type CarFormPowerProps = {
   setErrors: React.Dispatch<React.SetStateAction<ErrorsProps>>;
 };
 
-export default function CarFormPower({
-  car,
-  setCar,
-  errors,
-  setErrors,
-}: CarFormPowerProps) {
+export default function CarFormPower({ car, setCar, errors, setErrors }: CarFormPowerProps) {
   return (
     <FormBox title="Puissance fiscale">
       {/* carFiscalPower */}
@@ -28,8 +23,7 @@ export default function CarFormPower({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_fiscal_power:
-              e.target.value === null ? null : Number(e.target.value),
+            car_fiscal_power: e.target.value === null ? null : Number(e.target.value),
           })
         }
         name="carFiscalPower"
@@ -47,8 +41,7 @@ export default function CarFormPower({
         handleChange={(e) =>
           setCar({
             ...car,
-            car_horse_power:
-              e.target.value === null ? null : Number(e.target.value),
+            car_horse_power: e.target.value === null ? null : Number(e.target.value),
           })
         }
         name="carFiscalPower"

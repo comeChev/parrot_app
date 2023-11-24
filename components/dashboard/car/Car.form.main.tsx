@@ -1,9 +1,10 @@
+import { ErrorsProps, optionsFuel, optionsGearbox } from "@/utils/form/car";
+
+import { BsCurrencyEuro } from "react-icons/bs";
 import FormBox from "@/components/ui/form/Form.box";
 import FormInput from "@/components/ui/form/Form.input";
-import { ErrorsProps } from "./Car.form";
-import { FullCar } from "@/lib/cars";
-import { BsCurrencyEuro } from "react-icons/bs";
 import FormSelect from "@/components/ui/form/Form.select";
+import { FullCar } from "@/lib/cars";
 
 type CarFormMainProps = {
   car: FullCar;
@@ -12,29 +13,7 @@ type CarFormMainProps = {
   setErrors: React.Dispatch<React.SetStateAction<ErrorsProps>>;
 };
 
-const optionsFuel: { value: string; label: string }[] = [
-  { value: "", label: "-- Carburant --" },
-  { value: "essence", label: "Essence" },
-  { value: "diesel", label: "Diesel" },
-  { value: "electrique", label: "Électrique" },
-  { value: "hybride", label: "Hybride" },
-  { value: "hybride-rechargeable", label: "Hybride rechargeable" },
-  { value: "gpl", label: "GPL" },
-];
-
-const optionsGearbox: { value: string; label: string }[] = [
-  { value: "", label: "-- Boîte de vitesse --" },
-  { value: "manuelle", label: "Manuelle" },
-  { value: "automatique", label: "Automatique" },
-  { value: "semi-automatique", label: "Semi-automatique" },
-];
-
-export default function CarFormMain({
-  car,
-  setCar,
-  errors,
-  setErrors,
-}: CarFormMainProps) {
+export default function CarFormMain({ car, setCar, errors, setErrors }: CarFormMainProps) {
   function getInputDate(date: Date) {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -67,12 +46,10 @@ export default function CarFormMain({
 
       {/* car fuel */}
       <FormSelect
-        options={optionsFuel}
+        options={[{ value: "", label: "-- Carburant --" }, ...optionsFuel]}
         label="Carburant"
         value={car.car_fuel}
-        handleChange={(e) =>
-          setCar({ ...car, car_fuel: e.currentTarget.value })
-        }
+        handleChange={(e) => setCar({ ...car, car_fuel: e.currentTarget.value })}
         handleFocus={() => {
           setErrors({ ...errors, carFuel: "" });
         }}
@@ -113,12 +90,10 @@ export default function CarFormMain({
       />
       {/* car gearbox */}
       <FormSelect
-        options={optionsGearbox}
+        options={[{ value: "", label: "-- Boîte de vitesse --" }, ...optionsGearbox]}
         label="Boite de vitesse"
         value={car.car_gearbox}
-        handleChange={(e) =>
-          setCar({ ...car, car_gearbox: e.currentTarget.value })
-        }
+        handleChange={(e) => setCar({ ...car, car_gearbox: e.currentTarget.value })}
         handleFocus={() => {
           setErrors({ ...errors, carGearbox: "" });
         }}

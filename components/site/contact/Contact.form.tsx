@@ -1,238 +1,161 @@
 "use client";
 
-import { MessageCreate, createMessage } from "@/lib/messages";
+import { ErrorsProps, defaultErrors, defaultMessage } from "@/utils/form/contact";
+import { Validation, checkErrors } from "@/utils/form/validation";
 
 import Form from "@/components/ui/form/Form";
-import FormError from "@/components/ui/form/Form.error";
+import FormAfter from "@/components/ui/form/Form.after";
 import FormInput from "@/components/ui/form/Form.input";
 import FormPhone from "@/components/ui/form/Form.phone";
 import FormReacaptcha from "@/components/ui/form/Form.recaptcha";
 import FormSubmit from "@/components/ui/form/Form.submit";
 import FormTextarea from "@/components/ui/form/Form.textarea";
-import ReCAPTCHA from "react-google-recaptcha";
+import { createMessage } from "@/lib/messages";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const defaultMessage: MessageCreate = {
-  message_contact_first_name: "",
-  message_contact_last_name: "",
-  message_contact_email: "",
-  message_contact_phone: "",
-  message_content: "",
-  message_status: "PENDING",
-  message_response: null,
-  message_response_type: null,
-  message_response_date: null,
-};
-
-type ErrorsProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  content: string;
-  captcha: string;
-};
-
-const defaultErrors: ErrorsProps = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  content: "",
-  captcha: "",
-};
-
 export default function ContactForm() {
-  const [message, setMessage] = useState(defaultMessage);
-  const [errors, setErrors] = useState(defaultErrors);
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    values: defaultMessage,
+    errors: defaultErrors,
+  });
+  const [status, setStatus] = useState({
+    loading: false,
+    sent: false,
+    error: false,
+  });
   const [captcha, setCaptcha] = useState<null | string>(null);
+  const router = useRouter();
 
   // handle errors
   function isValidForm() {
-    let errorsTemp: ErrorsProps = defaultErrors;
+    let errTemp: ErrorsProps = defaultErrors;
 
-    // content validation
-    if (
-      message.message_content.trim().length < 10 ||
-      message.message_content.trim().length > 500
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        content:
-          "Votre message doit contenir au moins 10 caractères et au maximum 500.",
-      };
-    }
+    errTemp.message_content = new Validation(form.values.message_content).min(10).max(500).validate();
+    errTemp.message_contact_phone = new Validation(form.values.message_contact_phone).phone().validate();
+    errTemp.message_contact_email = new Validation(form.values.message_contact_email).email().validate();
+    errTemp.message_contact_first_name = new Validation(form.values.message_contact_first_name)
+      .min(3)
+      .max(50)
+      .validate();
+    errTemp.message_contact_last_name = new Validation(form.values.message_contact_last_name).min(3).max(50).validate();
+    errTemp.captcha = new Validation(captcha).required("Veuillez cocher la case 'Je ne suis pas un robot'").validate();
 
-    // phone validation
-    if (message.message_contact_phone.match(/^[0][1-9][0-9]{8}/) === null) {
-      errorsTemp = {
-        ...errorsTemp,
-        phone:
-          "Votre numéro de téléphone doit commencer par 0 et contenir 10 chiffres (ex : 0198237645).",
-      };
-    }
-
-    // email validation
-    if (
-      !message.message_contact_email.match(
-        /^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/i
-      )
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        email: "Votre adresse email est invalide.",
-      };
-    }
-    // firstName validation
-    if (
-      message.message_contact_first_name.trim().length < 3 ||
-      message.message_contact_first_name.trim().length > 50
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        firstName:
-          "Votre prénom doit comporter un minimum de 3 lettres et un maximum de 50",
-      };
-    }
-
-    // lastName validation
-    if (
-      message.message_contact_last_name.trim().length < 3 ||
-      message.message_contact_last_name.trim().length > 50
-    ) {
-      errorsTemp = {
-        ...errorsTemp,
-        lastName:
-          "Votre nom de famille doit comporter un minimum de 3 lettres et un maximum de 50",
-      };
-    }
-
-    if (captcha === null) {
-      errorsTemp = {
-        ...errorsTemp,
-        captcha: "Veuillez cocher la case 'Je ne suis pas un robot'.",
-      };
-    }
-
-    //checking errors
-    if (Object.values(errorsTemp).some((error) => error.length > 0)) {
-      setErrors(errorsTemp);
-      return false;
-    }
-    setErrors(defaultErrors);
-    return true;
+    return checkErrors(errTemp, () =>
+      setForm((prev) => {
+        return { ...prev, errors: errTemp };
+      })
+    );
   }
 
   async function handleSubmit() {
     if (!isValidForm()) return;
 
-    setLoading(true);
-    const response = await createMessage(message);
+    setStatus({ ...status, loading: true });
+    const response = await createMessage(form.values);
     setTimeout(() => {
       if (response) {
-        setLoading(false);
+        setStatus({ ...status, loading: false, sent: true });
         toast.success("Votre message a bien été envoyé !");
-        setMessage(defaultMessage);
+        setForm({ values: defaultMessage, errors: defaultErrors });
         return;
       }
-      setLoading(false);
+      setStatus({ ...status, loading: false, error: true });
       toast.error("Une erreur est survenue, veuillez réessayer plus tard");
     }, 2000);
   }
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setForm({
+      ...form,
+      values: { ...form.values, [e.target.name]: e.target.value },
+    });
+  }
+  function handleErrorsReset(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setForm({ ...form, errors: { ...form.errors, [e.target.name]: "" } });
+  }
   return (
     //Form
-    <Form
-      loading={loading}
-      explanations={[
-        "Vous avez des questions sur votre voiture, sur nos prestations ? Notre équipe est toujours prête à vous aider. Vous pouvez nous appeler ou même nous envoyer un message via le formulaire de contact ci-dessous.",
-      ]}
-    >
-      {/* name & lastName */}
-      <div className="flex flex-col md:flex-row md:space-x-5">
+    <div className="relative">
+      <Form
+        loading={status.loading}
+        explanations={[
+          "Vous avez des questions sur votre voiture, sur nos prestations ? Notre équipe est toujours prête à vous aider. Vous pouvez nous appeler ou même nous envoyer un message via le formulaire de contact ci-dessous.",
+        ]}
+      >
+        {/* name & lastName */}
+        <div className="flex flex-col md:flex-row md:space-x-5">
+          <FormInput
+            disabled={status.loading}
+            label="Prénom"
+            name="message_contact_first_name"
+            autocomplete="given-name"
+            type="text"
+            value={form.values.message_contact_first_name}
+            error={form.errors.message_contact_first_name}
+            handleChange={handleChange}
+            handleFocus={handleErrorsReset}
+          />
+          <FormInput
+            disabled={status.loading}
+            label="Nom de famille"
+            name="message_contact_last_name"
+            autocomplete="family-name"
+            type="text"
+            value={form.values.message_contact_last_name}
+            error={form.errors.message_contact_last_name}
+            handleChange={handleChange}
+            handleFocus={handleErrorsReset}
+          />
+        </div>
+
+        {/* email */}
         <FormInput
-          label="Prénom"
-          name="firstName"
-          value={message.message_contact_first_name}
-          error={errors.firstName}
-          type="text"
-          autocomplete="given-name"
-          handleChange={(e) =>
-            setMessage({
-              ...message,
-              message_contact_first_name: e.target.value,
-            })
-          }
-          handleFocus={(e) => setErrors({ ...errors, firstName: "" })}
+          disabled={status.loading}
+          label="E-mail"
+          name="message_contact_email"
+          autocomplete="email"
+          type="email"
+          value={form.values.message_contact_email}
+          error={form.errors.message_contact_email}
+          handleChange={handleChange}
+          handleFocus={handleErrorsReset}
         />
-        <FormInput
-          label="Nom de famille"
-          name="lastName"
-          value={message.message_contact_last_name}
-          error={errors.lastName}
-          type="text"
-          autocomplete="family-name"
-          handleChange={(e) =>
-            setMessage({
-              ...message,
-              message_contact_last_name: e.target.value,
-            })
-          }
-          handleFocus={(e) => setErrors({ ...errors, lastName: "" })}
+
+        {/* phone */}
+        <FormPhone
+          disabled={status.loading}
+          label="Téléphone"
+          placeholder="0612345678"
+          name="message_contact_phone"
+          value={form.values.message_contact_phone}
+          error={form.errors.message_contact_phone}
+          handleChange={handleChange}
+          handleFocus={handleErrorsReset}
         />
-      </div>
 
-      {/* email */}
-      <FormInput
-        label="E-mail"
-        name="email"
-        value={message.message_contact_email}
-        error={errors.email}
-        type="email"
-        autocomplete="email"
-        handleChange={(e) =>
-          setMessage({ ...message, message_contact_email: e.target.value })
-        }
-        handleFocus={(e) => setErrors({ ...errors, email: "" })}
-      />
+        {/* content */}
+        <FormTextarea
+          disabled={status.loading}
+          label="Message"
+          name="message_content"
+          value={form.values.message_content}
+          error={form.errors.message_content}
+          handleChange={handleChange}
+          handleFocus={handleErrorsReset}
+        />
 
-      {/* phone */}
-      <FormPhone
-        label="Téléphone"
-        placeholder="0612345678"
-        handleChange={(e) =>
-          setMessage({
-            ...message,
-            message_contact_phone: e.target.value.trim(),
-          })
-        }
-        handleFocus={(e) => setErrors({ ...errors, phone: "" })}
-        value={message.message_contact_phone}
-        error={errors.phone}
-      />
+        <FormReacaptcha setCaptcha={setCaptcha} error={form.errors.captcha} />
 
-      {/* content */}
-      <FormTextarea
-        label="Message"
-        name="message"
-        value={message.message_content}
-        error={errors.content}
-        handleChange={(e) =>
-          setMessage({ ...message, message_content: e.target.value })
-        }
-        handleFocus={(e) => setErrors({ ...errors, content: "" })}
-      />
-
-      <FormReacaptcha setCaptcha={setCaptcha} error={errors.captcha} />
-
-      {/* submit */}
-      <FormSubmit
-        handleClick={handleSubmit}
-        handleCheck={loading}
-        description="Dans la mesure du possible, nous essayons toujours de vous contacter par téléphone. Le cas échéant, nous vous répondrons par mail."
-      />
-    </Form>
+        {/* submit */}
+        <FormSubmit
+          handleClick={handleSubmit}
+          handleCheck={status.loading}
+          description="Dans la mesure du possible, nous essayons toujours de vous contacter par téléphone. Le cas échéant, nous vous répondrons par mail."
+        />
+      </Form>
+      <FormAfter status={status} setStatus={setStatus} />
+    </div>
   );
 }

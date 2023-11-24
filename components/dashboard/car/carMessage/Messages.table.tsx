@@ -1,22 +1,19 @@
 "use client";
 
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
+import { getFullName, getFullStringDate } from "@/utils/globals";
+import { useEffect, useRef, useState } from "react";
+
+import { FullCar } from "@/lib/cars";
+import MessagesForm from "./Messages.form";
+import MessagesListAction from "./Messages.list.action";
+import MessagesStatus from "./Messages.status";
 import Table from "@/components/ui/table/Table";
 import TableBody from "@/components/ui/table/Table.body";
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
-import { useEffect, useRef, useState } from "react";
 import UiButtonAction from "@/components/ui/Ui.button.action";
-import { getFullName, getFullStringDate } from "@/utils/globals";
-import MessagesStatus from "./Messages.status";
-import MessagesListAction from "./Messages.list.action";
-import MessagesForm, { defaultMessage } from "./Messages.form";
-import { FullCar } from "@/lib/cars";
 import UiPagination from "@/components/ui/Ui.pagination";
+import { defaultMessage } from "@/utils/form/car.message";
 
 export default function MessagesTable({
   car,
@@ -43,8 +40,7 @@ export default function MessagesTable({
     },
     {
       text: "Mail",
-      className:
-        "hidden md:w-auto text-sm md:text-md lg:table-cell lg:text-lg lg:w-[200px] truncate",
+      className: "hidden md:w-auto text-sm md:text-md lg:table-cell lg:text-lg lg:w-[200px] truncate",
     },
     {
       text: "Contenu",
@@ -70,17 +66,13 @@ export default function MessagesTable({
       { value: m.car_message_id, className: "hidden text-center" },
       // user
       {
-        value: getFullName(
-          decodeURI(m.car_message_contact_first_name),
-          decodeURI(m.car_message_contact_last_name)
-        ),
+        value: getFullName(decodeURI(m.car_message_contact_first_name), decodeURI(m.car_message_contact_last_name)),
         className: "w-12 sm:w-auto truncate",
       },
       // mail
       {
         value: m.car_message_contact_email,
-        className:
-          "hidden md:w-auto text-sm md:text-md lg:text-lg lg:table-cell truncate",
+        className: "hidden md:w-auto text-sm md:text-md lg:text-lg lg:table-cell truncate",
       },
       // content
       { value: decodeURI(m.car_message_content), className: "truncate" },
@@ -92,11 +84,7 @@ export default function MessagesTable({
       // status
       //message_status: "PENDING" | "REPLIED" | "ARCHIVED";
       {
-        value: (
-          <MessagesStatus
-            status={m.car_message_status as "PENDING" | "REPLIED" | "ARCHIVED"}
-          />
-        ),
+        value: <MessagesStatus status={m.car_message_status as "PENDING" | "REPLIED" | "ARCHIVED"} />,
         className: "w-12 w-20 text-center",
       },
       //actions
@@ -137,24 +125,12 @@ export default function MessagesTable({
           <TableHeader headersList={headersList} />
           <TableBody bodyItems={bodyItems} />
         </Table>
-        <UiPagination
-          page={page}
-          setPage={setPage}
-          length={messages.length}
-          itemsPerPage={itemsPerPage}
-        />
+        <UiPagination page={page} setPage={setPage} length={messages.length} itemsPerPage={itemsPerPage} />
       </div>
 
       <div className="mb-16">
         <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
-          {isOpenForm && (
-            <UiButtonAction
-              text="Fermer le formulaire"
-              onClick={handleCloseForm}
-              type="button"
-              href=""
-            />
-          )}
+          {isOpenForm && <UiButtonAction text="Fermer le formulaire" onClick={handleCloseForm} type="button" href="" />}
         </div>
       </div>
       {isOpenForm && (

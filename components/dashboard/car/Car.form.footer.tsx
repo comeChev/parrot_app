@@ -1,8 +1,5 @@
-"use client";
-
 import { Car } from "@prisma/client";
 import Link from "next/link";
-import { useState } from "react";
 
 type CarFormFooterProps = {
   carDB?: Car;
@@ -11,13 +8,7 @@ type CarFormFooterProps = {
   handleSubmit: () => void;
 };
 
-export default function CarFormFooter({
-  carDB,
-  car,
-  loading,
-  handleSubmit,
-}: CarFormFooterProps) {
-  const [confirmDelete, setConfirmDelete] = useState(false);
+export default function CarFormFooter({ carDB, car, loading, handleSubmit }: CarFormFooterProps) {
   return (
     <div className="lg:sticky lg:bottom-0 mt-16 py-4 right-0 w-full">
       <div className="h-full w-full bg-slate-300 border border-neutral-600 bg-opacity-90 rounded-md flex items-center justify-between py-4 lg:px-8">

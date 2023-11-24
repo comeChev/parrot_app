@@ -1,7 +1,6 @@
 "use client";
 
-import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs";
-
+import { BsCaretDownFill } from "react-icons/bs";
 import { useState } from "react";
 
 type FormBoxProps = {
@@ -29,7 +28,7 @@ export default function FormBox({
       </div>
 
       <div
-        className={` border-2 rounded-b-md transition-all duration-500 overflow-hidden ${
+        className={` border-2 rounded-md transition-all duration-500 overflow-hidden ${
           isOpen
             ? "max-h-[2000px] border-gray-300"
             : "max-h-0 border-transparent"

@@ -34,13 +34,13 @@ export default function FormTextarea({
   cssClasses = "resize-none",
 }: FormTextareaProps) {
   return (
-    <div className="mb-[50px] flex-col relative">
+    <div className="mb-[50px] flex-col relative pb-1">
       <p className="mb-3 px-4 font-semibold">
         {label} {required && <span className="text-red-500">*</span>}
       </p>
       <div
-        className={`flex-1 flex flex-col bg-slate-200 py-2 px-4 rounded-md border-2 border-slate-300 mb-1 ${
-          error && error.length > 0 && "border-red-800"
+        className={`flex-1 flex flex-col bg-gray-200 py-4 px-4 rounded-md border-2 border-gray-300 mb-1 ${
+          error && error.length > 0 && "border-red-500"
         }`}
       >
         <textarea
@@ -53,12 +53,12 @@ export default function FormTextarea({
           rows={valueRows}
           required={required}
           placeholder={placeholder || label}
-          className={`bg-slate-200 ${cssClasses} outline-none disabled:select-none disabled:text-slate-500 text-sm md:text-base mb-2`}
+          className={`bg-gray-200 ${cssClasses} outline-none disabled:select-none disabled:text-gray-500 text-sm md:text-base mb-2`}
         />
         {!disabled && value && (
-          <span className="text-xs italic text-neutral-500">{`Caractères restants : ${
-            max - value.length
-          }`}</span>
+          <span className="text-xs italic text-neutral-500">
+            {max - value.length < 0 ? `Trop de caractères` : `Caractères restants : ${max - value.length}`}
+          </span>
         )}
       </div>
       {error && <FormError error={error} />}

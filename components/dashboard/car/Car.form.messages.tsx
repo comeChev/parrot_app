@@ -9,10 +9,7 @@ type CarFormMessagesProps = {
 
 export default function CarFormMessages({ car, setCar }: CarFormMessagesProps) {
   return (
-    <FormBox
-      title={`Messages pour le véhicule ${car.car_name.toUpperCase()}`}
-      defaultOpen={true}
-    >
+    <FormBox title={`Messages pour le véhicule ${car.car_name.toUpperCase()}`} defaultOpen={true}>
       <MessagesTable car={car} setCar={setCar} />
     </FormBox>
   );

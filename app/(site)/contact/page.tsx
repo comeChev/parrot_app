@@ -16,15 +16,11 @@ export default function PageContact() {
 
       {/* phone button */}
       <div className="flex justify-center mb-[50px]">
-        <UiButtonAction
-          type="a"
-          href="tel:+33987654321"
-          Icon={BsFillTelephoneFill}
-          text="09 87 65 43 21"
-        />
+        <UiButtonAction type="a" href="tel:+33987654321" Icon={BsFillTelephoneFill} text="09 87 65 43 21" />
       </div>
 
       {/* Form */}
+
       <ContactForm />
 
       {/* Reasons */}

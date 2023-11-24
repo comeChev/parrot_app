@@ -1,7 +1,9 @@
 "use client";
 
 import { Car_picture, Strength } from "@prisma/client";
+import { ErrorsProps, defaultCar, defaultErrors, optionsFuel, optionsGearbox } from "@/utils/form/car";
 import { FullCar, createCar, createCarPicture, updateCar } from "@/lib/cars";
+import { Validation, checkErrors } from "@/utils/form/validation";
 import { useEffect, useState } from "react";
 
 import CarFormAssets from "./Car.form.assets";
@@ -25,67 +27,8 @@ type CarFormProps = {
   carDB?: FullCar;
 };
 
-export type ErrorsProps = {
-  carName: string;
-  carFuel: string;
-  carGearbox: string;
-  carPrice: string;
-  carKilometers: string;
-  carCountry: string;
-  carColor: string;
-  carLength: string;
-  carFiscalPower: string;
-  carHorsePower: string;
-  carOwners: string;
-};
-
-const defaultErrors: ErrorsProps = {
-  carName: "",
-  carPrice: "",
-  carKilometers: "",
-  carCountry: "",
-  carColor: "",
-  carLength: "",
-  carFiscalPower: "",
-  carHorsePower: "",
-  carOwners: "",
-  carFuel: "",
-  carGearbox: "",
-};
-
-const defaultCar: FullCar = {
-  car_id: 0,
-  car_name: "",
-  car_price: 0,
-  car_fuel: "",
-  car_year: new Date(new Date().getFullYear() + "-01-01"),
-  car_kilometers: 0,
-  car_gearbox: "",
-  car_published_date: new Date(),
-  car_status: "OFFLINE",
-  car_country: null,
-  car_technical_control: null,
-  car_first_hand: null,
-  car_owners: null,
-  car_color: null,
-  car_doors: null,
-  car_seats: null,
-  car_length: null,
-  car_boot: null,
-  car_fiscal_power: null,
-  car_horse_power: null,
-  car_eu_rule: null,
-  car_critair: null,
-  car_consumption: null,
-  car_carbon_release: null,
-  car_conversion_bonus: null,
-  car_messages: [],
-  car_pictures: [],
-  car_strengths: [],
-};
-
 export default function CarForm({ carDB }: CarFormProps) {
-  const [car, setCar] = useState<FullCar>(carDB ? carDB : defaultCar);
+  const [car, setCar] = useState<FullCar>(carDB ?? defaultCar);
   const [errors, setErrors] = useState(defaultErrors);
   const [loading, setLoading] = useState(false);
   const [strengths, setStrengths] = useState<Strength[]>([]);
@@ -95,113 +38,40 @@ export default function CarForm({ carDB }: CarFormProps) {
   // handle errors
   function isValidForm() {
     let errorsTemp: ErrorsProps = defaultErrors;
+    const fuelValues = optionsFuel.map((oF) => oF.value);
+    const gearValues = optionsGearbox.map((oG) => oG.value);
 
-    // car name validation
-    if (car.car_name.trim().length < 3 || car.car_name.trim().length > 50) {
-      errorsTemp = {
-        ...errorsTemp,
-        carName:
-          "Le nom du véhicule doit contenir au moins 3 caractères et au maximum 50.",
-      };
-    }
-    // car price validation
-    if (car.car_price <= 0 || car.car_price > 1000000) {
-      errorsTemp = {
-        ...errorsTemp,
-        carPrice:
-          "Le prix du véhicule doit être compris entre 1 et 1 000 000 €",
-      };
-    }
-    // car kilometers validation
-    if (car.car_kilometers <= 0 || car.car_kilometers > 1000000) {
-      errorsTemp = {
-        ...errorsTemp,
-        carKilometers:
-          "Les kilomètres du compteur doivent être compris entre 1 et 1 000 000 kms",
-      };
-    }
+    const carName = new Validation(car.car_name).min(3).max(4);
+    const carPrice = new Validation(car.car_price).min(1).max(50);
+    const carKilometers = new Validation(car.car_kilometers);
+    const carFuel = new Validation(car.car_fuel).enum(fuelValues);
+    const carGearbox = new Validation(car.car_fuel).enum(gearValues);
+    const carCountry = new Validation(car.car_country).min(3).max(50).alpha().optional();
+    const carColor = new Validation(car.car_color).min(3).max(50).alpha().optional();
+    const carLength = new Validation(car.car_length).min(1).max(40).optional();
+    const carOwners = new Validation(car.car_owners).min(1).max(10).optional();
+    const carFP = new Validation(car.car_fiscal_power).min(1).max(300).optional();
+    const carHP = new Validation(car.car_horse_power).min(1).max(2000).optional();
 
-    //car fuel validation
-    if (car.car_fuel === "") {
-      errorsTemp = {
-        ...errorsTemp,
-        carFuel: "Vous devez sélectionner un type de carburant.",
-      };
-    }
-    //car gearbox validation
-    if (car.car_gearbox === "") {
-      errorsTemp = {
-        ...errorsTemp,
-        carGearbox: "Vous devez sélectionner le type de boite de vitesse.",
-      };
-    }
-    // car country validation
-    if (car.car_country !== null) {
-      if (
-        car.car_country.trim().length < 3 ||
-        car.car_country.trim().length > 50
-      ) {
-        errorsTemp = {
-          ...errorsTemp,
-          carCountry:
-            "Le pays d'origine du véhicule doit contenir au moins 3 caractères et au maximum 50.",
-        };
-      }
-      if (car.car_country.match(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/) === null) {
-        errorsTemp = {
-          ...errorsTemp,
-          carCountry:
-            "e pays d'origine du véhicule doit contenir uniquement des lettres.",
-        };
-      }
-    }
-    // car color validation
-    if (car.car_color !== null) {
-      if (car.car_color.trim().length < 3 || car.car_color.trim().length > 50) {
-        errorsTemp = {
-          ...errorsTemp,
-          carColor:
-            "La couleur du véhicule doit contenir au moins 3 caractères et au maximum 50.",
-        };
-      }
-      if (car.car_color.match(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/) === null) {
-        errorsTemp = {
-          ...errorsTemp,
-          carColor:
-            "La couleur du véhicule doit contenir uniquement des lettres.",
-        };
-      }
-    }
-    // car length validation
-    if (car.car_length !== null) {
-      if (car.car_length <= 0 || car.car_length > 40) {
-        errorsTemp = {
-          ...errorsTemp,
-          carLength:
-            "La longueur du véhicule doit être supérieure à 0m et inférieure à 40m",
-        };
-      }
-    }
-    // car owner validation
-    if (car.car_owners !== null) {
-      if (car.car_owners <= 0 || car.car_owners >= 10) {
-        errorsTemp = {
-          ...errorsTemp,
-          carOwners:
-            "Le nombre de propriétaires du véhicule doit être supérieur à 0 et ne peut être supérieur à 10",
-        };
-      }
-    }
+    errorsTemp = {
+      ...errorsTemp,
+      carName: carName.validate(),
+      carPrice: carPrice.validate(),
+      carKilometers: carKilometers.validate(),
+      carFuel: carFuel.validate(),
+      carGearbox: carGearbox.validate(),
+      carCountry: carCountry.validate(),
+      carColor: carColor.validate(),
+      carLength: carLength.validate(),
+      carOwners: carOwners.validate(),
+      carFiscalPower: carFP.validate(),
+      carHorsePower: carHP.validate(),
+    };
 
     //checking errors
-    if (Object.values(errorsTemp).some((error) => error.length > 0)) {
+    return checkErrors(errorsTemp, () => {
       setErrors(errorsTemp);
-      toast.error(
-        "Veuillez corriger les erreurs avant de soumettre le formulaire."
-      );
-      return false;
-    }
-    return true;
+    });
   }
 
   async function handleSubmit() {
@@ -217,7 +87,6 @@ export default function CarForm({ carDB }: CarFormProps) {
         setLoading(false);
         toast.success("Votre véhicule a bien été mis à jour.");
         router.push(`/dashboard/cars`);
-        // TODO --> maybe implement a redirect to the cars page
         return;
       }
       return;
@@ -314,10 +183,7 @@ export default function CarForm({ carDB }: CarFormProps) {
             handleChange={(e) =>
               setCar({
                 ...car,
-                car_status: e.currentTarget.value as
-                  | "ONLINE"
-                  | "OFFLINE"
-                  | "ARCHIVED",
+                car_status: e.currentTarget.value as "ONLINE" | "OFFLINE" | "ARCHIVED",
               })
             }
             handleFocus={() => {}}
@@ -341,52 +207,23 @@ export default function CarForm({ carDB }: CarFormProps) {
         {/* main Infos & gallery */}
         <div className="flex flex-col md:flex-row flex-wrap">
           {/* main infos */}
-          <CarFormMain
-            car={car}
-            setCar={setCar}
-            errors={errors}
-            setErrors={setErrors}
-          />
+          <CarFormMain car={car} setCar={setCar} errors={errors} setErrors={setErrors} />
 
           {/* gallery*/}
-          <CarFormGallery
-            car={car}
-            setCar={setCar}
-            handleAddImage={handleAddImage}
-          />
+          <CarFormGallery car={car} setCar={setCar} handleAddImage={handleAddImage} />
         </div>
 
         {/* strengths */}
 
-        <CarFormStrengths
-          setCar={setCar}
-          car={car}
-          strengths={strengths}
-          setStrengths={setStrengths}
-        />
+        <CarFormStrengths setCar={setCar} car={car} strengths={strengths} setStrengths={setStrengths} />
 
-        <div className="flex flex-col md:flex-row flex-wrap">
+        <div className="flex flex-col md:flex-row md:gap-3 flex-wrap">
           {/* car assets */}
-          <CarFormAssets
-            setCar={setCar}
-            car={car}
-            errors={errors}
-            setErrors={setErrors}
-          />
+          <CarFormAssets setCar={setCar} car={car} errors={errors} setErrors={setErrors} />
           {/* car power */}
-          <CarFormPower
-            setCar={setCar}
-            car={car}
-            errors={errors}
-            setErrors={setErrors}
-          />
+          <CarFormPower setCar={setCar} car={car} errors={errors} setErrors={setErrors} />
           {/* car consumption */}
-          <CarFormConsumption
-            setCar={setCar}
-            car={car}
-            errors={errors}
-            setErrors={setErrors}
-          />
+          <CarFormConsumption setCar={setCar} car={car} errors={errors} setErrors={setErrors} />
         </div>
 
         {/* car messages */}
