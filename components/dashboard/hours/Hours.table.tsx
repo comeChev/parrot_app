@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
 import HourForm, { defaultHour } from "./Hours.form";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
 import { useRef, useState } from "react";
 
 import { Hour } from "@prisma/client";
@@ -37,8 +32,8 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
       className: "md:text-lg truncate",
     },
     {
-      text: "",
-      className: "w-6 md:text-lg",
+      text: "Actions",
+      className: "w-6 text-transparent",
     },
   ];
 
@@ -133,21 +128,11 @@ export default function HoursTable({ hoursDB }: { hoursDB: Hour[] }) {
       </div>
 
       <div className="mb-16" ref={list}>
-        <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
+        <div className="flex flex-col-reverse justify-between md:items-center md:flex-row">
           {isOpenForm ? (
-            <UiButtonAction
-              text="Fermer le formulaire"
-              onClick={handleCloseForm}
-              type="button"
-              href=""
-            />
+            <UiButtonAction text="Fermer le formulaire" onClick={handleCloseForm} type="button" href="" />
           ) : (
-            <UiButtonAction
-              text="Ajouter un horaire"
-              onClick={handleOpenForm}
-              type="button"
-              href=""
-            />
+            <UiButtonAction text="Ajouter un horaire" onClick={handleOpenForm} type="button" href="" />
           )}
         </div>
       </div>

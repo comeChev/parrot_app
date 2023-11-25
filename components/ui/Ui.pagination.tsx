@@ -1,11 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
+import { MdChevronLeft, MdChevronRight, MdFirstPage, MdLastPage } from "react-icons/md";
+
 import { IconType } from "react-icons";
-import {
-  MdFirstPage,
-  MdLastPage,
-  MdChevronRight,
-  MdChevronLeft,
-} from "react-icons/md";
 
 type UiPaginationButtonProps = {
   Icon: IconType;
@@ -14,12 +10,7 @@ type UiPaginationButtonProps = {
   label: string;
 };
 
-const UiPaginationButton = ({
-  Icon,
-  disabled = false,
-  handleClick,
-  label,
-}: UiPaginationButtonProps) => {
+const UiPaginationButton = ({ Icon, disabled = false, handleClick, label }: UiPaginationButtonProps) => {
   return (
     <button
       aria-label={label}
@@ -40,18 +31,11 @@ type UiPaginationProps = {
   scrollTo?: () => void;
 };
 
-export default function UiPagination({
-  page,
-  setPage,
-  length,
-  itemsPerPage,
-  scrollTo,
-}: UiPaginationProps) {
+export default function UiPagination({ page, setPage, length, itemsPerPage, scrollTo }: UiPaginationProps) {
   const numberPage = Math.ceil(length / itemsPerPage);
   const firstItem = length === 0 ? 0 : (page - 1) * itemsPerPage + 1;
   const lastItem = page * itemsPerPage < length ? page * itemsPerPage : length;
-  const txtLength =
-    length === 0 ? "0" : length === 1 ? `1 résultat` : `${length} résultats`;
+  const txtLength = length === 0 ? "0" : length === 1 ? `1 résultat` : `${length} résultats`;
 
   function handleFirstPage() {
     setPage(1);
@@ -71,7 +55,7 @@ export default function UiPagination({
   }
 
   return (
-    <div className="flex px-4 justify-between items-center my-10 select-none">
+    <div className="relative flex items-center justify-between px-4 my-10 select-none">
       {/* first & previous button */}
       <div className="flex flex-row">
         <UiPaginationButton
@@ -89,9 +73,7 @@ export default function UiPagination({
       </div>
 
       {/* text */}
-      <div className="hidden md:flex flex-col items-center text-xs sm:text-base">
-        <p>{`Résultats de ${firstItem} à ${lastItem}`}</p>
-        <p className="italic font-light text-neutral-500">{`pour un total de ${txtLength}`}</p>
+      <div className="flex-col items-center hidden text-xs text-gray-600 md:flex sm:text-base">
         <p>
           Page {length === 0 ? 0 : page} sur {numberPage}
         </p>
@@ -111,6 +93,10 @@ export default function UiPagination({
           handleClick={handleLastPage}
           label="Aller à la dernière page"
         />
+      </div>
+      <div className="absolute items-center justify-end hidden w-full gap-2 text-xs italic font-light md:flex right-5 -bottom-5">
+        <p>{`Résultats de ${firstItem} à ${lastItem}`}</p>
+        <p>{`pour un total de ${txtLength}`}</p>
       </div>
     </div>
   );

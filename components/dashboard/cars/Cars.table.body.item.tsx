@@ -1,11 +1,11 @@
+import { Dispatch, SetStateAction } from "react";
+
+import CarsTableBodyItemInbox from "./Cars.table.body.item.inbox";
+import { FullCar } from "@/lib/cars";
+import Image from "next/image";
 import { StatusPin } from "@/components/ui/Ui.status.pin";
 import TableActions from "@/components/ui/table/Table.actions";
-
-import { FullCar } from "@/lib/cars";
 import { getPrice } from "@/utils/globals";
-import { Dispatch, SetStateAction } from "react";
-import CarsTableBodyItemInbox from "./Cars.table.body.item.inbox";
-import Image from "next/image";
 import noPictures from "@/assets/no-image-available.jpg";
 
 type CarsTableBodyItemProps = {
@@ -13,54 +13,41 @@ type CarsTableBodyItemProps = {
   setCars: Dispatch<SetStateAction<FullCar[]>>;
 };
 
-export default function CarsTableBodyItem({
-  car,
-  setCars,
-}: CarsTableBodyItemProps) {
+export default function CarsTableBodyItem({ car, setCars }: CarsTableBodyItemProps) {
   return (
     <tr
       key={car.car_id}
-      className="ring-[1px] ring-transparent hover:ring-red-800 my-1 hover:bg-amber-100 transition-all duration-300"
+      className="ring-[1px] ring-transparent hover:ring-red-800 my-1 hover:bg-gray-200 text-gray-600 transition-all duration-300"
     >
       {/* status */}
-      <td className="py-2 px-1 text-center ">
+      <td className="px-1 py-2 text-center ">
         <div className="flex justify-center w-full">
-          <StatusPin
-            status={
-              car.car_status.toUpperCase() as "ONLINE" | "ARCHIVED" | "OFFLINE"
-            }
-          />
+          <StatusPin status={car.car_status.toUpperCase() as "ONLINE" | "ARCHIVED" | "OFFLINE"} />
         </div>
       </td>
-      <td className="py-2 px-1 hidden md:table-cell">
+      <td className="hidden px-1 py-2 md:table-cell">
         <p>{new Date(car.car_published_date).toLocaleDateString("fr-FR")}</p>
       </td>
-      <td className="py-2 px-1 hidden lg:table-cell">
-        <div className="mx-1 relative">
+      <td className="hidden px-1 py-2 lg:table-cell">
+        <div className="relative mx-1">
           <Image
-            src={
-              car.car_pictures[0]
-                ? car.car_pictures[0].car_picture_image
-                : noPictures
-            }
+            src={car.car_pictures[0] ? car.car_pictures[0].car_picture_image : noPictures}
             alt={car.car_name}
             height={100}
             width={150}
-            className="p-3 h-full w-full object-cover rounded-md"
+            className="object-cover w-full h-full p-3 rounded-md"
           />
         </div>
       </td>
-      <td className="py-2 px-1 truncate">{car.car_name.toUpperCase()}</td>
-      <td className="py-2 px-1 text-end hidden md:table-cell">
-        {getPrice(car.car_price)}
-      </td>
+      <td className="px-1 py-2 truncate">{car.car_name.toUpperCase()}</td>
+      <td className="hidden px-1 py-2 text-end md:table-cell">{getPrice(car.car_price)}</td>
       {/* inbox */}
-      <td className="py-2 px-1">
+      <td className="px-1 py-2">
         <CarsTableBodyItemInbox car={car} />
       </td>
 
       {/* buttons */}
-      <td className="py-2 px-1">
+      <td className="px-1 py-2">
         <TableActions car={car} setCars={setCars} />
       </td>
     </tr>

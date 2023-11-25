@@ -9,16 +9,16 @@ export default function GalleryPicturesItem({ picture }: { picture: Picture }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full h-full relative p-1 cursor-pointer border-2 hover:border-red-800 transition-colors duration-500">
+    <div className="relative w-full h-full p-1 transition-colors duration-500 border-2 cursor-pointer hover:border-red-800">
       <Image
         src={picture.picture_image}
         alt={picture.picture_name}
-        width={300}
-        height={300}
+        fill
+        sizes="(min-width: 1540px) 740px, (min-width: 1280px) 612px, (min-width: 1040px) 484px, (min-width: 780px) 356px, (min-width: 680px) 292px, calc(47.22vw - 20px)"
         placeholder="blur"
         blurDataURL={"/blur.png"}
         onClick={() => setIsOpen(true)}
-        className="h-full w-full object-cover rounded-md"
+        className="object-cover w-full h-full rounded-md"
       />
       {isOpen && <UiModalPicture picture={picture} setIsOpen={setIsOpen} />}
     </div>

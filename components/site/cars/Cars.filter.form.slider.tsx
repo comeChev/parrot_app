@@ -11,6 +11,8 @@ type CarFilterFormSliderProps = {
   setValue: (value: number, min: boolean) => void;
   step?: number;
   handleResetCars: () => void;
+  labelMin: string;
+  labelMax: string;
 
   typeData: "kilometers" | "currency" | "year";
 };
@@ -23,6 +25,8 @@ export default function CarsFilterFormSlider({
   handleResetCars,
   step,
   typeData,
+  labelMax,
+  labelMin,
 }: CarFilterFormSliderProps) {
   const [defaultValues, setDefaultValues] = useState({ min: 0, max: 0 });
 
@@ -66,22 +70,23 @@ export default function CarsFilterFormSlider({
   }, []);
 
   return (
-    <div className="max-w-96 flex flex-col px-4 mb-5">
+    <div className="flex flex-col px-4 mb-5 max-w-96">
       {/* text */}
-      <div className="flex flex-col text-neutral-100 mb-3">
+      <div className="flex flex-col mb-3 text-neutral-100">
         <label htmlFor={name} className="text-base font-semibold">
           {label}
         </label>
         <span className="text-sm font-light">{getSubLabelText()}</span>
       </div>
       {/* slider */}
-      <div className="py-4 bg-neutral-100 rounded-md px-6">
-        <div className="range-input flex relative">
+      <div className="px-6 py-4 rounded-md bg-neutral-100">
+        <div className="relative flex range-input">
           {/* background style */}
-          <div className="bg-neutral-400 h-1 w-full absolute top-0 rounded-full" />
+          <div className="absolute top-0 w-full h-1 rounded-full bg-neutral-400" />
 
           {/* input min value */}
           <CarsFilterFormSliderRange
+            label={labelMin}
             value={values.min}
             defaultValues={defaultValues}
             onChange={(e) => {
@@ -92,6 +97,7 @@ export default function CarsFilterFormSlider({
           />
           {/* input max value */}
           <CarsFilterFormSliderRange
+            label={labelMax}
             value={values.max}
             defaultValues={defaultValues}
             onChange={(e) => {

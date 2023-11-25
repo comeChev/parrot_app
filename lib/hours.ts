@@ -105,18 +105,15 @@ export interface HourUpdate extends HourCreate {
 
 export async function getHours() {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-        },
-        // revalidation every 60 seconds
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/hours`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+      },
+      // revalidation every 15 minutes
+      next: { revalidate: 60 * 15 },
+    });
     const responseJson = await response.json();
     if (responseJson.error) {
       return [];
@@ -126,16 +123,13 @@ export async function getHours() {
 }
 
 export async function createHour(hour: Omit<Hour, "hour_id">) {
-  const createdHour = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(hour),
-    }
-  );
+  const createdHour = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/hours`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(hour),
+  });
   const createdHourJson = await createdHour.json();
 
   if (createdHourJson.error) {
@@ -149,16 +143,13 @@ export async function createHour(hour: Omit<Hour, "hour_id">) {
  * @param hour hour to update (hour_morning_status | hour_morning_opening | hour_morning_closing | hour_afternoon_status | hour_afternoon_opening | hour_afternoon_closing)
  */
 export async function updateHour(hour: Hour) {
-  const updatedHour = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?id=${hour.hour_id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(hour),
-    }
-  );
+  const updatedHour = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/hours?id=${hour.hour_id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(hour),
+  });
   const updatedHourJson = await updatedHour.json();
   if (updatedHourJson.error) {
     return null;

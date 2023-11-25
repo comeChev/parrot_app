@@ -7,6 +7,12 @@ import UiReasons from "@/components/ui/Ui.reasons";
 import UiTextMain from "@/components/ui/Ui.text.main";
 import mailPic from "@/assets/contact/mail.jpg";
 
+export const metadata = {
+  title: "Contactez-nous | Garage V. Parrot",
+  description:
+    "Bienvenue sur le site Garage V. Parrot. Nous sommes spécialisés dans la réparation, l'entretien et la vente de véhicules de toutes marques. Retrouvez les avis de nos clients !",
+};
+
 export default function PageContact() {
   return (
     <div className="container mx-auto">

@@ -7,6 +7,12 @@ import UiTextMain from "@/components/ui/Ui.text.main";
 import galleryMainPic from "@/assets/gallery/mainGallery.jpg";
 import { getPictures } from "@/lib/pictures";
 
+export const metadata = {
+  title: "Galerie d'images | Garage V. Parrot",
+  description:
+    "Bienvenue sur le site Garage V. Parrot. Nous sommes spécialisés dans la réparation, l'entretien et la vente de véhicules de toutes marques. Consultez nos plus beaux clichés !",
+};
+
 export default async function GalleryPage() {
   const pictures: Picture[] = await getPictures();
   const picturePagination = 5;

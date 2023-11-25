@@ -15,7 +15,7 @@ export default function FormSubmit({ handleCheck, text = "Envoyer", description,
       >
         {text}
       </button>
-      {description && <p className="text-sm font-light text-slate-500 ">{description}</p>}
+      {description && <p className="text-sm font-light text-gray-600 ">{description}</p>}
     </div>
   );
 }

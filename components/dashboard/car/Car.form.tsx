@@ -28,6 +28,7 @@ type CarFormProps = {
 };
 
 export default function CarForm({ carDB }: CarFormProps) {
+  const [form, setForm] = useState({ values: carDB ?? defaultCar, errors: defaultErrors });
   const [car, setCar] = useState<FullCar>(carDB ?? defaultCar);
   const [errors, setErrors] = useState(defaultErrors);
   const [loading, setLoading] = useState(false);
@@ -37,40 +38,25 @@ export default function CarForm({ carDB }: CarFormProps) {
 
   // handle errors
   function isValidForm() {
-    let errorsTemp: ErrorsProps = defaultErrors;
+    let temp: ErrorsProps = defaultErrors;
     const fuelValues = optionsFuel.map((oF) => oF.value);
     const gearValues = optionsGearbox.map((oG) => oG.value);
 
-    const carName = new Validation(car.car_name).min(3).max(4);
-    const carPrice = new Validation(car.car_price).min(1).max(50);
-    const carKilometers = new Validation(car.car_kilometers);
-    const carFuel = new Validation(car.car_fuel).enum(fuelValues);
-    const carGearbox = new Validation(car.car_fuel).enum(gearValues);
-    const carCountry = new Validation(car.car_country).min(3).max(50).alpha().optional();
-    const carColor = new Validation(car.car_color).min(3).max(50).alpha().optional();
-    const carLength = new Validation(car.car_length).min(1).max(40).optional();
-    const carOwners = new Validation(car.car_owners).min(1).max(10).optional();
-    const carFP = new Validation(car.car_fiscal_power).min(1).max(300).optional();
-    const carHP = new Validation(car.car_horse_power).min(1).max(2000).optional();
-
-    errorsTemp = {
-      ...errorsTemp,
-      carName: carName.validate(),
-      carPrice: carPrice.validate(),
-      carKilometers: carKilometers.validate(),
-      carFuel: carFuel.validate(),
-      carGearbox: carGearbox.validate(),
-      carCountry: carCountry.validate(),
-      carColor: carColor.validate(),
-      carLength: carLength.validate(),
-      carOwners: carOwners.validate(),
-      carFiscalPower: carFP.validate(),
-      carHorsePower: carHP.validate(),
-    };
+    temp.carName = new Validation(car.car_name).min(3).max(50).validate();
+    temp.carPrice = new Validation(car.car_price).min(1).max(50).validate();
+    temp.carKilometers = new Validation(car.car_kilometers).validate();
+    temp.carFuel = new Validation(car.car_fuel).enum(fuelValues).validate();
+    temp.carGearbox = new Validation(car.car_fuel).enum(gearValues).validate();
+    temp.carCountry = new Validation(car.car_country).min(3).max(50).alpha().optional().validate();
+    temp.carColor = new Validation(car.car_color).min(3).max(50).alpha().optional().validate();
+    temp.carLength = new Validation(car.car_length).min(1).max(40).optional().validate();
+    temp.carOwners = new Validation(car.car_owners).min(1).max(10).optional().validate();
+    temp.carFiscalPower = new Validation(car.car_fiscal_power).min(1).max(300).optional().validate();
+    temp.carHorsePower = new Validation(car.car_horse_power).min(1).max(2000).optional().validate();
 
     //checking errors
-    return checkErrors(errorsTemp, () => {
-      setErrors(errorsTemp);
+    return checkErrors(temp, () => {
+      setErrors(temp);
     });
   }
 
@@ -146,6 +132,13 @@ export default function CarForm({ carDB }: CarFormProps) {
     return true;
   }
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setCar({ ...car, [e.target.name]: e.target.value });
+  }
+  // function handleErrorsFocus(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  //   setForms;
+  // }
+
   useEffect(() => {
     async function fetchStrengths() {
       const res = await getStrengths();
@@ -155,23 +148,18 @@ export default function CarForm({ carDB }: CarFormProps) {
   }, []);
 
   return (
-    <div className="select-non relative select-none">
+    <div className="relative select-none select-non">
       <Form imgSrc={carCreation} loading={loading}>
         {/* car name & status*/}
 
         <FormInput
           label="Titre de l'annonce"
           placeholder="Ex: Peugeot 308 SW"
-          name="carName"
+          name="car_name"
           value={car.car_name}
           error={errors.carName}
           type="text"
-          handleChange={(e) =>
-            setCar({
-              ...car,
-              car_name: e.target.value.toUpperCase(),
-            })
-          }
+          handleChange={handleChange}
           handleFocus={(e) => setErrors({ ...errors, carName: "" })}
         />
 
@@ -204,35 +192,21 @@ export default function CarForm({ carDB }: CarFormProps) {
           />
         </div>
 
-        {/* main Infos & gallery */}
-        <div className="flex flex-col md:flex-row flex-wrap">
-          {/* main infos */}
+        <div className="flex flex-col flex-wrap md:flex-row">
           <CarFormMain car={car} setCar={setCar} errors={errors} setErrors={setErrors} />
-
-          {/* gallery*/}
           <CarFormGallery car={car} setCar={setCar} handleAddImage={handleAddImage} />
         </div>
 
-        {/* strengths */}
-
         <CarFormStrengths setCar={setCar} car={car} strengths={strengths} setStrengths={setStrengths} />
 
-        <div className="flex flex-col md:flex-row md:gap-3 flex-wrap">
-          {/* car assets */}
+        <div className="flex flex-col flex-wrap md:flex-row md:gap-3">
           <CarFormAssets setCar={setCar} car={car} errors={errors} setErrors={setErrors} />
-          {/* car power */}
           <CarFormPower setCar={setCar} car={car} errors={errors} setErrors={setErrors} />
-          {/* car consumption */}
           <CarFormConsumption setCar={setCar} car={car} errors={errors} setErrors={setErrors} />
         </div>
 
-        {/* car messages */}
-        {car.car_messages && car.car_messages.length > 0 && (
-          <div className="">
-            <CarFormMessages car={car} setCar={setCar} />
-          </div>
-        )}
-        {/* sticky footer */}
+        {car.car_messages && car.car_messages.length > 0 && <CarFormMessages car={car} setCar={setCar} />}
+
         <FormFooter
           isNew={carDB ? false : true}
           loading={loading}
@@ -241,7 +215,6 @@ export default function CarForm({ carDB }: CarFormProps) {
           hrefBackText="Retour aux annonces"
         />
       </Form>
-      {/* <pre>{JSON.stringify(car, null, 2)}</pre> */}
     </div>
   );
 }

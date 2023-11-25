@@ -10,18 +10,15 @@ export type NewReview = {
 };
 
 export async function getReviews() {
-  const reviews = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-      },
-      // revalidate every hour
-      next: { revalidate: 60 * 60 },
-    }
-  );
+  const reviews = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+    },
+    // revalidate every hour
+    next: { revalidate: 60 * 60 },
+  });
   const reviewsJson = await reviews.json();
   if (reviewsJson.error) {
     return [];
@@ -40,16 +37,13 @@ export async function getReviews() {
 }
 
 export async function getReview(id: number) {
-  const review = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-      },
-    }
-  );
+  const review = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+    },
+  });
   const reviewJson = await review.json();
   if (reviewJson.error) {
     return null;
@@ -75,17 +69,14 @@ export async function createReview(review: NewReview) {
     review_status: "PENDING",
   };
 
-  const newReview = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-      },
-      body: JSON.stringify(reviewToCreate),
-    }
-  );
+  const newReview = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+    },
+    body: JSON.stringify(reviewToCreate),
+  });
   const newReviewJson = await newReview.json();
   if (newReviewJson.error) {
     return null;
@@ -99,16 +90,13 @@ export async function createReview(review: NewReview) {
  * @param review review to update ({review_status: "ONLINE" | "OFFLINE" | "PENDING"})
  */
 export async function updateReview(id: number, review: Partial<Review>) {
-  const updatedReview = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(review),
-    }
-  );
+  const updatedReview = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(review),
+  });
   const updatedReviewJson = await updatedReview.json();
   if (updatedReviewJson.error) {
     return null;
@@ -117,13 +105,10 @@ export async function updateReview(id: number, review: Partial<Review>) {
 }
 
 export async function deleteReview(id: number) {
-  const deletedReview = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`,
-    {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  const deletedReview = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?id=${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
   const deletedReviewJson = await deletedReview.json();
   if (deletedReviewJson.error) {
     return null;
@@ -132,18 +117,15 @@ export async function deleteReview(id: number) {
 }
 
 export async function getFreshReviews(quantity: number) {
-  const reviews = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?fresh=${quantity}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-      },
-      // revalidate every hour
-      next: { revalidate: 60 * 60 },
-    }
-  );
+  const reviews = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?fresh=${quantity}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+    },
+    // revalidate every hour
+    next: { revalidate: 60 * 60 },
+  });
   const reviewsJson = await reviews.json();
   if (reviewsJson.error) {
     return [];

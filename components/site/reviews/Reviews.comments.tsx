@@ -10,7 +10,6 @@ type ReviewsCommentsProps = {
 };
 
 export default function ReviewsComments({ reviews }: ReviewsCommentsProps) {
-  const [reviewsData, setReviewsData] = useState<Review[]>(reviews.reverse());
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
 
@@ -19,7 +18,7 @@ export default function ReviewsComments({ reviews }: ReviewsCommentsProps) {
   let resultsShown = page * limit;
 
   function handleShowMore() {
-    if (resultsShown < reviewsData.length) {
+    if (resultsShown < reviews.reverse().length) {
       setPage((prev) => prev + 1);
       if (showMoreRef.current) {
         // @ts-ignore
@@ -32,23 +31,21 @@ export default function ReviewsComments({ reviews }: ReviewsCommentsProps) {
     <>
       {/* historic */}
       <section className="container mx-auto mb-[100px] p-4 text-center">
-        {reviewsData &&
+        {reviews &&
           reviews.map((review, index) => {
             if (resultsShown > index) {
-              return (
-                <ReviewsCommentsItem key={review.review_id} review={review} />
-              );
+              return <ReviewsCommentsItem key={review.review_id} review={review} />;
             }
           })}
         <button
           ref={showMoreRef}
           onClick={handleShowMore}
-          disabled={resultsShown >= reviewsData.length}
-          className="bg-red-700 text-white px-4 py-2 rounded-md shadow-md hover:shadow-lg disabled:opacity-50 cursor-not-allowed mt-5"
+          disabled={resultsShown >= reviews.length}
+          className="px-4 py-2 mt-5 text-white bg-red-700 rounded-md shadow-md cursor-not-allowed hover:shadow-lg disabled:opacity-50"
         >
-          {reviewsData.length === 0
+          {reviews.length === 0
             ? "Soyez le premier à donner votre avis"
-            : resultsShown >= reviewsData.length
+            : resultsShown >= reviews.length
             ? "Aucun avis supplémentaire"
             : "Voir plus d'avis"}
         </button>

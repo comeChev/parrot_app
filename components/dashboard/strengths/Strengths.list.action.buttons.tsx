@@ -1,14 +1,11 @@
 "use client";
 
+import { BsExclamationDiamondFill, BsPenFill, BsTrash2Fill } from "react-icons/bs";
+
+import { Strength } from "@prisma/client";
 import { UiAlertError } from "@/components/ui/Ui.alert.windows";
 import { deleteStrength } from "@/lib/strengths";
-import { Strength } from "@prisma/client";
 import { useState } from "react";
-import {
-  BsExclamationDiamondFill,
-  BsPenFill,
-  BsTrash2Fill,
-} from "react-icons/bs";
 
 type StrengthsListActionEditProps = {
   strength: Strength;
@@ -36,7 +33,7 @@ export function StrengthsListActionEdit({
     <button
       type="button"
       onClick={handleEdit}
-      className="text-md text-teal-500 hover:text-teal-700 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+      className="flex items-center justify-between w-full px-4 py-2 text-teal-500 text-md hover:text-teal-700 disabled:text-neutral-300 hover:bg-neutral-200"
     >
       <p className="text-sm">Éditer</p>
       <BsPenFill className="" />
@@ -50,19 +47,13 @@ type StrengthsListActionStatusProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function StrengthsListActionDelete({
-  strength,
-  setStrengths,
-  setIsOpen,
-}: StrengthsListActionStatusProps) {
+export function StrengthsListActionDelete({ strength, setStrengths, setIsOpen }: StrengthsListActionStatusProps) {
   const [isConfirm, setIsConfirm] = useState(false);
   const [validation, setValidation] = useState({ success: false, message: "" });
 
   async function handleDelete() {
     //optimistic update
-    setStrengths((prev) =>
-      prev.filter((c) => c.strength_id !== strength.strength_id)
-    );
+    setStrengths((prev) => prev.filter((c) => c.strength_id !== strength.strength_id));
 
     //update DB
     const res = await deleteStrength(strength.strength_id);
@@ -76,8 +67,7 @@ export function StrengthsListActionDelete({
       setIsOpen(false);
       setValidation({
         success: false,
-        message:
-          "Vous ne pouvez pas supprimer ce point fort. Il est lié à des voitures",
+        message: "Vous ne pouvez pas supprimer ce point fort. Il est lié à des voitures",
       });
       return;
     }
@@ -95,26 +85,23 @@ export function StrengthsListActionDelete({
     <div>
       {isConfirm ? (
         <button
-          className="text-md text-red-700 hover:text-red-800 bg-red-200 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+          className="flex items-center justify-between px-4 py-2 text-red-700 bg-red-200 text-md hover:text-red-800 disabled:text-neutral-300 hover:bg-neutral-200"
           onClick={handleDelete}
         >
-          <span className="text-sm mr-2">Confirmer la suppression</span>
+          <span className="mr-2 text-sm">Confirmer la suppression</span>
           <BsExclamationDiamondFill className="" />
         </button>
       ) : (
         <button
-          className="text-md text-red-700 hover:text-red-800 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+          className="flex items-center justify-between px-4 py-2 text-red-700 text-md hover:text-red-800 disabled:text-neutral-300 hover:bg-neutral-200"
           onClick={handleConfirm}
         >
-          <span className="text-sm mr-2">Supprimer</span>
+          <span className="mr-2 text-sm">Supprimer</span>
           <BsTrash2Fill className="" />
         </button>
       )}
       {!validation.success && validation.message !== "" && (
-        <UiAlertError
-          handleClose={() => setValidation({ success: false, message: "" })}
-          message={validation.message}
-        />
+        <UiAlertError handleClose={() => setValidation({ success: false, message: "" })} message={validation.message} />
       )}
     </div>
   );

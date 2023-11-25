@@ -32,12 +32,7 @@ export default async function Home() {
         {/* assets */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-3 gap-3">
           {assetsItems.map((item, index) => (
-            <HomeAssetsItem
-              Icon={item.Icon}
-              text={item.text}
-              title={item.title}
-              key={index}
-            />
+            <HomeAssetsItem Icon={item.Icon} text={item.text} title={item.title} key={index} />
           ))}
         </div>
       </div>
@@ -57,39 +52,21 @@ export default async function Home() {
           </div>
           <div className="flex flex-col px-4 md:flex-1 space-y-5 text-lg font-light leading-relaxed">
             <p>
-              Le garage V. Parrot ouvre ses portes aux particuliers et aux
-              professionnels. Nous disposons des installations nécessaires pour
-              recevoir votre véhicule et pour en prendre soin. Nous vous
-              proposons une gamme complète de services.
+              Le garage V. Parrot ouvre ses portes aux particuliers et aux professionnels. Nous disposons des
+              installations nécessaires pour recevoir votre véhicule et pour en prendre soin. Nous vous proposons une
+              gamme complète de services.
             </p>
             <p>
-              Établi à Toulouse (Haute Garonne, France) depuis 2001, le garage
-              V. Parrot est spécialisé dans la{" "}
-              <strong className="underline underline-offset-2 font-semibold">
-                mécanique générale
-              </strong>{" "}
-              ainsi que la{" "}
-              <strong className="underline underline-offset-2 font-semibold">
-                vente de voiture d’occasion
-              </strong>
-              .
+              Établi à Toulouse (Haute Garonne, France) depuis 2001, le garage V. Parrot est spécialisé dans la{" "}
+              <strong className="underline underline-offset-2 font-semibold">mécanique générale</strong> ainsi que la{" "}
+              <strong className="underline underline-offset-2 font-semibold">vente de voiture d’occasion</strong>.
             </p>
             <p>
-              Passionnée de mécanique automobile, notre équipe de professionnels
-              propose des solutions adaptées à toutes vos problématiques allant
-              de la{" "}
-              <strong className="underline underline-offset-2 font-semibold">
-                réparation
-              </strong>{" "}
-              à la{" "}
-              <strong className="underline underline-offset-2 font-semibold">
-                vente
-              </strong>{" "}
-              en passant par{" "}
-              <strong className="underline underline-offset-2 font-semibold">
-                l'entretien annuel
-              </strong>{" "}
-              ou ponctuel.
+              Passionnée de mécanique automobile, notre équipe de professionnels propose des solutions adaptées à toutes
+              vos problématiques allant de la{" "}
+              <strong className="underline underline-offset-2 font-semibold">réparation</strong> à la{" "}
+              <strong className="underline underline-offset-2 font-semibold">vente</strong> en passant par{" "}
+              <strong className="underline underline-offset-2 font-semibold">l'entretien annuel</strong> ou ponctuel.
             </p>
           </div>
           <div className="absolute top-[300px] mr-10 right-0 h-[400px] mb-4 w-1/3 lg:relative lg:h-full lg:w-[300px] lg:mr-0 lg:top-0 shadow-xl hidden md:flex lg:mb-0">
@@ -112,12 +89,7 @@ export default async function Home() {
         </h2>
         <div className="h-[3px] bg-red-700 w-2/3 md:w-1/3 lg:w-1/4 mx-auto mb-12" />
         <div className="flex flex-col items-center md:grid md:grid-cols-3">
-          <HomeServiceOldCar
-            url={carItem.url}
-            imageSrc={carItem.imageSrc}
-            text={carItem.text}
-            title={carItem.title}
-          />
+          <HomeServiceOldCar url={carItem.url} imageSrc={carItem.imageSrc} text={carItem.text} title={carItem.title} />
 
           {categories.map((c) => (
             <HomeServicesItem
@@ -139,9 +111,7 @@ export default async function Home() {
 
       {/* section 3 - reviews */}
       <div className="container mx-auto px-5 mb-[100px] select-none">
-        <h3 className="text-3xl font-bold mb-16 font-title text-center">
-          Ils nous ont fait confiance
-        </h3>
+        <h3 className="text-3xl font-bold mb-16 font-title text-center">Ils nous ont fait confiance</h3>
 
         <Carousel reviews={reviews} />
 

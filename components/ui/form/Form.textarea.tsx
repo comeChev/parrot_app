@@ -35,7 +35,7 @@ export default function FormTextarea({
 }: FormTextareaProps) {
   return (
     <div className="mb-[50px] flex-col relative pb-1">
-      <p className="mb-3 px-4 font-semibold">
+      <p className="px-4 mb-3 font-semibold">
         {label} {required && <span className="text-red-500">*</span>}
       </p>
       <div
@@ -56,7 +56,7 @@ export default function FormTextarea({
           className={`bg-gray-200 ${cssClasses} outline-none disabled:select-none disabled:text-gray-500 text-sm md:text-base mb-2`}
         />
         {!disabled && value && (
-          <span className="text-xs italic text-neutral-500">
+          <span className="text-xs italic text-gray-800">
             {max - value.length < 0 ? `Trop de caractères` : `Caractères restants : ${max - value.length}`}
           </span>
         )}

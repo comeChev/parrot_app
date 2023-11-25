@@ -1,19 +1,20 @@
 "use client";
 
-import TableBodyItemAction from "@/components/ui/table/Table.body.item.action";
 import { Dispatch, SetStateAction, useState } from "react";
 import {
   MessagesListActionEdit,
   MessagesListActionMail,
   MessagesListActionPhone,
 } from "./Messages.list.action.buttons";
+
 import { Message } from "@prisma/client";
+import TableBodyItemAction from "@/components/ui/table/Table.body.item.action";
 
 type MessagesListActionProps = {
   message: Message;
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrent: Dispatch<SetStateAction<Message>>;
+  setCurrent: Dispatch<SetStateAction<Message | null>>;
   setIsNew: Dispatch<SetStateAction<boolean>>;
   list: React.RefObject<HTMLDivElement>;
 };
@@ -29,10 +30,7 @@ export default function MessagesListAction({
   const [isOpenMenuAction, setIsOpenMenuAction] = useState(false);
 
   return (
-    <TableBodyItemAction
-      isOpenMenuAction={isOpenMenuAction}
-      setIsOpenMenuAction={setIsOpenMenuAction}
-    >
+    <TableBodyItemAction isOpenMenuAction={isOpenMenuAction} setIsOpenMenuAction={setIsOpenMenuAction}>
       <MessagesListActionPhone
         setMessages={setMessages}
         setOpenForm={setIsOpenForm}

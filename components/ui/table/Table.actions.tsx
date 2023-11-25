@@ -30,21 +30,13 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
   async function handleHideCar() {
     setIsLoading(true);
     //optimistic update
-    setCars((prev) =>
-      prev.map((c) =>
-        c.car_id === car.car_id ? { ...c, car_status: "OFFLINE" } : c
-      )
-    );
+    setCars((prev) => prev.map((c) => (c.car_id === car.car_id ? { ...c, car_status: "OFFLINE" } : c)));
     //update db
     const res = await updateCar(car.car_id, { ...car, car_status: "OFFLINE" });
 
     //rollback if error
     if (!res) {
-      setCars((prev) =>
-        prev.map((c) =>
-          c.car_id === car.car_id ? { ...c, car_status: "ONLINE" } : c
-        )
-      );
+      setCars((prev) => prev.map((c) => (c.car_id === car.car_id ? { ...c, car_status: "ONLINE" } : c)));
       setIsLoading(false);
       return;
     }
@@ -55,21 +47,13 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
   async function handleShowCar() {
     setIsLoading(true);
     //optimistic update
-    setCars((prev) =>
-      prev.map((c) =>
-        c.car_id === car.car_id ? { ...c, car_status: "ONLINE" } : c
-      )
-    );
+    setCars((prev) => prev.map((c) => (c.car_id === car.car_id ? { ...c, car_status: "ONLINE" } : c)));
     //update db
     const res = await updateCar(car.car_id, { ...car, car_status: "ONLINE" });
 
     //rollback if error
     if (!res) {
-      setCars((prev) =>
-        prev.map((c) =>
-          c.car_id === car.car_id ? { ...c, car_status: "OFFLINE" } : c
-        )
-      );
+      setCars((prev) => prev.map((c) => (c.car_id === car.car_id ? { ...c, car_status: "OFFLINE" } : c)));
       setIsLoading(false);
       return;
     }
@@ -82,22 +66,14 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
 
     //optimistic update
     const oldStatus = car.car_status;
-    setCars((prev) =>
-      prev.map((c) =>
-        c.car_id === car.car_id ? { ...c, car_status: "ARCHIVED" } : c
-      )
-    );
+    setCars((prev) => prev.map((c) => (c.car_id === car.car_id ? { ...c, car_status: "ARCHIVED" } : c)));
 
     //update db
     const res = await updateCar(car.car_id, { ...car, car_status: "ARCHIVED" });
 
     //rollback if error
     if (!res) {
-      setCars((prev) =>
-        prev.map((c) =>
-          c.car_id === car.car_id ? { ...c, car_status: oldStatus } : c
-        )
-      );
+      setCars((prev) => prev.map((c) => (c.car_id === car.car_id ? { ...c, car_status: oldStatus } : c)));
       setIsLoading(false);
       return;
     }
@@ -133,12 +109,8 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
 
   return (
     <div className="relative text-center">
-      <button onClick={() => setIsOpenMenuAction(!isOpenMenuAction)}>
-        {isOpenMenuAction ? (
-          <BsXLg className="text-xl" />
-        ) : (
-          <BsThreeDotsVertical className="text-xl" />
-        )}
+      <button onClick={() => setIsOpenMenuAction(!isOpenMenuAction)} aria-label="Ouvrir le menu actions">
+        {isOpenMenuAction ? <BsXLg className="text-xl" /> : <BsThreeDotsVertical className="text-xl" />}
       </button>
 
       {isOpenMenuAction && (
@@ -147,16 +119,10 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
           h-auto z-50 border border-neutral-400 rounded-md"
         >
           {car.car_status.toUpperCase() === "ONLINE" ? (
-            <TableActionsButtonsHide
-              onClick={handleHideCar}
-              disabled={isLoading}
-            />
+            <TableActionsButtonsHide onClick={handleHideCar} disabled={isLoading} />
           ) : (
             car.car_status.toUpperCase() === "OFFLINE" && (
-              <TableActionsButtonsShow
-                onClick={handleShowCar}
-                disabled={isLoading}
-              />
+              <TableActionsButtonsShow onClick={handleShowCar} disabled={isLoading} />
             )
           )}
 
@@ -175,14 +141,9 @@ export default function TableActions({ car, setCars }: TableActionsProps) {
           <TableActionsButtonsEdit href={`/dashboard/car?id=${car.car_id}`} />
 
           {isAdmin && !isPendingDelete ? (
-            <TableActionsButtonsDelete
-              onClick={() => setIsPendingDelete(true)}
-            />
+            <TableActionsButtonsDelete onClick={() => setIsPendingDelete(true)} />
           ) : (
-            <TableActionsButtonsConfirm
-              onClick={handleDeleteCar}
-              disabled={isLoading}
-            />
+            <TableActionsButtonsConfirm onClick={handleDeleteCar} disabled={isLoading} />
           )}
         </div>
       )}

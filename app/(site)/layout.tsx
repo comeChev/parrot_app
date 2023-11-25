@@ -1,6 +1,4 @@
-import { ReactNode, Suspense } from "react";
-
-import Loading from "./loading";
+import { ReactNode } from "react";
 import SiteFooter from "@/components/layout/site/Site.footer";
 import SiteNav from "@/components/layout/site/Site.nav";
 import UiCookieConsent from "@/components/ui/Ui.cookie.consent";
@@ -20,9 +18,7 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
   return (
     <div className="bg-gray-100">
       <SiteNav hours={hours} session={session} />
-      {/* <Suspense fallback={<Loading />}> */}
       <main className="container mx-auto bg-gray-100">{children}</main>
-      {/* </Suspense> */}
       <SiteFooter hours={hours} session={session} categories={categories} />
       <UiCookieConsent />
     </div>

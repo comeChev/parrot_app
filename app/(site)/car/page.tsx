@@ -1,4 +1,5 @@
 import BreadCrumb, { BreadCrumbItem } from "@/components/ui/Ui.breadcrumb";
+import { Metadata, ResolvingMetadata } from "next";
 import { PublicCar, getCar } from "@/lib/cars";
 
 import { BsFillTelephoneFill } from "react-icons/bs";
@@ -10,10 +11,29 @@ import UiImageMain from "@/components/ui/Ui.image.main";
 import UiReasons from "@/components/ui/Ui.reasons";
 import UiTextMain from "@/components/ui/Ui.text.main";
 import mainCarImage from "@/assets/cars/carsMain.jpg";
+import noImage from "@/assets/no-image-available.jpg";
 
-export default async function CarPage(params: {
-  searchParams: { id: string };
-}) {
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  // read route params
+  const id = searchParams["id"];
+  const car: PublicCar = await getCar(Number(id));
+  const previousImages = (await parent).openGraph?.images ?? [];
+
+  return {
+    title: `${car.car_name} | Garage V. Parrot`,
+    description: `Vente de véhicules d'occasion. Le garage V.Parrot vous propose la ${car.car_name} en vente sur notre site de Toulouse, Haute-Garonne (France). Consultez caractéristiques et photos puis contactez-nous !  !`,
+    openGraph: {
+      images: [`${car.car_pictures[0].car_picture_image ?? noImage}`, ...previousImages],
+    },
+  };
+}
+
+export default async function CarPage(params: { searchParams: { id: string } }) {
   const id = Number(params.searchParams.id);
   const car: PublicCar = await getCar(id);
   const items: BreadCrumbItem[] = [
@@ -39,12 +59,7 @@ export default async function CarPage(params: {
         <UiTextMain text="Nous sommes là pour vous aider" />
         {/* phone button */}
         <div className="flex justify-center mb-[50px]">
-          <UiButtonAction
-            type="a"
-            href="tel:+33987654321"
-            Icon={BsFillTelephoneFill}
-            text="09 87 65 43 21"
-          />
+          <UiButtonAction type="a" href="tel:+33987654321" Icon={BsFillTelephoneFill} text="09 87 65 43 21" />
         </div>
         <CarForm car={car} />
       </div>

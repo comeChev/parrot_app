@@ -24,13 +24,7 @@ type CarsFilterFormProps = {
   setPage: Dispatch<SetStateAction<number>>;
 };
 
-export default function CarsFilterForm({
-  cars,
-  handleResetCars,
-  setCars,
-  setPage,
-  carsDB,
-}: CarsFilterFormProps) {
+export default function CarsFilterForm({ cars, handleResetCars, setCars, setPage, carsDB }: CarsFilterFormProps) {
   const [filteredCars, setFilteredCars] = useState<PublicCar[]>([...cars]);
   const [filters, setFilters] = useState(calculateDefaultFilters(cars));
   const [isOpen, setIsOpen] = useState(false);
@@ -39,20 +33,14 @@ export default function CarsFilterForm({
 
   function getTextResults() {
     if (filteredCars.length > 0) {
-      return filteredCars.length === 1
-        ? "Afficher 1 véhicule"
-        : `Afficher ${filteredCars.length} véhicules`;
+      return filteredCars.length === 1 ? "Afficher 1 véhicule" : `Afficher ${filteredCars.length} véhicules`;
     }
     return "Aucun véhicule";
   }
 
   function calculateDefaultFilters(cars: PublicCar[]) {
-    const kilometers = Array.from(
-      new Set(cars.map((car) => car.car_kilometers))
-    );
-    const years = Array.from(
-      new Set(cars.map((car) => new Date(car.car_year).getFullYear()))
-    );
+    const kilometers = Array.from(new Set(cars.map((car) => car.car_kilometers)));
+    const years = Array.from(new Set(cars.map((car) => new Date(car.car_year).getFullYear())));
     const prices = Array.from(new Set(cars.map((car) => car.car_price)));
 
     return {
@@ -148,10 +136,8 @@ export default function CarsFilterForm({
     value: number | string,
     valuetype: "f" | "kmin" | "pmin" | "ymin" | "kmax" | "pmax" | "ymax"
   ) {
-    const vKmin =
-      valuetype === "kmin" ? (value as number) : filters.kilometers.min;
-    const vKmax =
-      valuetype === "kmax" ? (value as number) : filters.kilometers.max;
+    const vKmin = valuetype === "kmin" ? (value as number) : filters.kilometers.min;
+    const vKmax = valuetype === "kmax" ? (value as number) : filters.kilometers.max;
     const vPmin = valuetype === "pmin" ? (value as number) : filters.price.min;
     const vPmax = valuetype === "pmax" ? (value as number) : filters.price.max;
     const vYmin = valuetype === "ymin" ? (value as number) : filters.year.min;
@@ -183,23 +169,13 @@ export default function CarsFilterForm({
     <div className="mx-4 md:w-[300px] lg:w-[400px] py-4">
       {/* open filters */}
       <div
-        aria-label={
-          isOpen
-            ? "Filtrer les voitures - Fermer"
-            : "Filtrer les voitures - Ouvrir"
-        }
+        aria-label={isOpen ? "Filtrer les voitures - Fermer" : "Filtrer les voitures - Ouvrir"}
         typeof="button"
-        className="flex items-center justify-between p-4  bg-red-800 rounded-lg text-neutral-100  text-lg cursor-pointer w-full"
+        className="flex items-center justify-between w-full p-4 text-lg bg-red-800 rounded-lg cursor-pointer text-neutral-100"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <p className="flex-1">
-          {isOpen ? "Sélectionnez vos filtres" : "Filtrer"}
-        </p>
-        {isOpen ? (
-          <BsFilterCircleFill className="text-3xl" />
-        ) : (
-          <BsFilterCircle className="text-3xl" />
-        )}
+        <p className="flex-1">{isOpen ? "Sélectionnez vos filtres" : "Filtrer"}</p>
+        {isOpen ? <BsFilterCircleFill className="text-3xl" /> : <BsFilterCircle className="text-3xl" />}
       </div>
 
       {/* filters */}
@@ -230,6 +206,8 @@ export default function CarsFilterForm({
 
         {/* filter by kilometers */}
         <CarsFilterFormSlider
+          labelMax="Kilométrage maximum"
+          labelMin="Kilométrage minimum"
           name="kilometers"
           label="Kilométrage"
           values={filters.kilometers}
@@ -241,6 +219,8 @@ export default function CarsFilterForm({
 
         {/* filter by year */}
         <CarsFilterFormSlider
+          labelMax="Année maximum"
+          labelMin="Année minimum"
           name="constructYear"
           label="Année de construction"
           values={filters.year}
@@ -252,6 +232,8 @@ export default function CarsFilterForm({
 
         {/* filter by price */}
         <CarsFilterFormSlider
+          labelMax="Prix maximum"
+          labelMin="Prix minimum"
           name="carPrices"
           label="Prix"
           values={filters.price}
@@ -262,10 +244,8 @@ export default function CarsFilterForm({
         />
         <div className="flex flex-col px-4">
           <button
-            className="mb-3 px-4 py-2 rounded-lg bg-red-800 text-neutral-100 font-semibold hover:bg-red-900 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:hover:bg-red-800"
-            disabled={
-              filteredCars.length === 0 || filteredCars.length === cars.length
-            }
+            className="px-4 py-2 mb-3 font-semibold transition-all duration-300 ease-in-out bg-red-800 rounded-lg text-neutral-100 hover:bg-red-900 disabled:opacity-50 disabled:hover:bg-red-800"
+            disabled={filteredCars.length === 0 || filteredCars.length === cars.length}
             onClick={() => {
               setCars(filteredCars);
               setPage(1);

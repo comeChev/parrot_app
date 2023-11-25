@@ -11,14 +11,8 @@ type HoursActionButtonProps = {
   isMorning: boolean;
 };
 
-export default function HoursActionButton({
-  setHours,
-  isMorning,
-  hour,
-}: HoursActionButtonProps) {
-  const isOpen = isMorning
-    ? hour.hour_morning_status
-    : hour.hour_afternoon_status;
+export default function HoursActionButton({ setHours, isMorning, hour }: HoursActionButtonProps) {
+  const isOpen = isMorning ? hour.hour_morning_status : hour.hour_afternoon_status;
 
   async function handleClose() {
     const oldHour = hour;
@@ -51,11 +45,11 @@ export default function HoursActionButton({
   }
 
   return isOpen ? (
-    <button className="text-red-600 text-xl" onClick={handleClose}>
+    <button className="text-xl text-red-600" onClick={handleClose} aria-label="Fermer le garage pour ce créneau">
       <FaDoorClosed />
     </button>
   ) : (
-    <button className="text-indigo-600 text-xl" onClick={handleClose}>
+    <button className="text-xl text-indigo-600" onClick={handleClose} aria-label="Ouvrir le garage pour ce créneau">
       <FaDoorOpen />
     </button>
   );

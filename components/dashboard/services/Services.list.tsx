@@ -1,23 +1,19 @@
 "use client";
 
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
+import { useEffect, useRef, useState } from "react";
+
+import { Category } from "@prisma/client";
+import { ServiceWithPicturesAndCategory } from "@/lib/services";
+import ServicesAddOrCreate from "./Services.add";
+import ServicesListAction from "./Services.list.action";
 import Table from "@/components/ui/table/Table";
 import TableBody from "@/components/ui/table/Table.body";
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
-import { useEffect, useRef, useState } from "react";
-import { getFullStringDate } from "@/utils/globals";
-import { defaultService } from "./Services.form";
-import UiPagination from "@/components/ui/Ui.pagination";
 import TableBodyItemStatus from "@/components/ui/table/Table.body.item.status";
-import { ServiceWithPicturesAndCategory } from "@/lib/services";
-import ServicesListAction from "./Services.list.action";
-import ServicesAddOrCreate from "./Services.add";
-import { Category } from "@prisma/client";
+import UiPagination from "@/components/ui/Ui.pagination";
+import { defaultService } from "./Services.form";
+import { getFullStringDate } from "@/utils/globals";
 
 const tableHeaders: TableHeaderProps[] = [
   {
@@ -55,18 +51,12 @@ type ServicesListProps = {
   categoriesDB: Category[];
 };
 
-export default function ServicesList({
-  servicesDB,
-  categoriesDB,
-}: ServicesListProps) {
-  const [services, setServices] =
-    useState<ServiceWithPicturesAndCategory[]>(servicesDB);
-  const [servicesToShow, setServicesToShow] =
-    useState<ServiceWithPicturesAndCategory[]>(servicesDB);
+export default function ServicesList({ servicesDB, categoriesDB }: ServicesListProps) {
+  const [services, setServices] = useState<ServiceWithPicturesAndCategory[]>(servicesDB);
+  const [servicesToShow, setServicesToShow] = useState<ServiceWithPicturesAndCategory[]>(servicesDB);
   const [isNew, setIsNew] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState(false);
-  const [currentService, setCurrentService] =
-    useState<ServiceWithPicturesAndCategory>(defaultService);
+  const [currentService, setCurrentService] = useState<ServiceWithPicturesAndCategory>(defaultService);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const list = useRef<HTMLDivElement>(null);
@@ -82,27 +72,23 @@ export default function ServicesList({
         // title
         {
           value: s.service_title,
-          className: "truncate",
+          className: "truncate text-gray-600",
         },
         // content
-        { value: s.service_paragraph_one, className: "truncate" },
+        { value: s.service_paragraph_one, className: "truncate text-gray-600" },
         // category
         {
           value: s.category.category_name,
-          className: "hidden lg:table-cell truncate",
+          className: "hidden lg:table-cell truncate text-gray-600",
         },
         //pusblised date
         {
           value: getFullStringDate(new Date(s.service_published_date)),
-          className: "hidden lg:table-cell",
+          className: "hidden lg:table-cell text-gray-600",
         },
         // status
         {
-          value: (
-            <TableBodyItemStatus
-              status={s.service_status as "ONLINE" | "OFFLINE"}
-            />
-          ),
+          value: <TableBodyItemStatus status={s.service_status as "ONLINE" | "OFFLINE"} />,
           className: "text-center",
         },
         {
@@ -135,12 +121,7 @@ export default function ServicesList({
           <TableHeader headersList={tableHeaders} />
           <TableBody bodyItems={bodyItems} />
         </Table>
-        <UiPagination
-          page={page}
-          setPage={setPage}
-          length={services.length}
-          itemsPerPage={itemsPerPage}
-        />
+        <UiPagination page={page} setPage={setPage} length={services.length} itemsPerPage={itemsPerPage} />
       </div>
       <div className="mb-20" ref={list}>
         <ServicesAddOrCreate

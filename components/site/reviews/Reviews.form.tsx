@@ -1,6 +1,5 @@
 "use client";
 
-import { BsStar, BsStarFill } from "react-icons/bs";
 import { ErrorsProps, arrayNote, defaultErrors, defaultReview, explanations } from "@/utils/form/review";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { Validation, checkErrors } from "@/utils/form/validation";
@@ -106,18 +105,18 @@ export default function ReviewsForm() {
 
       {/* note */}
       <div className="mb-[50px] flex-col relative p-1">
-        <p className="mb-3 px-4 font-semibold">
+        <p className="px-4 mb-3 font-semibold">
           Note <span className="text-red-500">*</span>
         </p>
         <div className="flex flex-col md:items-center md:justify-between md:flex-row">
-          <div className="flex items-center space-x-5 ml-4">
+          <div className="flex items-center ml-4 space-x-5">
             {arrayNote.map((note) => {
-              if (form.values.review_note && form.values.review_note >= note) {
+              if (form.values?.review_note >= note) {
                 return (
                   <FaStar
                     key={note}
                     aria-label={`note de ${note}`}
-                    className="text-red-500 text-4xl cursor-pointer"
+                    className="text-4xl text-red-500 cursor-pointer"
                     onClick={() => handleChangeNote(note)}
                     onMouseEnter={() => handleChangeNote(note)}
                   />
@@ -127,7 +126,7 @@ export default function ReviewsForm() {
                   <FaRegStar
                     key={note}
                     aria-label={`note de ${note}`}
-                    className="text-red-500 cursor-pointer text-2xl"
+                    className="text-2xl text-red-500 cursor-pointer"
                     onClick={() => handleChangeNote(note)}
                     onMouseEnter={() => handleChangeNote(note)}
                   />
@@ -149,7 +148,9 @@ export default function ReviewsForm() {
         handleChange={handleChange}
         handleFocus={handleErrorsFocus}
       />
+
       <FormReacaptcha setCaptcha={setCaptcha} error={form.errors.captcha} />
+
       {/* submit button */}
       <FormSubmit
         handleClick={handleSubmit}

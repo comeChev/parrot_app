@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
 import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
@@ -46,8 +41,8 @@ const tableHeaders: TableHeaderProps[] = [
     className: "w-12 text-center",
   },
   {
-    text: "",
-    className: "w-12",
+    text: "Actions",
+    className: "w-12 text-transparent",
   },
 ];
 
@@ -80,8 +75,9 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
               <Image
                 src={p.picture_image}
                 alt={p.picture_name}
+                sizes="(min-width: 780px) 150px, 100px"
                 fill
-                className="h-full w-full rounded-lg"
+                className="w-full h-full rounded-lg"
               />
             </div>
           ),
@@ -100,11 +96,7 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
           className: "hidden lg:table-cell",
         },
         {
-          value: (
-            <PicturesListStatus
-              status={p.picture_status as "ONLINE" | "OFFLINE"}
-            />
-          ),
+          value: <PicturesListStatus status={p.picture_status as "ONLINE" | "OFFLINE"} />,
           className: "text-center",
         },
         {
@@ -137,12 +129,7 @@ export default function PicturesList({ picturesDB }: GalleryListProps) {
           <TableHeader headersList={tableHeaders} />
           <TableBody bodyItems={bodyItems} />
         </Table>
-        <UiPagination
-          page={page}
-          setPage={setPage}
-          length={pictures.length}
-          itemsPerPage={itemsPerPage}
-        />
+        <UiPagination page={page} setPage={setPage} length={pictures.length} itemsPerPage={itemsPerPage} />
       </div>
       <div className="mb-20" ref={list}>
         <PicturesAddOrCreate

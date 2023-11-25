@@ -12,8 +12,8 @@ const Carousel: React.FC<CarouselProps> = ({ reviews }) => {
   const [item, setItem] = useState(0);
 
   return (
-    <div className="text-center pb-12 w-full" key={0}>
-      <div className=" py-4 mt-8 w-full px-2 overflow-hidden relative">
+    <div className="w-full pb-12 text-center" key={0}>
+      <div className="relative w-full px-2 py-4 mt-8 overflow-hidden ">
         <div className="h-[180px] flex items-center justify-center w-full overflow-x-auto text-center no-scrollbar">
           {reviews.map((r, i) => (
             <div
@@ -22,12 +22,7 @@ const Carousel: React.FC<CarouselProps> = ({ reviews }) => {
               } h-full relative overflow-hidden transition-all shrink-0 duration-500 scroll-mt-28 scroll-smooth snap-center snap-always `}
               key={i}
             >
-              <HomeReviewsItem
-                review={r as Review}
-                index={i}
-                length={reviews.length}
-                item={item}
-              />
+              <HomeReviewsItem review={r as Review} index={i} item={item} />
             </div>
           ))}
         </div>

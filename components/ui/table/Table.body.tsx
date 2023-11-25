@@ -6,7 +6,7 @@ type TableBodyProps = {
 
 export default function TableBody({ bodyItems }: TableBodyProps) {
   return (
-    <tbody className="text-neutral-500">
+    <tbody className="text-gray-600">
       {bodyItems.map((item, index) => (
         <TableBodyItem key={index} bodyItems={item} />
       ))}

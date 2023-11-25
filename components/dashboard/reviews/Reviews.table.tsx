@@ -1,22 +1,18 @@
 "use client";
 
-import Table from "@/components/ui/table/Table";
-import TableBody from "@/components/ui/table/Table.body";
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
-import { Review } from "@prisma/client";
-import { useEffect, useRef, useState } from "react";
-import UiButtonAction from "@/components/ui/Ui.button.action";
-import { getFullName, getFullStringDate } from "@/utils/globals";
-import MessagesStatus from "./Reviews.status";
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
 import ReviewsForm, { defaultReview } from "./Reviews.form";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
+import { getFullName, getFullStringDate } from "@/utils/globals";
+import { useEffect, useRef, useState } from "react";
+
+import MessagesStatus from "./Reviews.status";
+import { Review } from "@prisma/client";
 import ReviewsListAction from "./Reviews.list.action";
 import ReviewsNote from "./Reviews.note";
+import Table from "@/components/ui/table/Table";
+import TableBody from "@/components/ui/table/Table.body";
+import UiButtonAction from "@/components/ui/Ui.button.action";
 import UiPagination from "@/components/ui/Ui.pagination";
 
 export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
@@ -55,8 +51,8 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
       className: "w-12 text-center truncate",
     },
     {
-      text: "",
-      className: "w-6 ",
+      text: "Actions",
+      className: "w-6 text-transparent ",
     },
   ];
 
@@ -84,11 +80,7 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
       // status
       //message_status: "PENDING" | "ONLINE" | "OFFLINE";
       {
-        value: (
-          <MessagesStatus
-            status={m.review_status as "PENDING" | "ONLINE" | "OFFLINE"}
-          />
-        ),
+        value: <MessagesStatus status={m.review_status as "PENDING" | "ONLINE" | "OFFLINE"} />,
         className: "text-center",
       },
       //actions
@@ -134,30 +126,15 @@ export default function ReviewsTable({ reviewsDB }: { reviewsDB: Review[] }) {
           <TableHeader headersList={headersList} />
           <TableBody bodyItems={bodyItems} />
         </Table>
-        <UiPagination
-          page={page}
-          setPage={setPage}
-          length={reviews.length}
-          itemsPerPage={itemsPerPage}
-        />
+        <UiPagination page={page} setPage={setPage} length={reviews.length} itemsPerPage={itemsPerPage} />
       </div>
 
       <div className="mb-16" ref={list}>
-        <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
+        <div className="flex flex-col-reverse justify-between md:items-center md:flex-row">
           {isOpenForm ? (
-            <UiButtonAction
-              text="Fermer le formulaire"
-              onClick={handleCloseForm}
-              type="button"
-              href=""
-            />
+            <UiButtonAction text="Fermer le formulaire" onClick={handleCloseForm} type="button" href="" />
           ) : (
-            <UiButtonAction
-              text="Ajouter un commentaire"
-              onClick={handleOpenForm}
-              type="button"
-              href=""
-            />
+            <UiButtonAction text="Ajouter un commentaire" onClick={handleOpenForm} type="button" href="" />
           )}
         </div>
       </div>

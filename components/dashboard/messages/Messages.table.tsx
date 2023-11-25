@@ -1,35 +1,27 @@
 "use client";
 
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
+import { getFullName, getFullStringDate } from "@/utils/globals";
+import { useEffect, useRef, useState } from "react";
+
+import { Message } from "@prisma/client";
+import MessagesForm from "./Messages.form";
+import MessagesListAction from "./Messages.list.action";
+import MessagesStatus from "./Messages.status";
 import Table from "@/components/ui/table/Table";
 import TableBody from "@/components/ui/table/Table.body";
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
-import { Message } from "@prisma/client";
-import { useEffect, useRef, useState } from "react";
 import UiButtonAction from "@/components/ui/Ui.button.action";
-import { getFullName, getFullStringDate } from "@/utils/globals";
-import MessagesStatus from "./Messages.status";
-import MessagesListAction from "./Messages.list.action";
-import { defaultMessage } from "./Messages.form";
-import MessagesForm from "./Messages.form";
 import UiPagination from "@/components/ui/Ui.pagination";
+import { defaultMessage } from "@/utils/form/dashboard/message";
 
-export default function MessagesTable({
-  messagesDB,
-}: {
-  messagesDB: Message[];
-}) {
+export default function MessagesTable({ messagesDB }: { messagesDB: Message[] }) {
   const [messages, setMessages] = useState(messagesDB);
   const [messagesToShow, setMessagesToShow] = useState(messagesDB);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [isNew, setIsNew] = useState<boolean>(true);
-  const [currentMessage, setCurrentMessage] = useState<Message>(defaultMessage);
+  const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const list = useRef<HTMLDivElement>(null);
   const headersList: TableHeaderProps[] = [
@@ -58,8 +50,8 @@ export default function MessagesTable({
       className: "w-12 lg:w-20 truncate",
     },
     {
-      text: "",
-      className: "w-6 ",
+      text: "Actions",
+      className: "w-6 text-transparent",
     },
   ];
 
@@ -69,17 +61,13 @@ export default function MessagesTable({
       { value: m.message_id, className: "hidden lg:table-cell text-center" },
       // user
       {
-        value: getFullName(
-          decodeURI(m.message_contact_first_name),
-          decodeURI(m.message_contact_last_name)
-        ),
+        value: getFullName(decodeURI(m.message_contact_first_name), decodeURI(m.message_contact_last_name)),
         className: "truncate",
       },
       // mail
       {
         value: m.message_contact_email,
-        className:
-          "hidden md:table-cell text-sm md:text-md lg:text-lg truncate",
+        className: "hidden md:table-cell text-sm md:text-md lg:text-lg truncate",
       },
       // content
       { value: decodeURI(m.message_content), className: "truncate" },
@@ -91,11 +79,7 @@ export default function MessagesTable({
       // status
       //message_status: "PENDING" | "REPLIED" | "ARCHIVED";
       {
-        value: (
-          <MessagesStatus
-            status={m.message_status as "PENDING" | "REPLIED" | "ARCHIVED"}
-          />
-        ),
+        value: <MessagesStatus status={m.message_status as "PENDING" | "REPLIED" | "ARCHIVED"} />,
         className: "",
       },
       //actions
@@ -135,24 +119,12 @@ export default function MessagesTable({
           <TableHeader headersList={headersList} />
           <TableBody bodyItems={bodyItems} />
         </Table>
-        <UiPagination
-          page={page}
-          setPage={setPage}
-          length={messages.length}
-          itemsPerPage={itemsPerPage}
-        />
+        <UiPagination page={page} setPage={setPage} length={messages.length} itemsPerPage={itemsPerPage} />
       </div>
 
       <div className="mb-16" ref={list}>
-        <div className="flex flex-col-reverse md:items-center justify-between md:flex-row">
-          {isOpenForm && (
-            <UiButtonAction
-              text="Fermer le formulaire"
-              onClick={handleCloseForm}
-              type="button"
-              href=""
-            />
-          )}
+        <div className="flex flex-col-reverse justify-between md:items-center md:flex-row">
+          {isOpenForm && <UiButtonAction text="Fermer le formulaire" onClick={handleCloseForm} type="button" href="" />}
         </div>
       </div>
       {isOpenForm && (
@@ -160,7 +132,7 @@ export default function MessagesTable({
           messages={messages}
           setMessages={setMessages}
           isNew={isNew}
-          currentMessage={currentMessage}
+          currentMessage={currentMessage ?? defaultMessage}
           setIsOpenForm={setIsOpenForm}
         />
       )}

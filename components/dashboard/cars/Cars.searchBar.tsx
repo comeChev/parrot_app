@@ -1,8 +1,9 @@
 "use client";
 
-import { FullCar } from "@/lib/cars";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { BsSearch, BsXLg } from "react-icons/bs";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
+import { FullCar } from "@/lib/cars";
 
 type CarsSearchBarProps = {
   placeholder: string;
@@ -10,11 +11,7 @@ type CarsSearchBarProps = {
   setCars: Dispatch<SetStateAction<FullCar[]>>;
 };
 
-export default function CarsSearchBar({
-  placeholder,
-  carsDB,
-  setCars,
-}: CarsSearchBarProps) {
+export default function CarsSearchBar({ placeholder, carsDB, setCars }: CarsSearchBarProps) {
   const [search, setSearch] = useState("");
 
   function handleSearchCar(e: React.ChangeEvent<HTMLInputElement>) {
@@ -45,20 +42,21 @@ export default function CarsSearchBar({
 
   return (
     <div className="flex-1">
-      <div className="bg-slate-200 text-neutral-700 flex items-center rounded-md border-2 border-slate-300 relative flex-1">
-        <BsSearch className="ml-4 mr-1 absolute top-3 left-0" />
+      <div className="relative flex items-center flex-1 border-2 rounded-md bg-slate-200 text-neutral-700 border-slate-300">
+        <BsSearch className="absolute left-0 ml-4 mr-1 top-3" />
         <input
           type="text"
           name="search"
           placeholder={placeholder}
           onChange={handleSearchCar}
           value={search}
-          className="bg-slate-200 flex-1 py-2 px-10 rounded-md"
+          className="flex-1 px-10 py-2 bg-gray-200 rounded-md"
         />
         {search !== "" && (
           <BsXLg
             onClick={handleReset}
-            className="mr-4 ml-1 absolute top-3 right-0 cursor-pointer"
+            aria-label="Effacer la recherche"
+            className="absolute right-0 ml-1 mr-4 cursor-pointer top-3"
           />
         )}
       </div>

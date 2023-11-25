@@ -8,7 +8,7 @@ import { Message } from "@prisma/client";
 
 type MessagesListActionEditProps = {
   message: Message;
-  setCurrent: React.Dispatch<React.SetStateAction<Message>>;
+  setCurrent: React.Dispatch<React.SetStateAction<Message | null>>;
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNew: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +19,7 @@ type MessagesListActionInfoProps = {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrent: React.Dispatch<React.SetStateAction<Message>>;
+  setCurrent: React.Dispatch<React.SetStateAction<Message | null>>;
 };
 
 export function MessagesListActionEdit({
@@ -44,9 +44,9 @@ export function MessagesListActionEdit({
     <button
       type="button"
       onClick={handleEdit}
-      className="text-md text-teal-500 hover:text-teal-700 disabled:text-neutral-300 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+      className="flex items-center justify-between px-4 py-2 text-teal-500 text-md hover:text-teal-700 disabled:text-neutral-300 hover:bg-neutral-200"
     >
-      <p className="text-sm mr-2">Répondre</p>
+      <p className="mr-2 text-sm">Répondre</p>
       <BsPenFill className="" />
     </button>
   );
@@ -76,21 +76,14 @@ export function MessagesListActionPhone({
     const messageToUpdate = {
       ...message,
       message_status: message.message_status as MessageUpdate["message_status"],
-      message_response: message.message_response
-        ? message.message_response
-        : "",
+      message_response: message.message_response ? message.message_response : "",
       message_response_date: new Date(),
-      message_response_type:
-        message.message_response_type as MessageUpdate["message_response_type"],
-      message_contact_phone: message.message_contact_phone
-        ? message.message_contact_phone
-        : "",
+      message_response_type: message.message_response_type as MessageUpdate["message_response_type"],
+      message_contact_phone: message.message_contact_phone ? message.message_contact_phone : "",
     };
     const res = await updateMessage(message.message_id, messageToUpdate);
     if (!res) {
-      setMessages((prev) =>
-        prev.map((m) => (m.message_id === message.message_id ? oldMessage : m))
-      );
+      setMessages((prev) => prev.map((m) => (m.message_id === message.message_id ? oldMessage : m)));
       setIsOpen(false);
       return;
     }
@@ -100,9 +93,9 @@ export function MessagesListActionPhone({
   return (
     <button
       onClick={handlePhone}
-      className="text-md text-neutral-600 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+      className="flex items-center justify-between px-4 py-2 text-md text-neutral-600 hover:bg-neutral-200"
     >
-      <p className="text-sm mr-2">{message.message_contact_phone}</p>
+      <p className="mr-2 text-sm">{message.message_contact_phone}</p>
       <BsPhoneFill className="" />
     </button>
   );
@@ -118,27 +111,17 @@ export function MessagesListActionMail({
     const oldMessage = message;
     const messageToUpdate = {
       ...message,
-      message_response: message.message_response
-        ? message.message_response
-        : "",
+      message_response: message.message_response ? message.message_response : "",
       message_response_type: "MAIL" as MessageUpdate["message_response_type"],
       message_response_date: new Date(),
       message_status: "PENDING" as MessageUpdate["message_status"],
-      message_contact_phone: message.message_contact_phone
-        ? message.message_contact_phone
-        : "",
+      message_contact_phone: message.message_contact_phone ? message.message_contact_phone : "",
     };
 
-    setMessages((prev) =>
-      prev.map((m) =>
-        m.message_id === message.message_id ? messageToUpdate : m
-      )
-    );
+    setMessages((prev) => prev.map((m) => (m.message_id === message.message_id ? messageToUpdate : m)));
     const res = await updateMessage(message.message_id, messageToUpdate);
     if (!res) {
-      setMessages((prev) =>
-        prev.map((m) => (m.message_id === message.message_id ? oldMessage : m))
-      );
+      setMessages((prev) => prev.map((m) => (m.message_id === message.message_id ? oldMessage : m)));
       setIsOpen(false);
       return;
     }
@@ -149,9 +132,9 @@ export function MessagesListActionMail({
   return (
     <button
       onClick={handleMail}
-      className="text-md text-neutral-600 flex items-center justify-between hover:bg-neutral-200 px-4 py-2"
+      className="flex items-center justify-between px-4 py-2 text-md text-neutral-600 hover:bg-neutral-200"
     >
-      <p className="text-sm mr-2">{message.message_contact_email}</p>
+      <p className="mr-2 text-sm">{message.message_contact_email}</p>
       <MdAlternateEmail className="" />
     </button>
   );

@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  BodyItemProps,
-  BodyItems,
-} from "@/components/ui/table/Table.body.item";
-import TableHeader, {
-  TableHeaderProps,
-} from "@/components/ui/table/Table.header";
+import { BodyItemProps, BodyItems } from "@/components/ui/table/Table.body.item";
+import TableHeader, { TableHeaderProps } from "@/components/ui/table/Table.header";
 import { useEffect, useRef, useState } from "react";
 
 import Table from "@/components/ui/table/Table";
@@ -42,8 +37,8 @@ const tableHeaders: TableHeaderProps[] = [
     className: "w-12 text-center",
   },
   {
-    text: "",
-    className: "w-6",
+    text: "Actions",
+    className: "w-6 text-transparent",
   },
 ];
 
@@ -53,13 +48,11 @@ type UserListProps = {
 
 export default function UsersList({ usersDB }: UserListProps) {
   const [users, setUsers] = useState<UserWithoutPassword[]>(usersDB);
-  const [curentUser, setCurentUser] =
-    useState<UserWithoutPassword>(defaultUser);
+  const [curentUser, setCurentUser] = useState<UserWithoutPassword>(defaultUser);
   const [isNew, setIsNew] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const listUsers = useRef<HTMLDivElement>(null);
-  const [usersToShow, setUsersToShow] =
-    useState<UserWithoutPassword[]>(usersDB);
+  const [usersToShow, setUsersToShow] = useState<UserWithoutPassword[]>(usersDB);
   const list = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
@@ -109,12 +102,7 @@ export default function UsersList({ usersDB }: UserListProps) {
           <TableHeader headersList={tableHeaders} />
           <TableBody bodyItems={bodyItems} />
         </Table>
-        <UiPagination
-          page={page}
-          setPage={setPage}
-          length={users.length}
-          itemsPerPage={itemsPerPage}
-        />
+        <UiPagination page={page} setPage={setPage} length={users.length} itemsPerPage={itemsPerPage} />
       </div>
       <div className="mb-20" ref={list}>
         <UserAddOrCreate

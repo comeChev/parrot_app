@@ -21,5 +21,5 @@ export const StatusPin = ({ status }: statusPinProps) => {
 };
 
 export const DescriptionPin = ({ label }: { label: string }) => {
-  return <p className="text-neutral-500 text-sm">{label}</p>;
+  return <p className="text-sm text-gray-600">{label}</p>;
 };
